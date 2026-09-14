@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Кузнецов;Валерий;;;
+FN:Валерий Кузнецов
+ORG:ООО «ИТС»
+TITLE:Директор по развитию
+TEL;TYPE=CELL:+79044909106
+EMAIL:kuznetsov_vv@its.dev
+URL:https://its.dev/
+NOTE:Форум ИТС России 2026, Москва
+END:VCARD
