@@ -1485,3 +1485,17 @@ button:focus-visible {
 @media (min-width: 1150px) {
   .contacts__grid { grid-template-columns: repeat(3, 1fr); }
 }
+
+/* Product catalogue refresh, September 2026 */
+.products__grid { gap: 20px; }
+.products .card { border-radius: 24px; padding: 24px; }
+.card__task { font-size: 12px; font-weight: 700; letter-spacing: .035em; color: var(--text); margin: 14px 0 8px; }
+.products .card__text { line-height: 1.65; color: var(--text-muted); }
+.products .card__link { border-top: 1px solid var(--border); padding-top: 18px; display: block; }
+.products .card[data-system="bus"] { border-color: rgba(0,135,116,.6); background-image: linear-gradient(150deg,rgba(0,135,116,.10),transparent 65%); }
+.products .card[data-system="bus"] .card__shot { object-position: left top; }
+.products .card:focus-visible { outline: 3px solid var(--link); outline-offset: 4px; }
+@media (prefers-reduced-motion: reduce) { .products .card, .products .card__shot, .products .card__link { transition: none; transform: none; } }
+
+[data-theme="dark"] .products .card__text, :root:not([data-theme="light"]) .products .card__text { color:#b4bdc9; }
+@media(max-width:480px) { .header__right { flex:0 0 auto; } .header__row { flex-wrap:nowrap; } }

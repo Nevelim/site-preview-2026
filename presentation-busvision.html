@@ -1,0 +1,1027 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>bus:vision — Управление общественным транспортом</title>
+<meta name="description" content="bus:vision — платформа ИТС для управления движением общественного транспорта: маршрутная сеть, графики движения, онлайн-диспетчеризация, контроль контрактов, сервисы для пассажиров.">
+
+<style>
+  @font-face { font-family:'Gilroy'; src:url('assets/fonts/Gilroy-Regular.woff2') format('woff2'); font-weight:400; font-display:swap; }
+  @font-face { font-family:'Gilroy'; src:url('assets/fonts/Gilroy-Medium.woff2') format('woff2'); font-weight:500; font-display:swap; }
+  @font-face { font-family:'Gilroy'; src:url('assets/fonts/Gilroy-Semibold.woff2') format('woff2'); font-weight:600; font-display:swap; }
+  @font-face { font-family:'Gilroy'; src:url('assets/fonts/Gilroy-Bold.woff2') format('woff2'); font-weight:700; font-display:swap; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  :root {
+    --bg: #070C14; --bg2: #0A1120;
+    --text: #F2F5FB; --muted: #97A3BC; --dim: #8A96AE;
+    --accent: #4FD9EE; --accent-soft: #8FEAF6;
+    --brand: #008774; --brand-b: #17BFA6;
+    --line: rgba(255,255,255,0.10); --panel: rgba(255,255,255,0.035);
+  }
+  html, body { background: var(--bg); }
+  body {
+    font-family: 'Gilroy', 'Manrope', -apple-system, 'Helvetica Neue', Arial, sans-serif;
+    color: var(--text); -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  ::selection { background: rgba(0,135,116,0.55); color: #fff; }
+  a:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: 2px solid #4FD9EE; outline-offset: 2px; border-radius: 4px; }
+
+  /* ── progress + nav ── */
+  #progress { position: fixed; top: 0; left: 0; height: 3px; width: 0;
+    background: linear-gradient(90deg, #008774, #4FD9EE); z-index: 60; }
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: 14px 40px;
+    background: rgba(7,12,20,0.82); border-bottom: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 9px; font-weight: 700; font-size: 16px; letter-spacing: .05em; text-decoration: none; color: var(--text); }
+  .nav-links { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+  .nav-links a {
+    font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--muted); text-decoration: none; padding: 7px 10px; border-radius: 8px;
+    transition: color .25s, background .25s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-links a.active { color: #17BFA6; background: rgba(0,135,116,0.16); }
+
+  /* ── sections ── */
+  section { position: relative; overflow: hidden; padding: 110px 64px; }
+  section + section { border-top: 1px solid rgba(255,255,255,0.06); }
+  .aurora { position: absolute; pointer-events: none; border-radius: 50%; filter: blur(90px); }
+  .topo { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .aurora.a { width: 760px; height: 560px; top: -220px; right: -160px; background: radial-gradient(closest-side, rgba(79,217,238,0.14), transparent); }
+  .aurora.b { width: 700px; height: 560px; bottom: -260px; left: -200px; background: radial-gradient(closest-side, rgba(0,135,116,0.22), transparent); }
+  .inner { position: relative; max-width: 1160px; margin: 0 auto; }
+
+  .kick { display: flex; align-items: center; gap: 14px; margin-bottom: 18px;
+    font-size: 12px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--accent-soft); }
+  .kick .kn { color: #17BFA6; font-weight: 700; }
+  .kick .kb { width: 1px; height: 12px; background: rgba(23,191,166,0.65); }
+  h2 { font-size: 44px; font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; }
+  h3 { font-size: 26px; font-weight: 700; letter-spacing: -0.015em; margin: 56px 0 18px; }
+  .grad { background: linear-gradient(90deg, #008774 0%, #C970D7 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .uline { display: block; width: 84px; height: 4px; border-radius: 2px; margin-top: 24px;
+    background: linear-gradient(90deg, #008774, rgba(0,135,116,0.12)); }
+  .lead { font-size: 18px; font-weight: 500; line-height: 1.65; color: #C3CDE0; max-width: 720px; }
+  .note { font-size: 15px; line-height: 1.6; color: var(--muted); font-weight: 500; }
+
+  /* ── chips ── */
+  .chips { display: flex; flex-wrap: wrap; gap: 12px; }
+  .chip { border: 1px solid rgba(255,255,255,0.13); background: rgba(255,255,255,0.035);
+    border-radius: 999px; padding: 12px 22px; font-size: 15.5px; font-weight: 600; color: #E4EAF6;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.07); }
+  .chip.hl { background: linear-gradient(94deg, rgba(0,135,116,0.65), rgba(13,150,128,0.35));
+    border-color: rgba(23,191,166,0.70); color: #fff; }
+
+  /* ── cards ── */
+  .grid { display: grid; gap: 14px; }
+  .g2 { grid-template-columns: 1fr 1fr; } .g3 { grid-template-columns: 1fr 1fr 1fr; }
+  .card { border: 1px solid rgba(255,255,255,0.13);
+    background: linear-gradient(160deg, rgba(255,255,255,0.06), rgba(255,255,255,0.025));
+    border-radius: 28px; padding: 20px 22px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.09), 0 18px 40px rgba(0,0,0,0.35);
+    display: flex; gap: 14px; align-items: flex-start;
+    transition: transform .35s cubic-bezier(.16,1,.3,1), border-color .35s; }
+  .card:hover { transform: translateY(-4px); border-color: rgba(23,191,166,0.45); }
+  .card .n { font-family: 'SF Mono', Menlo, Consolas, monospace; flex: 0 0 auto; min-width: 34px; height: 34px;
+    border-radius: 10px; padding: 0 8px; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #008774, #0AA38C); border: 1px solid rgba(23,191,166,0.65);
+    color: #fff; font-size: 13.5px; font-weight: 700; }
+  .card .t { font-size: 15.5px; font-weight: 600; line-height: 1.45; color: #E4EAF6; }
+  .card.dashed { border-style: dashed; background: rgba(255,255,255,0.04); }
+  .card.dashed .t { color: var(--muted); }
+
+  /* ── numbered rows ── */
+  .rows { display: flex; flex-direction: column; }
+  .row { display: flex; gap: 18px; align-items: flex-start; padding: 15px 0;
+    border-bottom: 1px dashed rgba(23,191,166,0.38); position: relative; }
+  .row:last-child { border-bottom: none; }
+  .row::after { content: ''; position: absolute; right: 0; bottom: -3.5px; width: 6px; height: 6px;
+    border-radius: 50%; background: #17BFA6; }
+  .row .n { font-family: 'SF Mono', Menlo, Consolas, monospace; flex: 0 0 auto; width: 34px; height: 34px;
+    border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    border: 1px solid rgba(23,191,166,0.65); background: linear-gradient(135deg, #008774, #0AA38C);
+    color: #fff; font-size: 13.5px; font-weight: 700; }
+  .row .t { font-size: 16px; font-weight: 600; line-height: 1.45; color: #E4EAF6; padding-top: 5px; }
+
+  /* ── split layout ── */
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+  .split .txt { min-width: 0; }
+  .panel { border: 1px solid rgba(255,255,255,0.13);
+    background: linear-gradient(160deg, rgba(255,255,255,0.06), rgba(255,255,255,0.025));
+    border-radius: 28px; padding: 26px 28px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.09), 0 18px 40px rgba(0,0,0,0.35); }
+
+  /* ── shots ── */
+  .shot { position: relative; border-radius: 28px; overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.14); background: #fff;
+    box-shadow: 0 34px 90px rgba(0,0,0,0.55), 0 4px 18px rgba(0,0,0,0.4); }
+  .shot img { width: 100%; display: block; }
+  .hero-shot .hs { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    object-position: right center;
+    opacity: 0; transition: opacity .45s ease; }
+  .hero-shot .hs.on { opacity: 1; }
+  .hero-shot .hs.hs-left { object-position: left center; }
+  .hero-shot .hs-dots { position: absolute; left: 0; right: 0; bottom: 12px; display: flex;
+    justify-content: center; gap: 7px; z-index: 2; }
+  .hero-shot .hs-dots button { width: 9px; height: 9px; border-radius: 50%; cursor: pointer; padding: 0; border: 0;
+    background: rgba(255,255,255,0.45); box-shadow: 0 1px 4px rgba(0,0,0,0.35); transition: background .3s, transform .3s; }
+  .hero-shot .hs-dots button.on { background: #2BD9C2; transform: scale(1.25); }
+  .hero-shot .hs-cap { left: 14px; bottom: 14px; }
+  .shot .cap { position: absolute; left: 14px; bottom: 14px;
+    background: rgba(7,12,20,0.85); border: 1px solid rgba(255,255,255,0.16);
+    color: #D7E1F5; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 7px 12px; border-radius: 8px; }
+
+  .tag { display: inline-flex; align-items: center; gap: 9px;
+    border: 1px solid rgba(23,191,166,0.60); background: rgba(0,135,116,0.22);
+    color: #D8F7FC; border-radius: 11px; padding: 11px 16px; font-size: 13.5px; font-weight: 700; }
+
+  /* ── stats ── */
+  .stat-num { font-size: 96px; font-weight: 700; letter-spacing: -0.03em; line-height: 1; color: #2BD9C2; }
+  .stat-lbl { font-size: 16.5px; font-weight: 700; margin-top: 12px; line-height: 1.4; }
+  .stat-sub { font-size: 13px; font-weight: 500; color: var(--muted); margin-top: 6px; line-height: 1.5; }
+
+  /* ── tech / leaderboard ── */
+  .tech { display: flex; flex-wrap: wrap; gap: 12px; }
+  .tchip { display: inline-flex; align-items: center; gap: 10px; border: 1px solid var(--line);
+    background: var(--panel); border-radius: 12px; padding: 12px 18px; font-size: 15px; font-weight: 700; color: #E4EAF6; }
+  .tchip i { width: 10px; height: 10px; border-radius: 3px; background: linear-gradient(135deg, #008774, #17BFA6); }
+  .lb-row { display: flex; align-items: center; gap: 14px; }
+  .lb-rank { flex: 0 0 auto; width: 30px; height: 30px; border-radius: 9px; background: #008774;
+    border: 1px solid rgba(23,191,166,0.70); color: #fff; font-size: 13px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; }
+  .lb-bar { height: 10px; border-radius: 5px; background: linear-gradient(90deg, rgba(0,135,116,0.95), rgba(79,217,238,0.55)); }
+
+  /* ── awards ── */
+  .aw { border: 1px solid rgba(255,255,255,0.13);
+    background: linear-gradient(160deg, rgba(255,255,255,0.06), rgba(255,255,255,0.025));
+    border-radius: 28px; padding: 20px 22px; display: flex; gap: 16px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.09); }
+  .aw .ic { flex: 0 0 auto; width: 46px; height: 46px; border-radius: 13px; background: rgba(0,135,116,0.20);
+    border: 1px solid rgba(23,191,166,0.45); display: flex; align-items: center; justify-content: center; }
+  .aw h4 { font-size: 16.5px; font-weight: 700; margin-bottom: 6px; }
+  .aw p { font-size: 13.5px; font-weight: 500; line-height: 1.5; color: var(--muted); }
+
+  /* ── transport animations ── */
+  #progress .pbus { position: absolute; right: -11px; top: -6px; width: 22px; height: 13px;
+    filter: drop-shadow(0 2px 6px rgba(0,135,116,0.6)); }
+  #progress .pbus svg { display: block; width: 100%; height: 100%; }
+
+  .hero-route { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .hero-route .ride { offset-rotate: 0deg; animation: ride 14s cubic-bezier(.45,.05,.55,.95) infinite; }
+  @keyframes ride { 0% { offset-distance: 0%; opacity: 0 } 6% { opacity: 1 } 92% { opacity: 1 } 100% { offset-distance: 100%; opacity: 0 } }
+  .hero-route .stop { animation: stoppulse 3.5s ease-out infinite; transform-origin: center; transform-box: fill-box; }
+  .hero-route .stop.s2 { animation-delay: 1.2s; } .hero-route .stop.s3 { animation-delay: 2.3s; }
+  @keyframes stoppulse { 0% { transform: scale(1); opacity: .9 } 70% { transform: scale(2.1); opacity: 0 } 100% { opacity: 0 } }
+
+  .board { margin-top: 26px; border: 1px solid rgba(23,191,166,0.4); border-radius: 18px;
+    background: linear-gradient(160deg, rgba(0,135,116,0.14), rgba(7,12,20,0.6));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 18px 40px rgba(0,0,0,0.35);
+    overflow: hidden; position: relative; }
+  .board::before, .board::after { content: ''; position: absolute; top: 0; bottom: 0; width: 70px; z-index: 2; pointer-events: none; }
+  .board::before { left: 0; background: linear-gradient(90deg, #0A1120, transparent); }
+  .board::after { right: 0; background: linear-gradient(-90deg, #0A1120, transparent); }
+  .board-track { display: flex; width: max-content; gap: 0; animation: marquee 30s linear infinite; }
+  .board:hover .board-track { animation-play-state: paused; }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+  .bitem { display: inline-flex; align-items: center; gap: 14px; padding: 16px 28px;
+    font-family: 'SF Mono', Menlo, Consolas, monospace; font-size: 13.5px; white-space: nowrap; }
+  .bitem .rt { color: #2BD9C2; font-weight: 700; }
+  .bitem .to { color: #C3CDE0; }
+  .bitem .eta { color: #97A3BC; }
+  .bitem .eta.hot { color: #FFD166; }
+  .bitem + .bitem { border-left: 1px dashed rgba(23,191,166,0.25); }
+  .board-cap { position: absolute; top: 10px; right: 14px; font-size: 9.5px; letter-spacing: .2em;
+    text-transform: uppercase; color: var(--dim); z-index: 3; }
+
+  .pila { width: 100%; max-width: 560px; }
+  .pila .zig { stroke-dasharray: 6 10; animation: flow 1.6s linear infinite; }
+  @keyframes flow { to { stroke-dashoffset: -16; } }
+  .pila .pillp { animation: pillpulse 2.8s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
+  .pila .pillp.d2 { animation-delay: 1.4s; }
+  @keyframes pillpulse { 0%,100% { opacity: .55 } 50% { opacity: 1 } }
+
+  .sky-bus { animation: drive 9s ease-in-out infinite alternate; }
+  @keyframes drive { from { transform: translateX(0); } to { transform: translateX(150px); } }
+  .ping { animation: ping 2.6s ease-out infinite; transform-origin: center; transform-box: fill-box; }
+  @keyframes ping { 0% { transform: scale(.4); opacity: .8 } 80% { transform: scale(2.2); opacity: 0 } 100% { opacity: 0 } }
+
+  .stagger > * { opacity: 0; transform: translateY(22px);
+    transition: opacity .6s cubic-bezier(.16,1,.3,1), transform .6s cubic-bezier(.16,1,.3,1); }
+  .stagger.in > * { opacity: 1; transform: none; }
+  .stagger.in > *:nth-child(1) { transition-delay: .0s } .stagger.in > *:nth-child(2) { transition-delay: .07s }
+  .stagger.in > *:nth-child(3) { transition-delay: .14s } .stagger.in > *:nth-child(4) { transition-delay: .21s }
+  .stagger.in > *:nth-child(5) { transition-delay: .28s } .stagger.in > *:nth-child(6) { transition-delay: .35s }
+  .stagger.in > *:nth-child(7) { transition-delay: .42s } .stagger.in > *:nth-child(8) { transition-delay: .49s }
+  .stagger.in > *:nth-child(9) { transition-delay: .56s } .stagger.in > *:nth-child(10) { transition-delay: .63s }
+  .stagger.in > *:nth-child(11) { transition-delay: .7s } .stagger.in > *:nth-child(12) { transition-delay: .77s }
+  .stagger.in > *:nth-child(n+13) { transition-delay: .84s }
+
+  /* ── round-11 motion ── */
+  .hl-line { display: block; opacity: 0; transform: translateY(30px);
+    transition: opacity .75s cubic-bezier(.16,1,.3,1), transform .75s cubic-bezier(.16,1,.3,1); }
+  .hl-line.in { opacity: 1; transform: none; }
+  .uline.reveal { transform: scaleX(0); transform-origin: left; }
+  .uline.reveal.in { transform: scaleX(1); }
+  .row::after { animation: rowdot 5.5s infinite; animation-delay: calc(var(--i, 0) * 0.4s); }
+  @keyframes rowdot { 0%, 14%, 100% { background: #17BFA6; box-shadow: none; }
+    7% { background: #4FD9EE; box-shadow: 0 0 10px rgba(43,217,194,0.85); } }
+  .card { position: relative; overflow: hidden; }
+  .card::before { content: ''; position: absolute; top: -10%; bottom: -10%; left: -70%; width: 45%;
+    background: linear-gradient(105deg, transparent, rgba(143,234,246,0.08), transparent);
+    transform: skewX(-18deg); transition: left .75s ease; pointer-events: none; }
+  .card:hover::before { left: 135%; }
+  .pila .ridedot { offset-rotate: auto; animation: pilaride 5s linear infinite alternate; }
+  @keyframes pilaride { from { offset-distance: 0% } to { offset-distance: 100% } }
+  .win { animation: twinkle 4s ease-in-out infinite; }
+  @keyframes twinkle { 0%, 100% { opacity: .15 } 50% { opacity: .85 } }
+  .nav-links a { position: relative; }
+  .nav-links a::after { content: ''; position: absolute; left: 10px; right: 10px; bottom: 4px; height: 2px;
+    border-radius: 1px; background: #17BFA6; transform: scaleX(0); transform-origin: left;
+    transition: transform .35s cubic-bezier(.16,1,.3,1); }
+  .nav-links a.active::after { transform: scaleX(1); }
+  .eta.hot { animation: etablink 2.4s ease-in-out infinite; }
+  @keyframes etablink { 0%, 100% { opacity: 1 } 50% { opacity: .55 } }
+  .sh-dot { position: absolute; left: 50%; bottom: 34px; width: 5px; height: 5px; border-radius: 50%;
+    background: #2BD9C2; margin-left: -2.5px; animation: shdrop 2.2s cubic-bezier(.5,0,.7,1) infinite; }
+  @keyframes shdrop { 0% { transform: translateY(0); opacity: 0 } 25% { opacity: 1 } 85% { transform: translateY(46px); opacity: 0 } 100% { opacity: 0 } }
+
+  /* ── reveal ── */
+  .reveal { opacity: 0; transform: translateY(30px);
+    transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* ── hero ── */
+  #hero { min-height: 100vh; display: flex; align-items: center; padding-top: 140px; }
+  #hero h1 { font-size: 64px; font-weight: 700; line-height: 1.06; letter-spacing: -0.025em; }
+  .cta { display: flex; gap: 14px; margin-top: 34px; }
+  .btn { display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
+    border-radius: 12px; padding: 14px 24px; font-size: 14.5px; font-weight: 700; letter-spacing: .02em; }
+  .btn.pri { background: linear-gradient(94deg, #008774, #0AA38C); color: #fff; border: 1px solid rgba(23,191,166,0.7);
+    box-shadow: 0 14px 34px rgba(0,135,116,0.35); }
+  .btn.sec { color: #D8F7FC; border: 1px solid rgba(23,191,166,0.55); background: rgba(0,135,116,0.14); }
+  .hero-shot { height: clamp(360px, 56vh, 560px); transform: rotate(-1.2deg); border: 1px solid rgba(143,234,246,0.45);
+    box-shadow: 0 40px 110px rgba(0,0,0,0.6), 0 0 70px rgba(0,135,116,0.32); }
+  #hero .inner { max-width: 1360px; }
+  #hero .split { grid-template-columns: 0.92fr 1.12fr; gap: 40px; }
+  .side-label { position: absolute; right: 26px; bottom: 130px; writing-mode: vertical-rl;
+    font-family: 'SF Mono', Menlo, Consolas, monospace; font-size: 10px; letter-spacing: 0.34em;
+    color: rgba(143,234,246,0.5); text-transform: uppercase; }
+  .scroll-hint { position: absolute; left: 50%; bottom: 26px; transform: translateX(-50%);
+    font-size: 10.5px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--dim); }
+  .scroll-hint::after { content: ''; display: block; width: 1px; height: 34px; margin: 10px auto 0;
+    background: linear-gradient(180deg, #17BFA6, transparent); }
+
+  .cert { font-size: 12.5px; line-height: 1.6; color: var(--dim); font-weight: 500; }
+
+  footer { border-top: 1px solid rgba(255,255,255,0.08); padding: 34px 64px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim); }
+  footer .pg { font-family: 'SF Mono', Menlo, Consolas, monospace; color: #17BFA6; }
+
+  @media (max-width: 760px) {
+    section { padding: 80px 32px; }
+    .split, .g2, .g3 { grid-template-columns: 1fr; }
+    h2 { font-size: 34px; } #hero h1 { font-size: 44px; }
+    #hero .split { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .hero-shot { height: auto; aspect-ratio: 1200 / 607; }
+  }
+  @media print {
+    @page { size: 1280px 832px; margin: 0; }
+    .reveal, .stagger > *, .hl-line, .uline.reveal { opacity: 1 !important; transform: none !important; }
+    .hero-route, .board, .pila, .sh-dot { display: none; }
+    .hero-shot .hs { position: static; opacity: 1 !important; }
+    .hero-shot .hs:not(:first-of-type), .hero-shot .hs-dots { display: none; }
+    nav, #progress, .scroll-hint, .side-label, .cta { display: none; }
+    section { padding: 48px; break-inside: auto; }
+    #hero { min-height: auto; padding-top: 48px; }
+    .split { grid-template-columns: 1fr !important; gap: 24px !important; }
+    .shot img { max-height: 480px; object-fit: cover; }
+    .shot, .card, .panel, .aw, .row, .chip { break-inside: avoid; }
+    h2, h3, .kick { break-after: avoid; }
+    .stat-num { font-size: 64px !important; }
+    html, body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, .stagger > *, .hl-line, .uline.reveal { opacity: 1; transform: none; transition: none; }
+    .hero-route .ride, .board-track, .pila .zig, .sky-bus, .ping, .pila .pillp, .hero-route .stop,
+    .row::after, .card::before, .pila .ridedot, .win, .eta.hot, .sh-dot, .nav-links a::after { animation: none !important; }
+    .row::after { background: #17BFA6; }
+  }
+
+  /* Responsive online presentation */
+  nav { position: sticky; top: 0; padding: 12px 24px; flex-wrap: wrap; }
+  .nav-logo { flex-shrink: 0; }
+  .nav-links { display:flex; flex:1; flex-wrap:nowrap; overflow-x:auto; justify-content:flex-start; min-width:0; padding:4px 0; scrollbar-width:thin; scrollbar-color:#345c56 #101c24; }
+  .nav-links a { flex-shrink:0; }
+  section { scroll-margin-top:110px; }
+  #hero { padding-top:64px; }
+  @media (min-width:761px) and (max-width:1180px) {
+    section { padding:72px 32px; }
+    #hero .split { grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap:28px; }
+    #hero h1 { font-size:clamp(32px,3.9vw,46px); }
+    .lead { font-size:17px; }
+    .hero-shot { height:400px; }
+    .g3 { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  }
+  @media (max-width:760px) {
+    nav { padding:10px 16px; gap:6px; }
+    .lead { font-size:17px; line-height:1.65; }
+    .nav-links { flex-basis:100%; }
+    section { padding:56px 20px; }
+    #hero h1 { font-size:clamp(30px,7.5vw,44px); }
+    h2 { font-size:30px; overflow-wrap:anywhere; }
+    .side-label, .scroll-hint { display:none; }
+    footer { padding:24px 20px; gap:16px; flex-wrap:wrap; }
+  }
+  @media print { nav { display:none; } }
+</style>
+</head>
+<body>
+
+<div id="progress"><span class="pbus" aria-hidden="true"><svg viewBox="0 0 22 13"><rect x="0.5" y="0.5" width="17" height="9" rx="2.5" fill="#17BFA6"/><rect x="2.5" y="2.5" width="4" height="3.5" rx="1" fill="#070C14"/><rect x="8" y="2.5" width="4" height="3.5" rx="1" fill="#070C14"/><rect x="17.5" y="2.5" width="4" height="6" rx="1.5" fill="#4FD9EE"/><circle cx="5" cy="11" r="1.8" fill="#0A1120" stroke="#8FEAF6" stroke-width="1"/><circle cx="13" cy="11" r="1.8" fill="#0A1120" stroke="#8FEAF6" stroke-width="1"/></svg></span></div>
+<nav>
+  <a class="nav-logo" href="#hero">
+    <svg width="30" height="22" viewBox="0 0 46 34"><defs><linearGradient id="lg1" x1="0" y1="0" x2="46" y2="34" gradientUnits="userSpaceOnUse"><stop stop-color="#008774"/><stop offset="1" stop-color="#2BD9C2"/></linearGradient></defs><path d="M17 1 L28 1 L12 33 L1 33 Z" fill="url(#lg1)"/><path d="M34 1 L45 1 L29 33 L18 33 Z" fill="url(#lg1)"/></svg>
+    bus:vision
+  </a>
+  <div class="nav-links">
+    <a href="#features">Возможности</a><a href="#platform">Платформа</a><a href="#schedules">Графики</a>
+    <a href="#planning">Планирование</a><a href="#dispatch">Диспетчеризация</a><a href="#routes">Маршруты</a><a href="#standards">Стандарты</a>
+    <a href="#analytics">Аналитика</a><a href="#booking">Бронирование</a><a href="#passengers">Пассажирам</a>
+    <a href="#effect">Эффект</a><a href="#tech">Технологии</a><a href="#company">Компания</a><a href="#contacts">Контакты</a>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="aurora a"></div><div class="aurora b"></div>
+  <svg class="hero-route" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" fill="none" aria-hidden="true">
+    <path id="hrp" d="M-60 780 C 240 700, 380 520, 640 470 S 1120 420, 1500 250" stroke="url(#hrg)" stroke-width="2" stroke-dasharray="7 9"/>
+    <defs><linearGradient id="hrg" x1="0" y1="780" x2="1500" y2="250" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#008774" stop-opacity="0"/><stop offset=".45" stop-color="#17BFA6" stop-opacity=".55"/><stop offset="1" stop-color="#C970D7" stop-opacity=".5"/></linearGradient></defs>
+    <circle class="stop" cx="640" cy="470" r="6" fill="none" stroke="#17BFA6" stroke-width="2"/>
+    <circle class="stop s2" cx="1010" cy="425" r="6" fill="none" stroke="#17BFA6" stroke-width="2"/>
+    <circle class="stop s3" cx="640" cy="470" r="3" fill="#2BD9C2"/>
+    <g class="ride" style="offset-path: path('M-60 780 C 240 700, 380 520, 640 470 S 1120 420, 1500 250');">
+      <g transform="translate(-11,-14)">
+        <rect x="0.5" y="0.5" width="22" height="13" rx="3" fill="#17BFA6"/><rect x="3" y="3" width="5" height="4" rx="1" fill="#070C14"/><rect x="9.5" y="3" width="5" height="4" rx="1" fill="#070C14"/><rect x="18" y="3" width="4.5" height="7" rx="1.5" fill="#4FD9EE"/>
+        <circle cx="6" cy="12.5" r="2.2" fill="#0A1120" stroke="#8FEAF6"/><circle cx="15.5" cy="12.5" r="2.2" fill="#0A1120" stroke="#8FEAF6"/>
+      </g>
+    </g>
+  </svg>
+  <svg class="topo" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" fill="none" aria-hidden="true">
+    <g stroke="#4FD9EE" stroke-width="1">
+      <path opacity=".07" d="M-50 120 C 180 40, 340 210, 560 150 S 980 40, 1500 130"/>
+      <path opacity=".06" d="M-50 200 C 200 120, 380 290, 620 220 S 1040 120, 1500 210"/>
+      <path opacity=".05" d="M-50 300 C 240 210, 420 380, 700 300 S 1120 200, 1500 300"/>
+      <path opacity=".07" d="M-50 640 C 220 720, 460 560, 720 650 S 1180 780, 1500 660"/>
+      <path opacity=".06" d="M-50 740 C 240 830, 500 660, 780 750 S 1220 860, 1500 740"/>
+      <path opacity=".05" d="M-50 850 C 260 940, 540 770, 840 860 S 1260 950, 1500 840"/>
+    </g>
+  </svg>
+  <div class="side-label">smart-transport.ru</div>
+  <div class="inner split" style="align-items:center;">
+    <div class="txt">
+      <div class="kick reveal"><span class="kb"></span>Интеллектуальная транспортная система</div>
+      <h1><span class="hl-line">Управление движением</span><span class="hl-line">общественного</span><span class="hl-line"><span class="grad">транспорта</span></span></h1>
+      <span class="uline reveal"></span>
+      <p class="lead reveal" style="margin-top:28px;">Платформа полного цикла: ведение обновленного реестра 220-ФЗ, маршрутная сеть, графики движения,
+        планирование транспорта, онлайн-диспетчеризация (МП Водителя), контроль труда и отдыха,
+        контроль контрактов — выявление нарушений, модуль аналитики спроса и сервисы для пассажиров.</p>
+      <div class="cta reveal">
+        <a class="btn pri" href="mailto:info@smart-transport.ru">Обсудить проект</a>
+        <a class="btn sec" href="#features">Смотреть возможности</a>
+      </div>
+      <p class="cert reveal" style="margin-top:36px; max-width:560px;">Создано на базе ПО «Интеллектуальная Транспортная Система (ИТС)» —
+        свидетельство о государственной регистрации программы для ЭВМ № 2014617300 от 16.07.2014</p>
+    </div>
+    <div class="shot hero-shot reveal">
+      <img class="hs on" src="assets/web/hero-slide-1.jpg" alt="Диспетчерская карта и объекты" fetchpriority="high">
+      <img class="hs" src="assets/web/hero-slide-2.jpg" alt="Редактор схемы маршрута" loading="lazy" decoding="async">
+      <img class="hs hs-left" src="assets/web/hero-slide-3.jpg" alt="Расписание аналога" loading="lazy" decoding="async">
+      <img class="hs" src="assets/web/hero-slide-4.jpg" alt="Отчёты" loading="lazy" decoding="async">
+      <img class="hs hs-left" src="assets/web/hero-slide-5.jpg" alt="Интервальные графики" loading="lazy" decoding="async">
+      <img class="hs hs-left" src="assets/web/hero-slide-6.jpg" alt="Планирование транспорта" loading="lazy" decoding="async">
+      <span class="cap hs-cap">Диспетчерская карта и объекты</span>
+    <div class="hs-dots"><button class="on" type="button" aria-label="Слайд 1 — Диспетчерская карта"></button><button type="button" aria-label="Слайд 2 — Редактор схемы"></button><button type="button" aria-label="Слайд 3 — Расписание аналога"></button><button type="button" aria-label="Слайд 4 — Отчёты"></button><button type="button" aria-label="Слайд 5 — Интервальные графики"></button><button type="button" aria-label="Слайд 6 — Планирование транспорта"></button></div>
+    </div>
+  </div>
+  <div class="scroll-hint">Листайте вниз<i class="sh-dot"></i></div>
+</section>
+
+<!-- ═══ ВОЗМОЖНОСТИ ═══ -->
+<section id="features">
+  <div class="aurora a"></div>
+  <div class="inner">
+    <div class="kick reveal"><span class="kb"></span>Возможности системы</div>
+    <h2 class="reveal">Система управления движением общественного транспорта <span class="grad">обеспечивает</span></h2>
+    <div class="chips stagger" style="margin-top:36px;">
+      <span class="chip">Ведение реестров и данных маршрутной сети</span>
+      <span class="chip hl">Управление графиками движения</span>
+      <span class="chip">Управление планированием транспорта</span>
+      <span class="chip">Моделирование маршрутной сети</span>
+      <span class="chip">Комплексный показатель качества транспортного обслуживания</span>
+      <span class="chip">Мониторинг обновления парка под Указ 309</span>
+      <span class="chip">Прогнозирование спроса</span>
+      <span class="chip">Оптимизация расписаний и маршрутных сетей</span>
+      <span class="chip">Чат-боты «МАКС»</span>
+      <span class="chip">Вещание данных «Яндекс» и 2ГИС</span>
+      <span class="chip">Контроль выполнения условий контрактов</span>
+      <span class="chip">Сбор, обработка и хранение данных о тарифах и льготах</span>
+      <span class="chip hl">Мониторинг перемещения общественного транспорта</span>
+      <span class="chip">Комплексное информирование пассажиров</span>
+      <span class="chip">Диспетчерский контроль общественного транспорта</span>
+      <span class="chip">Организация маршрутов общественного транспорта агломерации</span>
+      <span class="chip">Формирование рейтинга перевозчиков</span>
+      <span class="chip hl">Анализ схем маршрутов</span>
+      <span class="chip">Анализ и визуализация показателей пассажирских перевозок</span>
+      <span class="chip">Сбор, обработка и хранение данных о параметрах движения в режиме реального времени — с технических средств, установленных на транспортных средствах</span>
+      <span class="chip">Отображение информации о соблюдении социальных стандартов транспортного обслуживания населения</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ПЛАТФОРМА ═══ -->
+<section id="platform">
+  <div class="aurora b"></div>
+  <div class="inner">
+    <div class="kick reveal"><span class="kn">01</span><span class="kb"></span>Платформа</div>
+    <h2 class="reveal">Платформа общественного <span class="grad">транспорта</span></h2>
+    <div class="split" style="margin-top:44px;">
+      <div class="txt">
+        <p class="lead reveal">Единое окно для работы с маршрутной сетью, графиками, планированием и онлайн-контролем перевозок.</p>
+        <div class="rows reveal" style="margin-top:26px;">
+          <div class="row"><span class="n">01</span><span class="t">Отображение маршрутной сети</span></div>
+          <div class="row"><span class="n">02</span><span class="t">Управление графиками движения</span></div>
+          <div class="row"><span class="n">03</span><span class="t">Управление планированием транспорта</span></div>
+          <div class="row"><span class="n">04</span><span class="t">Диспетчерский контроль общественного транспорта</span></div>
+          <div class="row"><span class="n">05</span><span class="t">Формирование рейтинга перевозчиков</span></div>
+        </div>
+      </div>
+      <div class="shot reveal"><img src="assets/web/platform-busmap.jpg" alt="Карта маршрутов с карточкой автобуса"><span class="cap">Карта маршрутов и рейсы</span></div>
+    </div>
+    <div class="grid g3 stagger" style="margin-top:28px;">
+      <div class="card"><span class="n">06</span><span class="t">Контроль выполнения условий контрактов</span></div>
+      <div class="card"><span class="n">07</span><span class="t">Сбор, обработка и хранение данных о параметрах движения в режиме реального времени — с технических средств, установленных на транспортных средствах</span></div>
+      <div class="card"><span class="n">08</span><span class="t">Организация маршрутов общественного транспорта агломерации</span></div>
+      <div class="card"><span class="n">09</span><span class="t">Анализ схем маршрутов</span></div>
+      <div class="card"><span class="n">10</span><span class="t">Отображение информации о соблюдении социальных стандартов транспортного обслуживания населения</span></div>
+      <div class="card"><span class="n">11</span><span class="t">Анализ и визуализация показателей пассажирских перевозок</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ГРАФИКИ ДВИЖЕНИЯ ═══ -->
+<section id="schedules">
+  <div class="aurora a"></div>
+  <div class="inner">
+    <div class="kick reveal"><span class="kn">02</span><span class="kb"></span>Графики движения</div>
+    <h2 class="reveal">Управление графиками движения</h2>
+    <div class="split" style="margin-top:40px; align-items:flex-start;">
+      <div class="txt">
+        <p class="lead reveal">Сформированные графики движения проверяются на соответствие нормам труда и отдыха водителей.</p>
+        <div class="reveal" style="margin:22px 0;"><span class="tag">Приказ Минтранса России № 424 от 16.10.2020 — режим рабочего времени и времени отдыха водителей</span></div>
+        <p class="note reveal">Если не пройдена одна или несколько проверок — система формирует уведомление.</p>
+      </div>
+      <div class="shot reveal"><img src="assets/web/schedules_card.jpg" alt="Конструктор графиков движения" loading="lazy" decoding="async"><span class="cap">Конструктор графиков</span></div>
+    </div>
+    <div class="grid g2 reveal" style="margin-top:28px;">
+      <div class="card"><span class="n">01</span><span class="t">Создание и редактирование графиков движения по маршрутам в автоматическом и ручном режимах, в том числе на основе интервалов движения</span></div>
+      <div class="card"><span class="n">02</span><span class="t">Проверка вариантов графиков на исполнимость; сокращение времени отстоя на конечных для уменьшения интервального режима между автобусами</span></div>
+      <div class="card"><span class="n">03</span><span class="t">Изменение схемы движения на случай потребности организации объездов</span></div>
+      <div class="card"><span class="n">04</span><span class="t">Вывод резервного транспорта на линию в случае сходов с маршрутов</span></div>
+      <div class="card"><span class="n">05</span><span class="t">Вывод дополнительного транспортного средства на график для сохранения интервала отправления от конечной</span></div>
+      <div class="card"><span class="n">06</span><span class="t">Возможное удлинение рабочего дня с учётом максимально возможной переработки</span></div>
+      <div class="card" style="grid-column:1 / -1;"><span class="n">07</span><span class="t">Согласование и утверждение разработанных вариантов графиков движения</span></div>
+    </div>
+    <h3 class="reveal">Генерация и визуализация <span class="grad">интервальных расписаний</span></h3>
+    <div class="split" style="align-items:flex-start;">
+      <div class="txt">
+        <p class="lead reveal">Автоматическая генерация оптимальных расписаний по желаемым интервалам в течение суток или по желаемому количеству транспортных средств на маршруте.</p>
+        <svg class="pila reveal" viewBox="0 0 560 190" fill="none" aria-hidden="true">
+          <line x1="0" y1="160" x2="560" y2="160" stroke="rgba(255,255,255,0.12)"/>
+          <line x1="0" y1="20" x2="560" y2="20" stroke="rgba(255,255,255,0.08)"/>
+          <polyline class="zig" points="20,160 80,20 140,160 200,20 260,160 320,20 380,160 440,20 500,160 545,60" stroke="#2BD9C2" stroke-width="2.5" stroke-linejoin="round"/>
+          <g class="ridedot" style="offset-path: path('M20 160 L80 20 L140 160 L200 20 L260 160 L320 20 L380 160 L440 20 L500 160 L545 60');">
+            <g transform="translate(-9,-12)">
+              <rect x="0" y="0" width="18" height="10" rx="2.5" fill="#17BFA6"/><rect x="2" y="2" width="4" height="3.2" rx="1" fill="#070C14"/><rect x="7.5" y="2" width="4" height="3.2" rx="1" fill="#070C14"/><rect x="14.5" y="2.2" width="3.5" height="5.5" rx="1.2" fill="#4FD9EE"/>
+              <circle cx="5" cy="11" r="1.8" fill="#0A1120" stroke="#8FEAF6"/><circle cx="13" cy="11" r="1.8" fill="#0A1120" stroke="#8FEAF6"/>
+            </g>
+          </g>
+          <g font-family="SF Mono, Menlo, Consolas, monospace" font-size="11">
+            <rect class="pillp" x="66" y="172" width="56" height="16" rx="8" fill="rgba(0,135,116,0.5)"/><text x="94" y="183" fill="#8FEAF6" text-anchor="middle">10 мин</text>
+            <rect class="pillp d2" x="306" y="172" width="56" height="16" rx="8" fill="rgba(0,135,116,0.5)"/><text x="334" y="183" fill="#8FEAF6" text-anchor="middle">20 мин</text>
+          </g>
+        </svg>
+      </div>
+      <div class="shot reveal"><img src="assets/web/interval_chart.jpg" alt="Мастер интервальных расписаний" loading="lazy" decoding="async"><span class="cap">Мастер расписаний</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ПЛАНИРОВАНИЕ ═══ -->
+<section id="planning">
+  <div class="aurora b"></div>
+  <div class="inner">
+    <div class="kick reveal"><span class="kn">03</span><span class="kb"></span>Планирование</div>
+    <h2 class="reveal">Управление планированием транспорта</h2>
+    <div class="split" style="margin-top:44px;">
+      <div class="txt">
+        <div class="rows reveal">
+          <div class="row"><span class="n">01</span><span class="t">Планирование ТС на маршрут — по рейсам и по разнарядке</span></div>
+          <div class="row"><span class="n">02</span><span class="t">Оперативная отмена рейсов</span></div>
+          <div class="row"><span class="n">03</span><span class="t">Проверка требований к назначаемому ТС по параметрам</span></div>
+          <div class="row"><span class="n">04</span><span class="t">При назначении ТС, не отвечающих требованиям контракта, подсистема уведомляет пользователя об этом</span></div>
+        </div>
+      </div>
+      <div class="shot reveal"><img src="assets/web/planning.jpg" alt="Календарь планирования транспорта" loading="lazy" decoding="async"><span class="cap">Календарь планирования</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ДИСПЕТЧЕРИЗАЦИЯ ═══ -->
+<section id="dispatch">
+  <div class="aurora a"></div>
+  <div class="inner">
+    <div class="kick reveal"><span class="kn">04</span><span class="kb"></span>Диспетчеризация</div>
+    <h2 class="reveal">Онлайн-диспетчерская и контроль работы ОТ</h2>
+    <div class="shot reveal" style="margin-top:40px;"><img src="assets/web/dispatch_full.jpg" alt="Рабочее место диспетчера" loading="lazy" decoding="async"><span class="cap">Рабочее место диспетчера</span></div>
+    <div class="board reveal" aria-hidden="true">
+      <span class="board-cap">Табло · иллюстративно</span>
+      <div class="board-track">
+        <div class="bitem"><span class="rt">А-55</span><span class="to">Тюмень АВ — Тобольск</span><span class="eta">отправление 14:40</span><span class="eta hot">до отправления 5 мин</span></div>
+        <div class="bitem"><span class="rt">А-36</span><span class="to">Тюмень АВ — Хондичиха</span><span class="eta">посадка · перрон 2</span></div>
+        <div class="bitem"><span class="rt">А-23</span><span class="to">Тюмень АВ — Гагарина</span><span class="eta">по расписанию 15:10</span></div>
+        <div class="bitem"><span class="rt">А-70</span><span class="to">Тюмень АВ — Пермяково</span><span class="eta hot">отмена · след. рейс 16:00</span></div>
+        <div class="bitem"><span class="rt">А-45</span><span class="to">Меншильде — Гагарина</span><span class="eta">прибытие 15:25</span></div>
+        <div class="bitem"><span class="rt">А-93</span><span class="to">Тюмень АВ — Сладково</span><span class="eta">отправление 16:30</span></div>
+        <div class="bitem"><span class="rt">А-55</span><span class="to">Тюмень АВ — Тобольск</span><span class="eta">отправление 14:40</span><span class="eta hot">до отправления 5 мин</span></div>
+        <div class="bitem"><span class="rt">А-36</span><span class="to">Тюмень АВ — Хондичиха</span><span class="eta">посадка · перрон 2</span></div>
+        <div class="bitem"><span class="rt">А-23</span><span class="to">Тюмень АВ — Гагарина</span><span class="eta">по расписанию 15:10</span></div>
+        <div class="bitem"><span class="rt">А-70</span><span class="to">Тюмень АВ — Пермяково</span><span class="eta hot">отмена · след. рейс 16:00</span></div>
+        <div class="bitem"><span class="rt">А-45</span><span class="to">Меншильде — Гагарина</span><span class="eta">прибытие 15:25</span></div>
+        <div class="bitem"><span class="rt">А-93</span><span class="to">Тюмень АВ — Сладково</span><span class="eta">отправление 16:30</span></div>
+      </div>
+    </div>
+    <div class="grid g2 stagger" style="margin-top:28px;">
+      <div class="card"><span class="n">01</span><span class="t">Отображать сводную информацию по движению транспортных средств на маршруте</span></div>
+      <div class="card"><span class="n">02</span><span class="t">Отображать схемы маршрутов на картографической подложке с остановочными пунктами</span></div>
+      <div class="card"><span class="n">03</span><span class="t">Фиксировать события на маршруте и уведомлять пользователей по совершенным событиям</span></div>
+      <div class="card"><span class="n">04</span><span class="t">Отображать круговые и линейные мнемосхемы маршрутов</span></div>
+      <div class="card"><span class="n">05</span><span class="t">Обеспечивать контакт диспетчер–водитель посредством чата</span></div>
+      <div class="card"><span class="n">06</span><span class="t">Отображать схемы маршрута по остановочным пунктам с плановым и фактическим временем прибытия</span></div>
+      <div class="card"><span class="n">07</span><span class="t">Просматривать трек по периоду действия рейса</span></div>
+      <div class="card"><span class="n">08</span><span class="t">Работать с мобильным приложением водителя</span></div>
+    </div>
+    <h3 class="reveal">Мобильное приложение <span class="grad">для водителей</span></h3>
+    <div class="chips reveal" style="margin-bottom:26px;">
+      <span class="chip">Отображение графика движения ТС</span>
+      <span class="chip hl">Тревожная кнопка</span>
+      <span class="chip">Отправка навигационных данных</span>
+    </div>
+    <div class="shot reveal"><img src="assets/web/driver_phones.jpg" alt="Экраны мобильного приложения водителя" loading="lazy" decoding="async"><span class="cap">Приложение водителя</span></div>
+  </div>
+</section>
+
+<!-- ═══ МАРШРУТЫ И КОНТРАКТЫ ═══ -->
+<section id="routes">
+  <div class="aurora b"></div>
+  <div class="inner">
+    <div class="kick reveal"><span class="kn">05</span><span class="kb"></span>Маршрутная сеть и контроль</div>
+    <h2 class="reveal">Организация маршрутов общественного транспорта</h2>
+    <div class="split" style="margin-top:40px; align-items:flex-start;">
+      <div class="txt">
+        <div class="rows reveal">
+          <div class="row"><span class="n">01</span><span class="t">Установление, изменение и отмена муниципальных и межмуниципальных маршрутов общественного транспорта агломерации</span></div>
+          <div class="row"><span class="n">02</span><span class="t">Согласование установления и изменения маршрутов, имеющих общие остановочные пункты с ранее установленными маршрутами</span></div>
+          <div class="row"><span class="n">03</span><span class="t">Ведение реестров муниципальных и межмуниципальных маршрутов агломерации</span></div>
+        </div>
+        <div class="panel reveal" style="margin-top:26px;">
+          <p class="note">Для органов власти, осуществляющих функции по организации регулярных перевозок, реализована возможность
+          самостоятельного создания заявления в случае ввода в эксплуатацию построенных и (или) реконструированных автомобильных
+          дорог общего пользования, на которых расположены остановочные пункты.</p>
+        </div>
+      </div>
+      <div class="shot reveal"><img src="assets/web/route_network.jpg" alt="Схема маршрута на карте" loading="lazy" decoding="async"><span class="cap">Схема маршрута</span></div>
+    </div>
+    <h3 class="reveal">Контроль выполнения <span class="grad">условий контракта</span></h3>
+    <div class="chips reveal">
+      <span class="chip">Контроль графиков движения</span>
+      <span class="chip">Контроль движения ТС по схеме маршрута</span>
+      <span class="chip">Фиксация отклонений от схемы движения</span>
+      <span class="chip">Фиксация нарушений условий контракта</span>
+    </div>
+    <div class="split" style="margin-top:30px; align-items:flex-start;">
+      <div class="txt">
+        <div class="kick reveal" style="margin-bottom:10px;"><span class="kb"></span>Работает на основе</div>
+        <div class="rows reveal">
+          <div class="row"><span class="n">01</span><span class="t" style="font-size:14.5px;">Регистрации прохождения ТС контрольных пунктов, учета выполненных рейсов</span></div>
+          <div class="row"><span class="n">02</span><span class="t" style="font-size:14.5px;">Установления отклонений ТС от схемы маршрута и от графика движения</span></div>
+          <div class="row"><span class="n">03</span><span class="t" style="font-size:14.5px;">Регистрации сходов, простоев, возвратов, отмен с возможностью указания причин</span></div>
+          <div class="row"><span class="n">04</span><span class="t" style="font-size:14.5px;">Учета и контроля времени завершения транспортной работы на линии</span></div>
+        </div>
+      </div>
+      <div class="shot reveal"><img src="assets/web/contract_charts.jpg" alt="Аналитика исполнения контрактов" loading="lazy" decoding="async"><span class="cap">Аналитика исполнения</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ СТАНДАРТЫ И ПОТОКИ ═══ -->
+<section id="standards">
+  <div class="aurora a"></div>
+  <div class="inner">
+    <div class="kick reveal"><span class="kn">05</span><span class="kb"></span>Стандарты обслуживания</div>
+    <h2 class="reveal">Контроль соблюдения социальных стандартов</h2>
+    <div class="split" style="margin-top:40px;">
+      <div class="txt">
+        <div class="rows reveal">
+          <div class="row"><span class="n">01</span><span class="t" style="font-size:15px;">Контроль доли ТС, оборудованных для перевозки маломобильных групп населения</span></div>
+          <div class="row"><span class="n">02</span><span class="t" style="font-size:15px;">Контроль общего количества пересадок — не более двух при использовании муниципальных маршрутов</span></div>
+          <div class="row"><span class="n">03</span><span class="t" style="font-size:15px;">Экологичность и энергоэффективность: минимальный экологический класс ТС и доля ТС на альтернативном топливе</span></div>
+        </div>
+      </div>
+      <div class="shot reveal"><img src="assets/web/social_dash.jpg" alt="Оценка транспортного обслуживания" loading="lazy" decoding="async"><span class="cap">Оценка обслуживания</span></div>
+    </div>
+    <h3 class="reveal">Пассажиропоток и анализ транзакций <span class="grad">АСОП</span></h3>
+    <div class="split" style="align-items:flex-start;">
+      <div class="txt">
+        <div class="rows reveal">
+          <div class="row"><span class="n">01</span><span class="t">Контроль над доходностью</span></div>
+          <div class="row"><span class="n">02</span><span class="t">Аналитика данных по количеству входящих пассажиров и транзакций</span></div>
+          <div class="row"><span class="n">03</span><span class="t">Эффективность использования пассажирского транспорта на маршрутах</span></div>
+          <div class="row"><span class="n">04</span><span class="t">Анализ загруженности маршрутов, остановок и пересадочных узлов</span></div>
+        </div>
+      </div>
+      <div class="shot reveal"><img src="assets/web/passenger_flow.jpg" alt="Объемы пассажирских перевозок" loading="lazy" decoding="async"><span class="cap">Объемы перевозок</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ АНАЛИТИКА СЕТИ ═══ -->
+<section id="analytics">
+  <div class="aurora b"></div>
+  <div class="inner">
+    <div class="kick reveal"><span class="kn">05</span><span class="kb"></span>Аналитика</div>
+    <h2 class="reveal">Анализ маршрутной сети</h2>
+    <div class="split" style="margin-top:40px; align-items:flex-start;">
+      <div class="txt">
+        <div class="rows reveal">
+          <div class="row"><span class="n">01</span><span class="t" style="font-size:14.5px;">Определение наличия остановочных пунктов в границах пешеходного подхода, установленного региональными нормативами градостроительного проектирования, от границ земельных участков садоводства, огородничества или дачного хозяйства</span></div>
+          <div class="row"><span class="n">02</span><span class="t" style="font-size:14.5px;">Определение остановочных пунктов, для которых маршрут является единственным</span></div>
+          <div class="row"><span class="n">03</span><span class="t" style="font-size:14.5px;">Расчет расстояния между остановочными пунктами</span></div>
+          <div class="row"><span class="n">04</span><span class="t" style="font-size:14.5px;">Анализ загруженности маршрутной сети</span></div>
+        </div>
+      </div>
+      <div class="shot reveal"><img src="assets/web/route_network.jpg" alt="Схема маршрута на карте" loading="lazy" decoding="async"><span class="cap">Проверка маршрутной сети</span></div>
+    </div>
+    <h3 class="reveal">Рейтинг <span class="grad">перевозчиков</span></h3>
+    <div class="split" style="align-items:flex-start;">
+      <div class="txt">
+        <div class="grid reveal" style="grid-template-columns:1fr; gap:12px;">
+          <div class="card"><span class="n">01</span><span class="t">Данные о государственных и муниципальных контрактах</span></div>
+          <div class="card"><span class="n">02</span><span class="t">Информация об используемых ТС: соответствие класса, возраст, экологичность, приспособленность к МГН</span></div>
+          <div class="card"><span class="n">03</span><span class="t">Данные о соблюдении условий государственного (муниципального) контракта</span></div>
+        </div>
+        <div class="panel reveal" style="margin-top:16px;">
+          <p class="note">Рейтинг представлен в виде таблицы с возможностью просмотра детальной информации и настройки отображения
+          данных по району, критерию, маршруту и другим качественным и количественным показателям.</p>
+        </div>
+      </div>
+      <div class="panel reveal">
+        <div style="font-size:11px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--accent-soft); margin-bottom:18px;">Структура рейтинга · иллюстративно</div>
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <div class="lb-row"><span class="lb-rank">1</span><div style="flex:1"><div class="lb-bar" style="width:100%"></div></div></div>
+          <div class="lb-row"><span class="lb-rank">2</span><div style="flex:1"><div class="lb-bar" style="width:76%"></div></div></div>
+          <div class="lb-row"><span class="lb-rank">3</span><div style="flex:1"><div class="lb-bar" style="width:58%"></div></div></div>
+        </div>
+      </div>
+    </div>
+    <h3 class="reveal">Сервис анализа пробега и <span class="grad">привязки к графам дорог</span></h3>
+    <div class="split" style="align-items:flex-start;">
+      <div class="txt">
+        <p class="lead reveal">Сервис забирает из брокера сообщений пакеты с данными и рассчитывает отрезки, где транспортное средство
+        находилось в движении: продолжительность, пробег, нарушения скоростных режимов, стоянки и адрес ближайшего дома к месту стоянки.</p>
+      </div>
+      <div class="txt">
+        <div class="kick reveal" style="margin-bottom:10px;"><span class="kb"></span>Алгоритм привязки</div>
+        <div class="rows reveal">
+          <div class="row"><span class="n">01</span><span class="t" style="font-size:14px;">Выбираются все ребра графа с линиями, пересекающими буферную зону первой точки трека; из полученных ребер выбирается ближайшее к точке</span></div>
+          <div class="row"><span class="n">02</span><span class="t" style="font-size:14px;">Сервис получает наборы всех возможных вариантов последовательности ребер, общая длина которых больше суммы расстояний между точками</span></div>
+          <div class="row"><span class="n">03</span><span class="t" style="font-size:14px;">В наборе с наибольшей оценкой выбирается ребро, на которое попала проекция точки, и все предшествующие ему — они добавляются к готовому маршруту</span></div>
+          <div class="row"><span class="n">04</span><span class="t" style="font-size:14px;">Переход к пункту 2, если есть необработанные навигационные данные согласно сценарию</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ БРОНИРОВАНИЕ ═══ -->
+<section id="booking">
+  <div class="aurora a"></div>
+  <div class="inner">
+    <div class="kick reveal"><span class="kn">06</span><span class="kb"></span>Билетная система</div>
+    <h2 class="reveal">Модуль «Бронирования платного <span class="grad">проезда и сервисов»</span></h2>
+    <p class="lead reveal" style="margin-top:22px;">Продажа, возврат и контроль билетов — от касс автовокзалов до систем-агрегаторов.</p>
+    <div class="grid g2 stagger" style="margin-top:36px;">
+      <div class="card"><span class="t">Бронирование и покупка билетов для перевозок пассажиров и багажа общественным транспортом</span></div>
+      <div class="card"><span class="t">Поддержка актуального расписания и схем маршрутов для систем-агрегаторов, продающих билеты пассажирам</span></div>
+      <div class="card"><span class="t">Подбор подходящих рейсов в соответствии с пунктами отправления и назначения пассажиров</span></div>
+      <div class="card"><span class="t">Формирование итоговой стоимости билета с учетом льгот, проверка типа льготы и факта оплаты билета</span></div>
+      <div class="card"><span class="t">Содействие в возвратах денежных средств за купленные билеты</span></div>
+      <div class="card"><span class="t">Ведение реестра купленных и возвращенных билетов</span></div>
+      <div class="card"><span class="t">Интерфейс продажи и возврата билетов в кассах автовокзалов и автостанций</span></div>
+      <div class="card"><span class="t">Возможность подтверждения посадки пассажира на рейс для перронного контролера рейсов</span></div>
+      <div class="card"><span class="t">Аналитические отчеты о результатах работы модуля биллинга платного проезда и сервисов</span></div>
+      <div class="card"><span class="t">Сводная информация о результатах работы модуля биллинга платного проезда</span></div>
+      <div class="card"><span class="t">Взаимодействие в части модуля выдачи транспортных разрешений</span></div>
+      <div class="card"><span class="t">Интерфейс администратора для управления параметрами работы модуля биллинга</span></div>
+      <div class="card dashed" style="grid-column:1 / -1;"><span class="t">Ограничение: не реализована обработка персональных данных покупателей билетов</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ПАССАЖИРАМ ═══ -->
+<section id="passengers">
+  <div class="aurora b"></div>
+  <div class="inner">
+    <div class="kick reveal"><span class="kn">07</span><span class="kb"></span>Пассажирам</div>
+    <h2 class="reveal">Комплексное информирование. <span class="grad">Интерактивные панели</span></h2>
+    <div class="shot reveal" style="margin-top:40px; background:transparent; border:none; box-shadow:none;">
+      <img src="assets/web/info_phones.jpg" alt="Экраны информирования пассажиров" loading="lazy" decoding="async" style="border-radius:20px; background:rgba(255,255,255,0.02);">
+    </div>
+    <h3 class="reveal">Функции <span class="grad">для пользователя</span></h3>
+    <div class="chips reveal">
+      <span class="chip">Поиск маршрута следования</span>
+      <span class="chip">Бронирование билетов на рейс</span>
+      <span class="chip">Проверка льготы пассажира</span>
+      <span class="chip">Отображение схемы движения выбранного маршрута</span>
+      <span class="chip">Отображение остановочных пунктов</span>
+      <span class="chip">Отображение проходящих через остановочный пункт маршрутов</span>
+      <span class="chip">Расписание выбранного остановочного пункта</span>
+      <span class="chip">Актуальные рейсы на выбранную дату</span>
+      <span class="chip">Выбор ТС, запланированного на рейс</span>
+      <span class="chip">Схема салона транспортного средства</span>
+      <span class="chip">Свободные и занятые места в салоне</span>
+      <span class="chip">Предварительная стоимость билета</span>
+      <span class="chip">Рекламные баннеры на экране</span>
+      <span class="chip">Проверка наличия и категории льготы граждан</span>
+      <span class="chip">Движение ТС по маршруту с просмотром данных о ТС</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ЭФФЕКТИВНОСТЬ ═══ -->
+<section id="effect">
+  <div class="aurora a"></div><div class="aurora b"></div>
+  <div class="inner">
+    <div class="kick reveal"><span class="kn">08</span><span class="kb"></span>Результаты внедрения</div>
+    <h2 class="reveal">Эффективность</h2>
+    <div class="grid g2 reveal" style="margin-top:40px; max-width:720px;">
+      <div class="panel" style="display:flex; flex-direction:column; align-items:flex-start;">
+        <div class="stat-num"><span class="counter" data-count="36" data-prefix="+" data-suffix="%">+36%</span></div>
+        <div class="stat-lbl">оперативность диспетчеризации и планирования транспорта</div>
+      </div>
+      <div class="panel" style="display:flex; flex-direction:column; align-items:flex-start;">
+        <div class="stat-num"><span class="counter" data-count="28" data-prefix="−" data-suffix="%">−28%</span></div>
+        <div class="stat-lbl">случаев пересечения ТС на сходной части маршрутов — за счет анализа маршрутной сети и расписаний</div>
+      </div>
+    </div>
+    <div class="rows reveal" style="margin-top:26px;">
+      <div class="row"><span class="n">01</span><span class="t" style="font-size:15px;">Прозрачный контроль исполнения контрактов повысил качество работы и выявил недобросовестных подрядчиков</span></div>
+      <div class="row"><span class="n">02</span><span class="t" style="font-size:15px;">Качество сервисов информирования граждан: мобильное приложение, информационные табло, интерактивные панели — прогнозы прибытия, поиск и покупка билетов</span></div>
+      <div class="row"><span class="n">03</span><span class="t" style="font-size:15px;">Анализ расписаний в графическом виде сократил время ожидания транспорта на остановках</span></div>
+    </div>
+    <div class="panel reveal" style="margin-top:26px; display:flex; align-items:center; gap:24px; flex-wrap:wrap;">
+      <div style="flex:1; min-width:260px;">
+        <div style="font-size:18px; font-weight:700;">Хотите те же результаты в вашем регионе?</div>
+        <p class="note" style="margin-top:6px;">Покажем систему на ваших данных и подскажем модель внедрения.</p>
+      </div>
+      <a class="btn pri" href="mailto:info@smart-transport.ru?subject=Внедрение bus:vision">Обсудить внедрение</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ТЕХНОЛОГИИ ═══ -->
+<section id="tech">
+  <div class="aurora b"></div>
+  <div class="inner">
+    <div class="kick reveal"><span class="kn">08</span><span class="kb"></span>Технологии</div>
+    <h2 class="reveal">Стек технологий и масштабируемость</h2>
+    <div class="split" style="margin-top:44px; align-items:flex-start;">
+      <div class="txt">
+        <div class="rows reveal">
+          <div class="row"><span class="n">01</span><span class="t" style="font-size:15px;">В разработке применяются только open source языки программирования, фреймворки и библиотеки</span></div>
+          <div class="row"><span class="n">02</span><span class="t" style="font-size:15px;">Разработчики поддерживают самые актуальные версии применяемых языков на всем процессе развития системы</span></div>
+          <div class="row"><span class="n">03</span><span class="t" style="font-size:15px;">Все необходимые средства информационной безопасности для сохранности данных и контроля передачи</span></div>
+          <div class="row"><span class="n">04</span><span class="t" style="font-size:15px;">Микросервисная архитектура обеспечивает горизонтальную масштабируемость на неограниченное количество объемов данных и пользователей</span></div>
+        </div>
+      </div>
+      <div class="panel reveal">
+        <div style="font-size:11px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent-soft); margin-bottom:20px;">Технологии</div>
+        <div class="tech">
+          <span class="tchip"><i></i>Python</span><span class="tchip"><i></i>Django</span><span class="tchip"><i></i>FastAPI</span>
+          <span class="tchip"><i></i>JavaScript</span><span class="tchip"><i></i>Flutter</span><span class="tchip"><i></i>Dart</span>
+        </div>
+        <p class="note" style="margin-top:22px;">Единый open source стек для backend-сервисов, веб-интерфейса и мобильных приложений водителей и пассажиров.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ КОМПАНИЯ ═══ -->
+<section id="company">
+  <div class="aurora a"></div>
+  <div class="inner">
+    <div class="kick reveal"><span class="kn">09</span><span class="kb"></span>О компании</div>
+    <h2 class="reveal">Компания в цифрах</h2>
+    <div class="grid g2 stagger" style="margin-top:40px;">
+      <div class="card" style="align-items:center;"><div class="stat-num" style="font-size:72px;"><span class="counter" data-count="9" data-suffix="+">9+</span></div>
+        <div><div class="stat-lbl">лет на рынке</div><div class="stat-sub">развитие продукта с 2014 года</div></div></div>
+      <div class="card" style="align-items:center;"><div class="stat-num" style="font-size:72px;"><span class="counter" data-count="80" data-suffix="+">80+</span></div>
+        <div><div class="stat-lbl">профессиональных разработчиков</div><div class="stat-sub">собственная команда полного цикла</div></div></div>
+      <div class="card" style="align-items:center;"><div class="stat-num" style="font-size:72px;"><span class="counter" data-count="40" data-suffix="+">40+</span></div>
+        <div><div class="stat-lbl">отраслевых проектов</div><div class="stat-sub">транспорт, дороги, города</div></div></div>
+      <div class="card" style="align-items:center;"><div class="stat-num" style="font-size:72px;"><span class="counter" data-count="6">6</span></div>
+        <div><div class="stat-lbl">субъектов РФ</div><div class="stat-sub">Тюменская, Челябинская, Оренбургская области · Екатеринбург · Республика Мордовия · Красноярский край</div></div></div>
+    </div>
+    <h3 class="reveal">Наши <span class="grad">достижения</span></h3>
+    <div class="grid g2 stagger">
+      <div class="aw"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="9" r="5.5" stroke="#8FEAF6" stroke-width="1.8"/><path d="M8.5 13.5 L7 21 L12 18.4 L17 21 L15.5 13.5" stroke="#8FEAF6" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+        <div><h4>Умный город</h4><p>Победитель конкурса в номинации «Транспорт». Лучшая практика по внедрению интеллектуальных транспортных систем</p></div></div>
+      <div class="aw"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="9" r="5.5" stroke="#8FEAF6" stroke-width="1.8"/><path d="M8.5 13.5 L7 21 L12 18.4 L17 21 L15.5 13.5" stroke="#8FEAF6" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+        <div><h4>Global CIO — DIGITAL experts</h4><p>Победитель конкурса «Проект года» в номинации «Лучший ИТ-проект Уральского федерального округа», Москва</p></div></div>
+      <div class="aw"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="9" r="5.5" stroke="#8FEAF6" stroke-width="1.8"/><path d="M8.5 13.5 L7 21 L12 18.4 L17 21 L15.5 13.5" stroke="#8FEAF6" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+        <div><h4>Цифровые Вершины</h4><p>Победитель в номинации «Лучшее решение для умного города» в рамках Национальной премии ИТ-решений</p></div></div>
+      <div class="aw"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="9" r="5.5" stroke="#8FEAF6" stroke-width="1.8"/><path d="M8.5 13.5 L7 21 L12 18.4 L17 21 L15.5 13.5" stroke="#8FEAF6" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+        <div><h4>РОСДОРНИИ</h4><p>Финалист всероссийского акселератора ФАУ «РОСДОРНИИ», Москва</p></div></div>
+      <div class="aw" style="grid-column:1 / -1;"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="9" r="5.5" stroke="#8FEAF6" stroke-width="1.8"/><path d="M8.5 13.5 L7 21 L12 18.4 L17 21 L15.5 13.5" stroke="#8FEAF6" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+        <div><h4>Твердые знаки</h4><p>2 место в номинации «Инновационные технологии» — повышающие эффективность производств и улучшающие качество жизни человека. Тюменская область</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ КОНТАКТЫ ═══ -->
+<section id="contacts">
+  <div class="aurora b"></div>
+  <div class="inner">
+    <div class="kick reveal"><span class="kn">10</span><span class="kb"></span>Контакты</div>
+    <div class="split" style="align-items:flex-start;">
+      <div class="txt">
+        <h2 class="reveal">Контакты</h2>
+        <span class="uline reveal"></span>
+        <div class="reveal" style="margin-top:28px; display:flex; align-items:center; gap:12px;">
+          <svg width="46" height="34" viewBox="0 0 46 34"><path d="M17 1 L28 1 L12 33 L1 33 Z" fill="#17BFA6"/><path d="M34 1 L45 1 L29 33 L18 33 Z" fill="#17BFA6"/></svg>
+          <span style="font-weight:700; font-size:20px;">ИТС</span>
+        </div>
+        <p class="note reveal" style="margin-top:16px;">Управление движением общественного транспорта</p>
+        <svg class="reveal" style="margin-top:40px; overflow:visible;" width="460" height="128" viewBox="0 0 900 250" fill="none">
+          <g stroke="#4FD9EE" stroke-opacity="0.8" stroke-width="3">
+            <g fill="#8FEAF6" stroke="none">
+              <rect class="win" x="84" y="140" width="6" height="6"/><rect class="win" style="animation-delay:.7s" x="102" y="168" width="6" height="6"/>
+              <rect class="win" style="animation-delay:1.3s" x="170" y="104" width="6" height="6"/><rect class="win" style="animation-delay:.4s" x="188" y="150" width="6" height="6"/>
+              <rect class="win" style="animation-delay:1.9s" x="243" y="70" width="6" height="6"/><rect class="win" style="animation-delay:1s" x="262" y="118" width="6" height="6"/>
+              <rect class="win" style="animation-delay:2.3s" x="330" y="128" width="6" height="6"/><rect class="win" style="animation-delay:.9s" x="428" y="96" width="6" height="6"/>
+              <rect class="win" style="animation-delay:1.6s" x="602" y="112" width="6" height="6"/><rect class="win" style="animation-delay:.5s" x="622" y="156" width="6" height="6"/>
+            </g>
+            <rect x="60" y="120" width="70" height="90" fill="rgba(79,217,238,0.05)"/><rect x="150" y="82" width="55" height="128" fill="rgba(79,217,238,0.04)"/>
+            <rect x="225" y="42" width="62" height="168" fill="rgba(79,217,238,0.06)"/><line x1="256" y1="42" x2="256" y2="22"/><circle cx="256" cy="18" r="3" fill="#4FD9EE" stroke="none"/>
+            <rect x="308" y="108" width="80" height="102" fill="rgba(79,217,238,0.04)"/><rect x="412" y="70" width="52" height="140" fill="rgba(79,217,238,0.05)"/>
+            <rect x="486" y="126" width="76" height="84"/><rect x="584" y="92" width="60" height="118" fill="rgba(79,217,238,0.04)"/>
+          </g>
+          <g class="sky-bus" stroke="#4FD9EE" stroke-width="3">
+            <rect x="620" y="150" width="118" height="44" rx="8" fill="rgba(79,217,238,0.08)"/>
+            <line x1="636" y1="162" x2="668" y2="162" stroke-opacity="0.8"/><line x1="676" y1="162" x2="706" y2="162" stroke-opacity="0.8"/><line x1="714" y1="162" x2="724" y2="162" stroke-opacity="0.8"/>
+            <circle cx="646" cy="200" r="9" fill="#070C14"/><circle cx="714" cy="200" r="9" fill="#070C14"/>
+          </g>
+          <g class="ping" opacity="0.9"><circle cx="874" cy="128" r="26" stroke="#17BFA6" stroke-width="1.5"/></g>
+          <line x1="500" y1="210" x2="900" y2="210" stroke="#4FD9EE" stroke-opacity="0.5" stroke-width="3"/>
+        </svg>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <div class="card reveal" style="align-items:center;">
+          <div class="n" style="width:44px; height:44px; border-radius:12px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 21 C 12 21, 5 14.5, 5 9.5 A 7 7 0 0 1 19 9.5 C 19 14.5, 12 21, 12 21 Z" stroke="#8FEAF6" stroke-width="1.8"/><circle cx="12" cy="9.5" r="2.6" stroke="#8FEAF6" stroke-width="1.8"/></svg>
+          </div>
+          <div style="padding-left:14px;"><div class="stat-lbl" style="margin:0;">Бизнес-центр «Нобель парк»</div><div class="stat-sub">ул. Пермякова 1, ст. 5, оф. 1102</div></div>
+        </div>
+        <div class="card reveal" style="align-items:center;">
+          <div class="n" style="width:44px; height:44px; border-radius:12px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 4 L9 4 L11 9 L8.5 10.8 C 9.6 13.2, 10.8 14.4, 13.2 15.5 L15 13 L20 15 L20 19 C 20 19.9, 19.3 20.6, 18.4 20.5 C 10.6 19.7, 4.3 13.4, 3.5 5.6 C 3.4 4.7, 4.1 4, 5 4 Z" stroke="#8FEAF6" stroke-width="1.8" stroke-linejoin="round"/></svg>
+          </div>
+          <div style="padding-left:14px;">
+            <div class="stat-lbl" style="margin:0;">Отдел продаж</div>
+            <div class="stat-sub" style="margin-top:8px;">Кузнецов Валерий — <a href="tel:+79044909106" style="color:#E4EAF6; text-decoration:none; border-bottom:1px solid rgba(143,234,246,0.35);"><b>+7 (904) 490-91-06</b></a></div>
+            <div class="stat-sub">Забалуев Павел — <a href="tel:+79199201234" style="color:#E4EAF6; text-decoration:none; border-bottom:1px solid rgba(143,234,246,0.35);"><b>+7 (919) 920-12-34</b></a></div>
+          </div>
+        </div>
+        <div class="card reveal" style="align-items:center;">
+          <div class="n" style="width:44px; height:44px; border-radius:12px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3.5" y="5.5" width="17" height="13" rx="2.5" stroke="#8FEAF6" stroke-width="1.8"/><path d="M4.5 7.5 L12 13 L19.5 7.5" stroke="#8FEAF6" stroke-width="1.8" stroke-linejoin="round"/></svg>
+          </div>
+          <div style="padding-left:14px;"><div class="stat-lbl" style="margin:0;"><a href="mailto:info@smart-transport.ru" style="color:#E4EAF6; text-decoration:none; border-bottom:1px solid rgba(143,234,246,0.35);">info@smart-transport.ru</a></div><div class="stat-sub">информация и коммерческие предложения</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>ИТС · Управление движением общественного транспорта</span>
+  <span class="pg">its · smart-transport.ru</span>
+</footer>
+
+<script>
+(function(){
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  var sio = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); sio.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.stagger').forEach(function(el){ sio.observe(el); });
+  // hero: слайд-шоу скриншотов, переключение каждые 2.44 с (пауза вне вьюпорта и при reduced-motion)
+  (function(){
+    var slides = document.querySelectorAll('.hero-shot .hs');
+    var dots = document.querySelectorAll('.hero-shot .hs-dots button');
+    var cap = document.querySelector('.hero-shot .hs-cap');
+    var box = document.querySelector('.hero-shot');
+    if (slides.length < 2) return;
+    var i = 0, visible = true;
+    function show(n){
+      slides[i].classList.remove('on'); dots[i] && dots[i].classList.remove('on');
+      i = (n + slides.length) % slides.length;
+      slides[i].classList.add('on'); dots[i] && dots[i].classList.add('on');
+      if (cap) cap.textContent = slides[i].alt;
+    }
+    Array.prototype.forEach.call(dots, function(d, n){ d.addEventListener('click', function(){ show(n); }); });
+    new IntersectionObserver(function(es){ es.forEach(function(e){ visible = e.isIntersecting; }); }).observe(box);
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { show(0); return; }
+    setInterval(function(){ if (visible) show(i + 1); }, 2440);
+  })();
+
+  var prog = document.getElementById('progress');
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav-links a'));
+  var secs = Array.prototype.slice.call(document.querySelectorAll('section[id]'));
+  function onScroll(){
+    var h = document.documentElement;
+    var p = h.scrollTop / (h.scrollHeight - h.clientHeight);
+    prog.style.width = (p * 100).toFixed(2) + '%';
+    var cur = null;
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 60) cur = 'contacts';
+    else secs.forEach(function(s){ if (s.getBoundingClientRect().top <= 120) cur = s.id; });
+    links.forEach(function(a){ a.classList.toggle('active', a.getAttribute('href') === '#' + cur); });
+    if (!rm) {
+      par.forEach(function(el){
+        var host = el.closest('section') || el.parentElement;
+        var r = host.getBoundingClientRect();
+        if (r.bottom < -200 || r.top > innerHeight + 200) return;
+        var off = (r.top + r.height / 2 - innerHeight / 2) * (el.classList.contains('topo') ? -0.045 : -0.08);
+        el.style.transform = 'translate3d(0,' + off.toFixed(1) + 'px,0)';
+      });
+    }
+  }
+  document.addEventListener('scroll', onScroll, { passive: true });
+
+  // hero lines: последовательный взлёт
+  var lines = document.querySelectorAll('.hl-line');
+  lines.forEach(function(l, i){ setTimeout(function(){ l.classList.add('in'); }, 200 + i * 190); });
+  // route-stop light wave по спискам
+  document.querySelectorAll('.rows').forEach(function(r){
+    Array.prototype.forEach.call(r.children, function(c, i){ c.style.setProperty('--i', i); });
+  });
+  // лёгкий параллакс аврор и тополиний
+  var par = Array.prototype.slice.call(document.querySelectorAll('.aurora, .topo'));
+  var rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  onScroll();
+
+  var cio = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if (!e.isIntersecting) return;
+      var el = e.target, target = parseInt(el.dataset.count, 10);
+      var pre = el.dataset.prefix || '', suf = el.dataset.suffix || '';
+      var t0 = null;
+      if (rm) { el.textContent = pre + target + suf; cio.unobserve(el); return; }
+      function step(t){
+        if (!t0) t0 = t;
+        var k = Math.min((t - t0) / 1200, 1);
+        var v = Math.round(target * (1 - Math.pow(1 - k, 3)));
+        el.textContent = pre + v + suf;
+        if (k < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+      cio.unobserve(el);
+    });
+  }, { threshold: 0.6 });
+  document.querySelectorAll('.counter').forEach(function(el){ cio.observe(el); });
+})();
+</script>
+</body>
+</html>
