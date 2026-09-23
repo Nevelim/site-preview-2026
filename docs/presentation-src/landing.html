@@ -391,6 +391,13 @@
   .customer-features h4 { font-size:17px; line-height:1.35; margin:4px 0 12px; color:#E4EAF6; }
   .customer-features p { font-size:14px; line-height:1.6; color:#C3CDE0; }
   .customer-features a:hover { border-color:#17BFA6; }
+  .quality-card .norm-code { color:#8FEAF6; font-size:12px; line-height:1.5; margin-top:14px; }
+  .norm-docs article + article { border-top:1px solid rgba(255,255,255,.1); margin-top:20px; padding-top:20px; }
+  .norm-docs h3 { font-size:16px; line-height:1.45; margin:0 0 10px; }
+  .norm-docs a, .norm-context a { color:#8FEAF6; text-decoration:underline; text-decoration-color:rgba(143,234,246,.4); text-underline-offset:4px; }
+  .norm-docs a:hover, .norm-context a:hover { color:#fff; }
+  .norm-docs a:focus-visible, .norm-context a:focus-visible { outline:2px solid #17BFA6; outline-offset:4px; }
+  .norm-context { margin-bottom:22px; max-width:850px; }
 @media (max-width:760px) {
   .more-details > summary { padding:18px; gap:12px; }
   .more-content { padding:18px; }
@@ -407,7 +414,7 @@
     bus:vision
   </a>
   <div class="nav-links">
-    <a href="#quality-service">Качество</a><a href="#features">Возможности</a><a href="#platform">Платформа</a><a href="#schedules">Графики</a>
+    <a href="#quality-service">Качество</a><a href="#compliance">Нормы</a><a href="#features">Возможности</a><a href="#platform">Платформа</a><a href="#schedules">Графики</a>
     <a href="#planning">Планирование</a><a href="#dispatch">Диспетчеризация</a><a href="#routes">Маршруты</a><a href="#standards">Стандарты</a>
     <a href="#analytics">Аналитика</a><a href="#booking">Бронирование</a><a href="#passengers">Пассажирам</a>
     <a href="#effect">Эффект</a><a href="#tech">Технологии</a><a href="#company">Компания</a><a href="#contacts">Контакты</a>
@@ -516,11 +523,58 @@
   </div>
 </section>
 
+<!-- ═══ НОРМАТИВНЫЕ ТРЕБОВАНИЯ ═══ -->
+<section id="compliance" aria-labelledby="compliance-title">
+  <div class="aurora a"></div>
+  <div class="inner">
+    <div class="kick reveal"><span class="kn">03</span><span class="kb"></span>Нормативные требования</div>
+    <h2 class="reveal" id="compliance-title">Система помогает<br><span class="grad">соблюдать нормы</span></h2>
+    <p class="lead reveal" style="margin-top:22px;max-width:880px;">Контроль рейсов и подготовка отчётов опираются на нормативную базу — заказчику проще проверять работу перевозчиков.</p>
+    <div class="grid g2 quality-grid stagger">
+      <article class="card quality-card"><span class="n">01</span><div>
+        <h4>Единые правила диспетчеризации</h4>
+        <p>Мониторинг, карта маршрутов и работа диспетчера в одной системе — для контроля движения и разбора отклонений.</p>
+        <p class="norm-code">ПНСТ 986-2024 · ПНСТ 985-2024</p>
+      </div></article>
+      <article class="card quality-card"><span class="n">02</span><div>
+        <h4>Данные для приёмки перевозок</h4>
+        <p>Выполненные рейсы, пробег и нарушения помогают проверять исполнение брутто-контракта и обосновывать расчёты с перевозчиком.</p>
+        <p class="norm-code">ПНСТ 895-2023</p>
+      </div></article>
+      <article class="card quality-card"><span class="n">03</span><div>
+        <h4>Работа в составе ИТС региона</h4>
+        <p>Обмен данными с интеграционной платформой. При подключении АСУДД — взаимодействие для приоритетного проезда транспорта.</p>
+        <p class="norm-code">ГОСТ Р 71092-2023 · ГОСТ Р 71095-2023</p>
+      </div></article>
+      <article class="card quality-card"><span class="n">04</span><div>
+        <h4>Графики с учётом труда и отдыха</h4>
+        <p>Проверки при составлении графиков помогают выявлять нарушения режима водителей до утверждения расписания.</p>
+        <p class="norm-code">Режим труда и отдыха · приказ Минтранса № 160</p>
+      </div></article>
+    </div>
+    <p class="note reveal" style="margin-top:22px;">Состав нормативных проверок и интеграций фиксируется в проекте внедрения с учётом применимых требований.</p>
+    <details class="more-details">
+      <summary>Нормативные документы и их применение в системе</summary>
+      <div class="more-content">
+        <div class="norm-docs">
+          <article><h3><a href="https://protect.gost.ru/gost/details/4dcd6966-e869-4b21-978e-114194ea43c3" target="_blank" rel="noopener noreferrer">ПНСТ 986-2024 ↗</a></h3><p class="note">Архитектура и функции диспетчерского управления при брутто-контракте. Основа для организации мониторинга, управления перевозками и контроля транспортного предприятия.</p></article>
+          <article><h3><a href="https://protect.gost.ru/gost/details/6474bc36-1faa-4939-b980-39c535502686" target="_blank" rel="noopener noreferrer">ПНСТ 985-2024 ↗</a></h3><p class="note">Картографическое обеспечение диспетчерских информационных услуг, включая параметры вождения. Применяется к работе с картой, маршрутом и навигационными данными.</p></article>
+          <article><h3><a href="https://protect.gost.ru/gost/details/2e26718c-4ce7-4d07-aba2-9a59df22999c" target="_blank" rel="noopener noreferrer">ПНСТ 895-2023 ↗</a></h3><p class="note">Состав и содержание отчётных данных перевозчика при брутто-контракте. Основа для сопоставимой отчётности об исполнении транспортной работы и проверки муниципального заказа.</p></article>
+          <article><h3><a href="https://protect.gost.ru/gost/details/f67c0e71-f11b-450b-a021-914cb056d189" target="_blank" rel="noopener noreferrer">ГОСТ Р 71092-2023 ↗</a></h3><p class="note">Функциональная архитектура интеграционной платформы ИТС. Определяет требования к взаимодействию подсистем при включении общественного транспорта в ИТС региона.</p></article>
+          <article><h3><a href="https://protect.gost.ru/gost/details/7bc907b1-8419-43b6-997b-91b4d1773486" target="_blank" rel="noopener noreferrer">ГОСТ Р 71095-2023 ↗</a></h3><p class="note">Общие требования к подсистеме приоритетного проезда. Учитывается при интеграции с АСУДД; реализация зависит от оборудования и состава проекта.</p></article>
+          <article><h3><a href="https://www.consultant.ru/document/cons_doc_LAW_534382/2ff7a8c72de3994f30496a0ccbb1ddafdaddf518/" target="_blank" rel="noopener noreferrer">Приказ Минтранса России от 14.04.2026 № 160 ↗</a></h3><p class="note">Действующая с 01.09.2026 нормативная база режима рабочего времени и отдыха водителей автомобилей. Учитывается при определении требований к проверкам графиков; заменяет приказ № 424 от 16.10.2020.</p></article>
+          <article><h3><a href="https://mintrans.gov.ru/eye/documents/2/13397" target="_blank" rel="noopener noreferrer">Распоряжение Минтранса России от 27.04.2024 № АК-95-р ↗</a></h3><p class="note">Методические рекомендации по подготовке региональных заявок и локальных проектов ИТС для получения субсидий. Используются при проработке проекта внедрения; это методическая основа, а не сертификат продукта.</p></article>
+        </div>
+      </div>
+    </details>
+  </div>
+</section>
+
 <!-- ═══ ВОЗМОЖНОСТИ ═══ -->
 <section id="features">
   <div class="aurora a"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">03</span><span class="kb"></span>Возможности системы</div>
+    <div class="kick reveal"><span class="kn">04</span><span class="kb"></span>Возможности системы</div>
     <h2 class="reveal">Ключевые задачи <span class="grad">заказчика</span></h2>
     <div class="grid g3 customer-features stagger" style="margin-top:36px;">
       <a class="card" href="#schedules"><span class="n">01</span><div><h4>Настроить расписания</h4><p>Интервалы, пересадки и проверка графиков на исполнимость.</p></div></a>
@@ -565,7 +619,7 @@
 <section id="platform">
   <div class="aurora b"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">04</span><span class="kb"></span>Платформа</div>
+    <div class="kick reveal"><span class="kn">05</span><span class="kb"></span>Платформа</div>
     <h2 class="reveal">Платформа общественного <span class="grad">транспорта</span></h2>
     <div class="split" style="margin-top:44px;">
       <div class="txt">
@@ -600,14 +654,14 @@
 <section id="schedules">
   <div class="aurora a"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">05</span><span class="kb"></span>Графики движения</div>
+    <div class="kick reveal"><span class="kn">06</span><span class="kb"></span>Графики движения</div>
     <h2 class="reveal">Управление графиками движения</h2>
     <p class="note quality-context reveal"><strong>Качество перевозок:</strong> согласованные интервалы и пересадки помогают снизить время ожидания пассажиров.</p>
     <div class="split" style="margin-top:40px; align-items:flex-start;">
       <div class="txt">
         <p class="lead reveal">Сформированные графики движения проверяются на соответствие нормам труда и отдыха водителей.</p>
-        <div class="reveal" style="margin:22px 0;"><span class="tag">Приказ Минтранса России № 424 от 16.10.2020 — режим рабочего времени и времени отдыха водителей</span></div>
-        <p class="note reveal">Если не пройдена одна или несколько проверок — система формирует уведомление.</p>
+        <div class="reveal" style="margin:22px 0;"><span class="tag">Нормативная база: приказ Минтранса России № 160 от 14.04.2026 — режим труда и отдыха водителей, действует с 01.09.2026</span></div>
+        <p class="note reveal">Если не пройдена одна или несколько проверок — система формирует уведомление. Состав проверок определяется требованиями проекта внедрения.</p>
       </div>
       <div class="shot reveal"><img src="assets/web/schedules_card.jpg" alt="Конструктор графиков движения" loading="lazy" decoding="async" width="570" height="666"><span class="cap">Конструктор графиков</span></div>
     </div>
@@ -654,7 +708,7 @@
 <section id="planning">
   <div class="aurora b"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">06</span><span class="kb"></span>Планирование</div>
+    <div class="kick reveal"><span class="kn">07</span><span class="kb"></span>Планирование</div>
     <h2 class="reveal">Управление планированием транспорта</h2>
     <div class="split" style="margin-top:44px;">
       <div class="txt">
@@ -674,7 +728,7 @@
 <section id="dispatch">
   <div class="aurora a"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">07</span><span class="kb"></span>Диспетчеризация</div>
+    <div class="kick reveal"><span class="kn">08</span><span class="kb"></span>Диспетчеризация</div>
     <h2 class="reveal">Онлайн-диспетчерская и контроль работы ОТ</h2>
     <p class="note quality-context reveal"><strong>Качество перевозок:</strong> план и факт движения, события и связь с водителем помогают выявить причину срыва рейса.</p>
     <div class="shot reveal" style="margin-top:40px;"><img src="assets/web/dispatch_full.jpg" alt="Рабочее место диспетчера" loading="lazy" decoding="async" width="1065" height="598"><span class="cap">Рабочее место диспетчера</span></div>
@@ -729,7 +783,7 @@
 <section id="routes">
   <div class="aurora b"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">08</span><span class="kb"></span>Маршрутная сеть и контроль</div>
+    <div class="kick reveal"><span class="kn">09</span><span class="kb"></span>Маршрутная сеть и контроль</div>
     <h2 class="reveal">Организация маршрутов общественного транспорта</h2>
     <div class="split" style="margin-top:40px; align-items:flex-start;">
       <div class="txt">
@@ -747,6 +801,7 @@
       <div class="shot reveal"><img src="assets/web/route_network.jpg" alt="Схема маршрута на карте" loading="lazy" decoding="async" width="570" height="666"><span class="cap">Схема маршрута</span></div>
     </div>
     <h3 class="reveal">Контроль выполнения <span class="grad">условий контракта</span></h3>
+    <p class="note norm-context reveal">План и факт перевозок — основа для проверки исполнения контракта. <a href="#compliance">Нормативная база: ПНСТ 986-2024 и ПНСТ 895-2023 ↗</a></p>
     <div class="chips reveal">
       <span class="chip">Контроль графиков движения</span>
       <span class="chip">Контроль движения ТС по схеме маршрута</span>
@@ -772,7 +827,7 @@
 <section id="standards">
   <div class="aurora a"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">09</span><span class="kb"></span>Стандарты обслуживания</div>
+    <div class="kick reveal"><span class="kn">10</span><span class="kb"></span>Стандарты обслуживания</div>
     <h2 class="reveal">Контроль соблюдения социальных стандартов</h2>
     <div class="split" style="margin-top:40px;">
       <div class="txt">
@@ -804,7 +859,7 @@
 <section id="analytics">
   <div class="aurora b"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">10</span><span class="kb"></span>Аналитика</div>
+    <div class="kick reveal"><span class="kn">11</span><span class="kb"></span>Аналитика</div>
     <h2 class="reveal">Анализ маршрутной сети</h2>
     <p class="note quality-context reveal"><strong>Качество перевозок:</strong> доступность остановок и загрузка сети помогают определить приоритеты изменения маршрутов.</p>
     <div class="split" style="margin-top:40px; align-items:flex-start;">
@@ -868,7 +923,7 @@
 <section id="booking">
   <div class="aurora a"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">11</span><span class="kb"></span>Билетная система</div>
+    <div class="kick reveal"><span class="kn">12</span><span class="kb"></span>Билетная система</div>
     <h2 class="reveal">Модуль «Бронирования платного <span class="grad">проезда и сервисов»</span></h2>
     <p class="lead reveal" style="margin-top:22px;">Продажа, возврат и контроль билетов — от касс автовокзалов до систем-агрегаторов.</p>
     <div class="grid g2 stagger" style="margin-top:36px;">
@@ -904,7 +959,7 @@
 <section id="passengers">
   <div class="aurora b"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">12</span><span class="kb"></span>Пассажирам</div>
+    <div class="kick reveal"><span class="kn">13</span><span class="kb"></span>Пассажирам</div>
     <h2 class="reveal">Комплексное информирование. <span class="grad">Интерактивные панели</span></h2>
     <div class="shot reveal" style="margin-top:40px; background:transparent; border:none; box-shadow:none;">
       <img src="assets/web/info_phones.jpg" alt="Экраны информирования пассажиров" loading="lazy" decoding="async" style="border-radius:20px; background:rgba(255,255,255,0.02);" width="890" height="474">
@@ -943,7 +998,7 @@
 <section id="effect">
   <div class="aurora a"></div><div class="aurora b"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">13</span><span class="kb"></span>Результаты внедрения</div>
+    <div class="kick reveal"><span class="kn">14</span><span class="kb"></span>Результаты внедрения</div>
     <h2 class="reveal">Эффективность</h2>
     <div class="grid g2 reveal" style="margin-top:40px; max-width:720px;">
       <div class="panel" style="display:flex; flex-direction:column; align-items:flex-start;">
@@ -974,7 +1029,7 @@
 <section id="tech">
   <div class="aurora b"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">14</span><span class="kb"></span>Технологии</div>
+    <div class="kick reveal"><span class="kn">15</span><span class="kb"></span>Технологии</div>
     <h2 class="reveal">Масштабирование и <span class="grad">защита данных</span></h2>
     <p class="lead reveal" style="margin-top:22px;">Архитектура поддерживает рост нагрузки, веб-сервисы и мобильные приложения. Предусмотрены средства защиты данных и контроля их передачи.</p>
     <details class="more-details">
@@ -1007,7 +1062,7 @@
 <section id="company">
   <div class="aurora a"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">15</span><span class="kb"></span>О компании</div>
+    <div class="kick reveal"><span class="kn">16</span><span class="kb"></span>О компании</div>
     <h2 class="reveal">Компания в цифрах</h2>
     <div class="grid g2 stagger" style="margin-top:40px;">
       <div class="card" style="align-items:center;"><div class="stat-num" style="font-size:72px;"><span class="counter" data-count="9" data-suffix="+">9+</span></div>
@@ -1044,7 +1099,7 @@
 <section id="contacts">
   <div class="aurora b"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">16</span><span class="kb"></span>Контакты</div>
+    <div class="kick reveal"><span class="kn">17</span><span class="kb"></span>Контакты</div>
     <div class="split" style="align-items:flex-start;">
       <div class="txt">
         <h2 class="reveal">Контакты</h2>
