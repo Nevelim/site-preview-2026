@@ -402,6 +402,21 @@
   .more-details > summary { padding:18px; gap:12px; }
   .more-content { padding:18px; }
 }
+
+  .norm-bridge { display:inline-block; color:#8FEAF6; font-size:13px; font-weight:600; line-height:1.6; margin-top:14px; text-underline-offset:4px; }
+  .norm-bridge:focus-visible { outline:2px solid #17BFA6; outline-offset:4px; }
+  .norm-target { color:#8FEAF6; font-size:20px; font-weight:700; }
+  .quality-card .norm-code + .note { margin-top:10px; font-size:13px; color:var(--muted); }
+  .architecture-flow { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:32px; list-style:none; padding:0; margin:0; }
+  .architecture-flow li { position:relative; padding-left:18px; border-left:2px solid #008774; }
+  .architecture-flow li + li::before { content:'↔'; position:absolute; left:-27px; top:28px; color:#17BFA6; font-size:20px; }
+  .arch-step { color:#8FEAF6; font-size:11px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; }
+  .architecture-flow h3 { margin:12px 0; font-size:18px; line-height:1.4; }
+  .arch-doc { display:block; margin-top:14px; font-size:12px; color:var(--muted); }
+@media (max-width:760px) {
+  .architecture-flow { grid-template-columns:1fr; gap:28px; }
+  .architecture-flow li + li::before { content:'↕'; left:-9px; top:-27px; }
+}
   @media print { .hs-toggle { display:none!important; } .quality-card { break-inside:avoid; } }
 </style>
 </head>
@@ -485,7 +500,7 @@
   <div class="inner quality-block">
     <div class="kick reveal"><span class="kn">02</span><span class="kb"></span>Качество перевозок</div>
     <h2 class="reveal" id="quality-service-title">Качество перевозок —<br><span class="grad">под контролем</span></h2>
-    <p class="lead reveal">Комплексный показатель качества помогает находить проблемные маршруты, выбирать меры и отслеживать результат.</p>
+    <p class="lead reveal">Надёжность рейсов, доступность остановок, время и стоимость поездки — четыре направления оценки качества.</p>
     <div class="grid g2 quality-grid stagger">
       <article class="card quality-card"><span class="n">01</span><div>
         <h4>Рейсы по расписанию</h4>
@@ -505,11 +520,12 @@
       </div></article>
     </div>
     <div class="panel quality-summary reveal">
-      <strong>Регион → перевозчик → маршрут → причина отклонения</strong>
-      <p class="note">От общей оценки — к конкретному решению: изменить расписание, скорректировать выпуск или маршрут.</p>
+      <strong>Качество перевозок и выполнение требований — в одной системе</strong>
+      <p class="note">От показателя региона — к рейсу, перевозчику и причине отклонения. Контроль обновления парка дополняет оценку качества поездки.</p>
+      <a class="norm-bridge" href="#compliance">ПНСТ 986 · Указ № 309 · архитектура ИТС →</a>
     </div>
     <details class="more-details">
-      <summary>Какие данные входят в оценку качества</summary>
+      <summary>Показатели качества, данные и федеральный ориентир</summary>
       <div class="more-content">
         <div class="grid g2">
           <div><h4>Надёжность</h4><p class="note">Расписания, ГЛОНАСС-мониторинг и события диспетчера: план и факт рейсов, регулярность, отмены и сходы.</p></div>
@@ -517,7 +533,8 @@
           <div><h4>Временная доступность</h4><p class="note">Плановые и фактические прибытия, интервалы, скорость сообщения, пересадки и пассажиропоток.</p></div>
           <div><h4>Ценовая доступность</h4><p class="note">Тарифы, льготные категории, типовые поездки и статистика доходов.</p></div>
         </div>
-        <p class="note" style="margin-top:24px;">Методика расчёта, веса и целевые значения настраиваются для региона. При сравнении учитываются период, полнота и актуальность данных.</p>
+        <p class="note norm-context" style="margin-top:24px;">Четыре направления предусмотрены пунктом 2а <a href="https://www.consultant.ru/document/cons_doc_LAW_544820/" target="_blank" rel="noopener noreferrer">поручения Президента от 17.09.2026 № Пр-2314ГС</a>. Разработать комплексный показатель с учётом опыта Москвы поручено к 01.12.2026.</p>
+        <p class="note">Региональная оценка использует настраиваемые веса и цели; при сравнении учитываются период, полнота и актуальность данных. Утверждённая федеральная методика применяется после её принятия и настройки расчёта.</p>
       </div>
     </details>
   </div>
@@ -527,40 +544,60 @@
 <section id="compliance" aria-labelledby="compliance-title">
   <div class="aurora a"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">03</span><span class="kb"></span>Нормативные требования</div>
-    <h2 class="reveal" id="compliance-title">Система помогает<br><span class="grad">соблюдать нормы</span></h2>
-    <p class="lead reveal" style="margin-top:22px;max-width:880px;">Контроль рейсов и подготовка отчётов опираются на нормативную базу — заказчику проще проверять работу перевозчиков.</p>
+    <div class="kick reveal"><span class="kn">03</span><span class="kb"></span>Качество и нормативные требования</div>
+    <h2 class="reveal" id="compliance-title">Нормативная основа<br><span class="grad">качества перевозок</span></h2>
+    <p class="lead reveal" style="margin-top:22px;max-width:880px;">bus:vision связывает контроль рейсов, обновление парка и работу ИТС с показателями, по которым заказчик оценивает транспортное обслуживание.</p>
     <div class="grid g2 quality-grid stagger">
       <article class="card quality-card"><span class="n">01</span><div>
-        <h4>Единые правила диспетчеризации</h4>
-        <p>Мониторинг, карта маршрутов и работа диспетчера в одной системе — для контроля движения и разбора отклонений.</p>
-        <p class="norm-code">ПНСТ 986-2024 · ПНСТ 985-2024</p>
+        <h4>Надёжность каждого рейса</h4>
+        <p>План и факт движения, отмены и сходы с причинами. Данные для оценки перевозчика и приёмки работы по брутто-контракту.</p>
+        <p class="norm-code">ПНСТ 986-2024 · ПНСТ 895-2023</p>
       </div></article>
       <article class="card quality-card"><span class="n">02</span><div>
-        <h4>Данные для приёмки перевозок</h4>
-        <p>Выполненные рейсы, пробег и нарушения помогают проверять исполнение брутто-контракта и обосновывать расчёты с перевозчиком.</p>
-        <p class="norm-code">ПНСТ 895-2023</p>
+        <h4>Контроль обновления парка</h4>
+        <p><strong class="norm-target">≥85% к 2030 году</strong> — национальная цель по доле парка не старше нормативного срока в городах и агломерациях.</p>
+        <p class="norm-code">Указ Президента № 309 от 07.05.2024</p>
+        <p class="note">В системе — возраст транспорта и контроль показателя обновления.</p>
       </div></article>
       <article class="card quality-card"><span class="n">03</span><div>
-        <h4>Работа в составе ИТС региона</h4>
-        <p>Обмен данными с интеграционной платформой. При подключении АСУДД — взаимодействие для приоритетного проезда транспорта.</p>
-        <p class="norm-code">ГОСТ Р 71092-2023 · ГОСТ Р 71095-2023</p>
+        <h4>Единая архитектура ИТС</h4>
+        <p>Связь диспетчеризации с интеграционной платформой региона. Общие данные для планирования и оценки качества обслуживания.</p>
+        <p class="norm-code">ГОСТ Р 56294-2014 · ГОСТ Р 71092-2023</p>
       </div></article>
       <article class="card quality-card"><span class="n">04</span><div>
-        <h4>Графики с учётом труда и отдыха</h4>
-        <p>Проверки при составлении графиков помогают выявлять нарушения режима водителей до утверждения расписания.</p>
-        <p class="norm-code">Режим труда и отдыха · приказ Минтранса № 160</p>
+        <h4>Предсказуемая поездка</h4>
+        <p>Актуальная информация о движении для пассажиров. При интеграции с АСУДД — приоритет на перекрёстках для снижения задержек.</p>
+        <p class="norm-code">ПНСТ 892-2023 · ГОСТ Р 71095-2023</p>
       </div></article>
     </div>
     <p class="note reveal" style="margin-top:22px;">Состав нормативных проверок и интеграций фиксируется в проекте внедрения с учётом применимых требований.</p>
     <details class="more-details">
-      <summary>Нормативные документы и их применение в системе</summary>
+      <summary>Как архитектура ИТС связывает данные с качеством</summary>
+      <div class="more-content">
+        <p class="note" style="margin-bottom:24px;">Схема взаимодействия для проекта внедрения. Конкретные источники, интерфейсы и состав обмена определяются вместе с заказчиком.</p>
+        <ol class="architecture-flow" aria-label="Связь данных перевозок, bus:vision и ИТС региона">
+          <li><span class="arch-step">01 · Данные перевозок</span><h3>Факты на маршруте</h3><p class="note">ГЛОНАСС, расписания, реестр транспорта, билетные данные, тарифы и льготы.</p></li>
+          <li><span class="arch-step">02 · bus:vision</span><h3>Контроль и решения</h3><p class="note">Планирование выпуска, диспетчеризация, отклонения, отчётность по контрактам.</p><span class="arch-doc">ПНСТ 986 · ПНСТ 895</span></li>
+          <li><span class="arch-step">03 · ИТС региона</span><h3>Обмен между подсистемами</h3><p class="note">Интеграционная платформа; при подключении — АСУДД и пассажирские сервисы.</p><span class="arch-doc">ГОСТ Р 56294 · ГОСТ Р 71092</span></li>
+        </ol>
+        <div class="panel quality-summary">
+          <strong>Панель заказчика: регион → перевозчик → маршрут</strong>
+          <p class="note">Выполнение рейсов и причины срывов · доступность остановок · ожидание и пересадки · стоимость поездки. Рядом — динамика обновления парка по Указу № 309.</p>
+        </div>
+      </div>
+    </details>
+    <details class="more-details">
+      <summary>Документы: требования, цели и связь с качеством</summary>
       <div class="more-content">
         <div class="norm-docs">
-          <article><h3><a href="https://protect.gost.ru/gost/details/4dcd6966-e869-4b21-978e-114194ea43c3" target="_blank" rel="noopener noreferrer">ПНСТ 986-2024 ↗</a></h3><p class="note">Архитектура и функции диспетчерского управления при брутто-контракте. Основа для организации мониторинга, управления перевозками и контроля транспортного предприятия.</p></article>
+          <article><h3><a href="https://publication.pravo.gov.ru/document/0001202405070015" target="_blank" rel="noopener noreferrer">Указ Президента РФ от 07.05.2024 № 309 · п. 4к ↗</a></h3><p class="note">Устанавливает ориентир на 2030 год: не менее 85% парка общественного транспорта в городах и агломерациях должно быть не старше нормативного срока эксплуатации. Мониторинг возраста транспорта помогает отслеживать движение к цели и определять потребность в обновлении.</p></article>
+          <article><h3><a href="https://www.consultant.ru/document/cons_doc_LAW_544820/" target="_blank" rel="noopener noreferrer">Поручение от 17.09.2026 № Пр-2314ГС · пп. 1а и 2а ↗</a></h3><p class="note">К 01.12.2026 поручено разработать комплексный показатель качества по четырём направлениям с учётом опыта Москвы. Поручение также связывает будущую оценку эффективности субсидий с этим показателем. Панель качества объединяет исходные данные для такой оценки.</p></article>
+          <article><h3><a href="https://protect.gost.ru/gost/details/37d2fb0d-1978-4d1d-9aba-cca65a7778da" target="_blank" rel="noopener noreferrer">ГОСТ Р 56294-2014 ↗</a></h3><p class="note">Требования к функциональной и физической архитектурам ИТС. Помогает определить задачи подсистем, их состав и взаимодействие в региональном проекте.</p></article>
+          <article><h3><a href="https://protect.gost.ru/gost/details/4dcd6966-e869-4b21-978e-114194ea43c3" target="_blank" rel="noopener noreferrer">ПНСТ 986-2024 ↗</a></h3><p class="note">Архитектура и функции диспетчерского управления при брутто-контракте. Основа для организации мониторинга, управления перевозками и контроля транспортного предприятия. Для заказчика это связь отклонения по рейсу с оценкой надёжности обслуживания.</p></article>
           <article><h3><a href="https://protect.gost.ru/gost/details/6474bc36-1faa-4939-b980-39c535502686" target="_blank" rel="noopener noreferrer">ПНСТ 985-2024 ↗</a></h3><p class="note">Картографическое обеспечение диспетчерских информационных услуг, включая параметры вождения. Применяется к работе с картой, маршрутом и навигационными данными.</p></article>
           <article><h3><a href="https://protect.gost.ru/gost/details/2e26718c-4ce7-4d07-aba2-9a59df22999c" target="_blank" rel="noopener noreferrer">ПНСТ 895-2023 ↗</a></h3><p class="note">Состав и содержание отчётных данных перевозчика при брутто-контракте. Основа для сопоставимой отчётности об исполнении транспортной работы и проверки муниципального заказа.</p></article>
-          <article><h3><a href="https://protect.gost.ru/gost/details/f67c0e71-f11b-450b-a021-914cb056d189" target="_blank" rel="noopener noreferrer">ГОСТ Р 71092-2023 ↗</a></h3><p class="note">Функциональная архитектура интеграционной платформы ИТС. Определяет требования к взаимодействию подсистем при включении общественного транспорта в ИТС региона.</p></article>
+          <article><h3><a href="https://protect.gost.ru/gost/details/f67c0e71-f11b-450b-a021-914cb056d189" target="_blank" rel="noopener noreferrer">ГОСТ Р 71092-2023 ↗</a></h3><p class="note">Функциональная архитектура интеграционной платформы ИТС. Определяет требования к функциям и взаимодействию подсистем. Поддерживает совместное использование транспортных данных при оценке качества и выборе мер.</p></article>
+          <article><h3><a href="https://protect.gost.ru/gost/details/2577c8cb-5b75-4b7d-baf3-09ac72bc8d1f" target="_blank" rel="noopener noreferrer">ПНСТ 892-2023 ↗</a></h3><p class="note">Архитектура и функции информирования пассажиров по фактическому и прогнозному движению. Связь с качеством — понятное ожидание и актуальная информация о поездке.</p></article>
           <article><h3><a href="https://protect.gost.ru/gost/details/7bc907b1-8419-43b6-997b-91b4d1773486" target="_blank" rel="noopener noreferrer">ГОСТ Р 71095-2023 ↗</a></h3><p class="note">Общие требования к подсистеме приоритетного проезда. Учитывается при интеграции с АСУДД; реализация зависит от оборудования и состава проекта.</p></article>
           <article><h3><a href="https://www.consultant.ru/document/cons_doc_LAW_534382/2ff7a8c72de3994f30496a0ccbb1ddafdaddf518/" target="_blank" rel="noopener noreferrer">Приказ Минтранса России от 14.04.2026 № 160 ↗</a></h3><p class="note">Действующая с 01.09.2026 нормативная база режима рабочего времени и отдыха водителей автомобилей. Учитывается при определении требований к проверкам графиков; заменяет приказ № 424 от 16.10.2020.</p></article>
           <article><h3><a href="https://mintrans.gov.ru/eye/documents/2/13397" target="_blank" rel="noopener noreferrer">Распоряжение Минтранса России от 27.04.2024 № АК-95-р ↗</a></h3><p class="note">Методические рекомендации по подготовке региональных заявок и локальных проектов ИТС для получения субсидий. Используются при проработке проекта внедрения; это методическая основа, а не сертификат продукта.</p></article>
@@ -593,7 +630,7 @@
       <span class="chip">Управление планированием транспорта</span>
       <span class="chip">Моделирование маршрутной сети</span>
       <a class="chip" href="#quality-service">Комплексный показатель качества транспортного обслуживания ↗</a>
-      <span class="chip">Мониторинг обновления парка под Указ 309</span>
+      <a class="chip" href="#compliance">Мониторинг обновления парка по Указу № 309 ↗</a>
       <span class="chip">Прогнозирование спроса</span>
       <span class="chip">Оптимизация расписаний и маршрутных сетей</span>
       <span class="chip">Чат-боты «МАКС»</span>
@@ -961,6 +998,7 @@
   <div class="inner">
     <div class="kick reveal"><span class="kn">13</span><span class="kb"></span>Пассажирам</div>
     <h2 class="reveal">Комплексное информирование. <span class="grad">Интерактивные панели</span></h2>
+    <p class="note norm-context reveal" style="margin-top:22px;">Данные о движении делают ожидание понятнее. <a href="#compliance">ПНСТ 892-2023: нормативная основа пассажирских сервисов ↗</a></p>
     <div class="shot reveal" style="margin-top:40px; background:transparent; border:none; box-shadow:none;">
       <img src="assets/web/info_phones.jpg" alt="Экраны информирования пассажиров" loading="lazy" decoding="async" style="border-radius:20px; background:rgba(255,255,255,0.02);" width="890" height="474">
     </div>
