@@ -4,8 +4,6 @@ import re,base64,mimetypes
 ROOT=Path(__file__).resolve().parents[1]
 SRC=ROOT/'docs/presentation-src'
 s=(SRC/'landing.html').read_text()
-s=s.replace('/* QUALITY_STYLES */',(SRC/'quality.css').read_text())
-s=s.replace('/* QUALITY_BEHAVIOR */',(SRC/'quality.js').read_text())
 s=s.replace('<link rel="stylesheet" href="fonts.css">','') # Gilroy faces are declared in the source.
 (ROOT/'presentation-busvision.html').write_text(s)
 def inline(m):
@@ -28,5 +26,5 @@ for name,css in [('desktop','body{min-width:1180px}'),('mobile','section{padding
                 depth += (variant[end]=='{') - (variant[end]=='}'); end+=1
             variant=variant[:match.start()]+variant[end:]
     out=variant.replace('</head>','<style>'+css+'</style></head>')
-    (ROOT/f'presentation-busvision-{name}.html').write_text('\n'.join(line.rstrip() for line in out.splitlines())+'\n')
+    (ROOT/f'presentation-busvision-{name}.html').write_text(out)
 print('Built online, desktop and mobile presentations.')
