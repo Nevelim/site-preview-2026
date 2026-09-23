@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>bus:vision — Управление общественным транспортом</title>
-<meta name="description" content="bus:vision — платформа ИТС для управления движением общественного транспорта: маршрутная сеть, графики движения, онлайн-диспетчеризация, контроль контрактов, сервисы для пассажиров.">
+<title>bus:vision — управление качеством общественного транспорта</title>
+<meta name="description" content="bus:vision — управление качеством транспортного обслуживания: надёжность рейсов, доступность маршрутов, время поездки и тарифы. Расписания, диспетчеризация и аналитика в единой системе.">
 
 <style>
   @font-face { font-family:'Gilroy'; src:url('assets/fonts/Gilroy-Regular.woff2') format('woff2'); font-weight:400; font-display:swap; }
@@ -342,21 +342,242 @@
   }
   @media print { nav { display:none; } }
 </style>
+<style>/* bus:vision — presentation of transport service quality */
+:root { --bg:#0c1318; --bg2:#121f25; --text:#f2f5f3; --muted:#a0b2b8; --dim:#94a7af; --accent:#bfe999; --accent-soft:#bfe999; --brand:#087f70; --brand-b:#8edcbb; --line:#ffffff20; }
+body { background:var(--bg); }
+html { scroll-padding-top:0; }
+section { padding:100px 56px; scroll-margin-top:70px; }
+.inner { max-width:1240px; }
+h2 { font-size:clamp(34px,4.1vw,56px); max-width:1000px; line-height:1.08; letter-spacing:-.035em; text-wrap:balance; }
+h3 { font-size:29px; text-wrap:balance; }
+.grad { background:none; color:var(--accent); }
+.lead { color:#c3d0d2; line-height:1.6; }
+.kick { color:#a9bfc3; font-size:11px; letter-spacing:.14em; }
+.kick .kn { color:var(--accent); }
+.uline { width:54px; height:2px; background:var(--accent); margin-top:22px; }
+.aurora { opacity:.4; }
+.topo { opacity:.4; }
+.side-label,.scroll-hint { display:none; }
+#progress { height:2px; background:var(--accent); }
+#progress .pbus { display:none; }
+nav { flex-wrap:nowrap; min-height:70px; padding:12px 32px; background:#0c1318f5; gap:24px; }
+.nav-logo { font-size:18px; letter-spacing:-.025em; }
+.nav-links { gap:5px; justify-content:center; overflow:visible; padding:0; }
+.nav-links a { font-size:12px; text-transform:none; letter-spacing:0; padding:10px; border-radius:5px; white-space:nowrap; }
+.nav-links a.active { color:var(--accent); background:#bfe9990b; }
+.nav-links a::after { background:var(--accent); }
+.deck-menu { position:relative; flex-shrink:0; }
+.deck-menu summary { list-style:none; cursor:pointer; padding:11px 14px; border:1px solid #ffffff26; border-radius:7px; font-size:12px; font-weight:600; display:flex; gap:20px; align-items:center; }
+.deck-menu summary::-webkit-details-marker { display:none; }
+.deck-menu summary span { color:var(--accent); font-size:18px; line-height:1; }
+.deck-menu[open] summary span { transform:rotate(45deg); }
+.deck-toc { position:absolute; right:0; top:calc(100% + 14px); width:560px; max-height:72vh; overflow:auto; background:#142128; border:1px solid #435457; border-radius:12px; box-shadow:0 20px 60px #0008; padding:20px; display:grid; grid-template-columns:1fr 1fr; gap:4px 18px; }
+.deck-toc a { display:flex; align-items:center; gap:10px; padding:12px 8px; border-bottom:1px solid #ffffff10; text-decoration:none; font-size:13px; color:#e4ecec; }
+.deck-toc a:hover,.deck-toc a[aria-current] { color:var(--accent); background:#ffffff05; }
+.deck-toc a span { font:10px Menlo,monospace; color:#8eaaaa; }
+.deck-motion { width:36px; height:36px; flex-shrink:0; border:1px solid #ffffff26; border-radius:50%; background:none; color:var(--accent); cursor:pointer; font:14px inherit; }
+.deck-motion:disabled { opacity:.5; cursor:default; }
+.deck-motion[hidden] { display:none; }
+#hero { min-height:calc(100svh - 125px); padding:72px 56px 56px; display:block; background:linear-gradient(118deg,#0c1318 35%,#102525); }
+#hero .inner { max-width:1320px; }
+#hero .split { grid-template-columns:1.04fr 1fr; gap:64px; align-items:center; }
+#hero h1 { font-size:clamp(48px,5.8vw,80px); line-height:1.02; letter-spacing:-.045em; }
+#hero .lead { max-width:570px; font-size:19px; margin-top:28px!important; }
+#hero .kick { letter-spacing:.15em; color:#a7cfbb; margin-bottom:28px; }
+#hero .hero-route { opacity:.3; }
+#hero .uline,#hero .topo { display:none; }
+.hero-caption { display:flex; align-items:center; gap:12px; margin-top:32px; color:#a5b8bd; font-size:12px; line-height:1.5; }
+.hero-caption strong { font-size:31px; color:var(--accent); font-weight:500; letter-spacing:-.04em; }
+.cta { margin-top:32px; gap:10px; flex-wrap:wrap; }
+.btn { border-radius:7px; padding:16px 22px; font-size:13px; letter-spacing:0; }
+.btn.pri { background:var(--accent); color:#14251f; border-color:var(--accent); box-shadow:none; }
+.btn.pri:hover { background:#d2f4b4; }
+.btn.sec { background:transparent; border-color:#668c7d; color:#e7f5ee; }
+.hero-shot { position:relative; transform:none!important; height:430px; border:1px solid #526965; border-radius:13px; background:#eaf0ed; box-shadow:0 28px 64px #0004; overflow:hidden; }
+.hero-shot .hs { top:42px; bottom:64px; height:calc(100% - 106px); object-fit:contain; object-position:center!important; padding:12px; }
+.hero-screen-head { height:42px; display:flex; justify-content:space-between; align-items:center; padding:0 16px; background:#203c35; color:#eaf7ef; font-size:11px; }
+.hero-screen-head span:first-child { letter-spacing:.1em; text-transform:uppercase; }
+.hero-shot .hs-cap { position:absolute; bottom:30px; left:0; right:0; padding:6px 14px; color:#25453c; border:0; background:transparent; border-radius:0; text-align:center; letter-spacing:0; text-transform:none; font-size:12px; }
+.hero-shot .hs-dots { bottom:13px; gap:8px; }
+.hero-shot .hs-dots button { width:24px; height:4px; border-radius:3px; background:#a5b9af; box-shadow:none; }
+.hero-shot .hs-dots button.on { background:#087f70; transform:none; }
+.hero-shot .hs-dots button::before { content:''; display:block; margin-top:-10px; height:24px; width:24px; }
+.hero-baseline { display:flex; gap:28px; justify-content:space-between; flex-wrap:wrap; border-top:1px solid #ffffff1c; margin-top:48px; padding-top:22px; color:#a0b5b5; font-size:12px; }
+.hero-baseline span:first-child { color:var(--accent); }
+.cert { font-size:11px; line-height:1.5; }
+.shot { border-radius:14px; box-shadow:0 18px 50px #0003; }
+.shot:not(.hero-shot) { padding-bottom:40px; background:#eaf0ed; border-color:#ffffff20; }
+.shot:not(.hero-shot) .cap { bottom:0; left:0; right:0; height:40px; display:flex; align-items:center; border:0; border-radius:0; background:#eaf0ed; color:#35554b; letter-spacing:.04em; font-size:10px; }
+.shot:not(.hero-shot) img { object-fit:contain; height:auto; }
+.split { align-items:start; }
+.split .shot:not(.hero-shot) img { max-height:540px; }
+.card,.panel,.aw { border-radius:12px; box-shadow:none; background:#132127; border-color:#ffffff18; }
+.card { padding:22px; }
+.card:hover { transform:none; }
+.card::before,.row::after { display:none; }
+.card .n,.row .n { border:0; border-radius:0; background:none; color:var(--accent); font-size:12px; }
+.row { border-bottom:1px solid #ffffff16; padding:18px 0; gap:14px; }
+.row .t { line-height:1.55; }
+.card .t { line-height:1.55; }
+.chips { gap:10px; }
+.chip { border-radius:5px; box-shadow:none; padding:12px 16px; font-size:14px; background:#ffffff03; }
+.chip.hl { background:#163f33; border-color:#3f7561; color:#dcf7dc; }
+.module-context { max-width:850px; font-size:18px; line-height:1.65; color:#b6c9ca; margin-top:24px; }
+.module-context strong { color:var(--accent); font-weight:600; }
+.quality-overview { background:#eef1e8; color:#182e27; }
+.quality-overview .kick { color:#597365; }
+.quality-overview .kn { color:#087b60; }
+.quality-overview h2 { max-width:850px; }
+.quality-overview h2 span { color:#4c7b62; }
+.quality-intro { margin-top:24px; color:#53665c; font-size:19px; line-height:1.6; max-width:780px; }
+.quality-dimensions { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:30px; margin-top:54px; }
+.quality-dimension { border-top:2px solid #61816b; padding-top:20px; }
+.quality-number { font:12px Menlo,monospace; color:#63826c; }
+.quality-dimension h3 { font-size:22px; line-height:1.2; letter-spacing:-.02em; margin:28px 0 18px; min-height:54px; }
+.quality-dimension p { font-size:16px; line-height:1.6; color:#435e50; }
+.quality-dimension .quality-measures { margin-top:24px; color:#63776b; font-size:13px; line-height:1.6; }
+.quality-depth { margin-top:54px; padding-top:24px; border-top:1px solid #66806d40; display:flex; justify-content:space-between; gap:24px; font-size:14px; color:#46634f; }
+.quality-depth strong { color:#183e28; }
+.quality-method { margin-top:20px; max-width:940px; color:#65776b; font-size:12px; line-height:1.65; }
+#quality-workspace { background:#10241f; }
+.quality-workspace-head { display:grid; grid-template-columns:1.15fr .85fr; align-items:end; gap:80px; }
+.quality-workspace-head p { font-size:18px; line-height:1.65; color:#aac3b8; }
+.quality-scenarios { display:flex; flex-wrap:wrap; margin:42px 0 0; gap:10px; }
+.quality-scenarios button { font:600 14px 'Gilroy',sans-serif; cursor:pointer; border:1px solid #517064; background:none; color:#c3d8ce; padding:13px 20px; border-radius:6px; }
+.quality-scenarios button[aria-pressed=true] { background:#c2e6a6; color:#183223; border-color:#c2e6a6; }
+.quality-case { margin-top:36px; border-top:1px solid #64817160; border-bottom:1px solid #64817160; padding:32px 0; }
+.quality-case-heading { display:flex; align-items:center; justify-content:space-between; gap:24px; }
+.quality-case h3 { font-size:32px; margin:0; max-width:780px; }
+.quality-case-label { color:#9ebaaa; font-size:11px; text-transform:uppercase; letter-spacing:.12em; white-space:nowrap; }
+.quality-case-steps { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:36px; margin-top:32px; }
+.quality-case-step { border-left:1px solid #64817170; padding-left:20px; }
+.quality-case-step span { display:block; font:11px Menlo,monospace; color:#bfe999; margin-bottom:14px; }
+.quality-case-step h4 { font-size:19px; line-height:1.35; margin-bottom:12px; }
+.quality-case-step p { color:#adc3b8; font-size:15px; line-height:1.65; }
+.quality-case-result { display:flex; gap:28px; align-items:start; margin-top:28px; }
+.quality-case-result strong { font-size:11px; letter-spacing:.1em; color:#bfd6c9; flex:0 0 170px; padding-top:4px; }
+.quality-case-result p { color:#e1f2e4; font-size:19px; line-height:1.5; max-width:850px; }
+.quality-case-note { margin-top:18px; font-size:12px; color:#8faf9f; line-height:1.5; }
+.quality-roles { display:grid; grid-template-columns:repeat(3,1fr); gap:40px; margin-top:48px; }
+.quality-roles h3 { font-size:19px; margin:0 0 12px; color:#c1e2b5; }
+.quality-roles p { font-size:15px; color:#adc5b7; line-height:1.6; }
+#features .chips { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:0 28px; margin-top:40px!important; }
+#features .chip { border:0; border-bottom:1px solid #ffffff19; border-radius:0; background:none; padding:19px 0; color:#c5d4d5; font-size:15px; line-height:1.45; }
+#features .chip.hl { color:var(--accent); }
+#effect .grid { max-width:none!important; gap:48px; }
+#effect .grid>.panel { background:none; border:0; border-top:1px solid #678272; border-radius:0; padding:30px 0; }
+#effect .stat-num { font-size:100px; color:var(--accent); }
+.outcome-note { font-size:12px; line-height:1.6; color:#91a9a6; max-width:800px; margin-top:8px; }
+.implementation-invite { display:grid; grid-template-columns:1fr auto; align-items:center; gap:40px; margin-bottom:60px; padding-bottom:40px; border-bottom:1px solid #698c7845; }
+.implementation-invite h2 { max-width:740px; }
+.implementation-invite p { color:#aebfb6; margin-top:22px; font-size:18px; line-height:1.6; max-width:650px; }
+#contacts { background:#142a22; }
+.deck-paused *, .deck-hidden *, section:not(.scene-visible) * { animation-play-state:paused!important; }
+.reveal,.stagger>*,.hl-line { opacity:1; transform:none; }
+.deck-enhanced .reveal:not(.in),.deck-enhanced .stagger:not(.in)>* { opacity:0; transform:translateY(18px); }
+@media (max-width:1180px) {
+  nav { padding:12px 24px; gap:16px; }
+  #hero { padding:64px 32px 42px; }
+  #hero .split { grid-template-columns:1fr 1fr; gap:36px; }
+  #hero h1 { font-size:58px; }
+  #hero .lead { font-size:17px; }
+  .hero-shot { height:400px; }
+  .quality-dimensions { gap:24px; }
+  .quality-dimension h3 { min-height:80px; margin:18px 0 14px; }
+  .quality-workspace-head { gap:40px; }
+  .nav-links { gap:0; }
+  .nav-links a { font-size:11px; padding:9px; }
+  .deck-menu summary { padding:10px; gap:12px; }
+}
+@media (max-width:900px) {
+  .quality-dimensions { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .quality-dimension h3 { min-height:54px; }
+  .nav-links { display:none; }
+  .deck-menu { margin-left:auto; }
+  #hero h1 { font-size:49px; }
+  #hero .split { gap:28px; }
+  .hero-shot { height:360px; }
+  .quality-workspace-head { grid-template-columns:1fr; gap:24px; }
+  .quality-case-steps { gap:22px; }
+  #features .chips { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media (max-width:760px) {
+  nav { min-height:62px; padding:10px 18px; gap:12px; }
+  .nav-logo { font-size:17px; }
+  .deck-motion { width:32px; height:32px; }
+  .deck-menu summary { font-size:11px; gap:10px; padding:9px; }
+  .deck-toc { position:fixed; top:64px; left:12px; right:12px; width:auto; padding:14px; max-height:calc(100svh - 84px); gap:0 8px; }
+  .deck-toc a { font-size:12px; padding:12px 4px; }
+  #hero { padding:42px 24px 32px; min-height:auto; }
+  #hero .split { grid-template-columns:1fr; gap:38px; }
+  #hero h1 { font-size:clamp(42px,11vw,60px); }
+  #hero .kick { font-size:9px; margin-bottom:22px; }
+  #hero .lead { font-size:17px; }
+  .hero-shot { height:auto; aspect-ratio:1.18; }
+  .hero-shot .hs { padding:8px; }
+  .hero-caption { margin-top:24px; }
+  .hero-baseline { margin-top:30px; gap:14px 22px; font-size:11px; }
+  section { padding:64px 24px; scroll-margin-top:62px; }
+  h2 { font-size:36px; overflow-wrap:normal; }
+  h3 { font-size:25px; }
+  .quality-intro { font-size:17px; }
+  .quality-dimensions { margin-top:36px; gap:30px 24px; }
+  .quality-dimension h3 { font-size:19px; min-height:70px; }
+  .quality-dimension p { font-size:15px; }
+  .quality-dimension .quality-measures { font-size:12px; margin-top:16px; }
+  .quality-depth { flex-direction:column; gap:12px; margin-top:36px; line-height:1.6; }
+  .quality-scenarios { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:30px; }
+  .quality-scenarios button { padding:13px 8px; font-size:13px; }
+  .quality-case-heading { flex-direction:column; align-items:flex-start; gap:14px; }
+  .quality-case h3 { font-size:27px; }
+  .quality-case-steps,.quality-roles { grid-template-columns:1fr; gap:26px; }
+  .quality-case-result { flex-direction:column; gap:12px; }
+  .quality-case-result strong { flex-basis:auto; }
+  .quality-case-result p { font-size:18px; }
+  .quality-roles { margin-top:36px; }
+  #features .chips { grid-template-columns:1fr; }
+  .module-context { font-size:17px; }
+  #effect .grid { gap:22px; }
+  #effect .stat-num { font-size:84px; }
+  .implementation-invite { grid-template-columns:1fr; gap:26px; }
+  .implementation-invite .btn { justify-self:start; }
+  #contacts svg[width="460"] { width:100%; }
+}
+@media (max-width:380px) {
+  #hero,section { padding-left:20px; padding-right:20px; }
+  .quality-dimensions { grid-template-columns:1fr; }
+  .quality-dimension h3 { min-height:0; }
+  .deck-toc { grid-template-columns:1fr; }
+  .nav-logo svg { display:none; }
+  .cta { flex-direction:column; align-items:stretch; }
+  .cta .btn { justify-content:center; }
+}
+@media (prefers-reduced-motion:reduce) {
+  html { scroll-behavior:auto; }
+  .deck-enhanced .reveal,.deck-enhanced .stagger>* { opacity:1!important; transform:none!important; transition:none!important; }
+  .hs { transition:none!important; }
+}
+@media print {
+  .deck-menu,.deck-motion,.quality-scenarios { display:none; }
+  .deck-enhanced .reveal,.deck-enhanced .stagger>* { opacity:1!important; transform:none!important; }
+  .quality-overview,.quality-workspace-head,.quality-case { break-inside:avoid; }
+  #hero { padding:48px; }
+  .hero-shot { height:auto; aspect-ratio:auto; }
+  .hero-shot .hs { height:auto; padding:12px; }
+}
+</style>
 </head>
 <body>
 
 <div id="progress"><span class="pbus" aria-hidden="true"><svg viewBox="0 0 22 13"><rect x="0.5" y="0.5" width="17" height="9" rx="2.5" fill="#17BFA6"/><rect x="2.5" y="2.5" width="4" height="3.5" rx="1" fill="#070C14"/><rect x="8" y="2.5" width="4" height="3.5" rx="1" fill="#070C14"/><rect x="17.5" y="2.5" width="4" height="6" rx="1.5" fill="#4FD9EE"/><circle cx="5" cy="11" r="1.8" fill="#0A1120" stroke="#8FEAF6" stroke-width="1"/><circle cx="13" cy="11" r="1.8" fill="#0A1120" stroke="#8FEAF6" stroke-width="1"/></svg></span></div>
-<nav>
+<nav aria-label="Разделы презентации">
   <a class="nav-logo" href="#hero">
     <svg width="30" height="22" viewBox="0 0 46 34"><defs><linearGradient id="lg1" x1="0" y1="0" x2="46" y2="34" gradientUnits="userSpaceOnUse"><stop stop-color="#008774"/><stop offset="1" stop-color="#2BD9C2"/></linearGradient></defs><path d="M17 1 L28 1 L12 33 L1 33 Z" fill="url(#lg1)"/><path d="M34 1 L45 1 L29 33 L18 33 Z" fill="url(#lg1)"/></svg>
     bus:vision
   </a>
-  <div class="nav-links">
-    <a href="#features">Возможности</a><a href="#platform">Платформа</a><a href="#schedules">Графики</a>
-    <a href="#planning">Планирование</a><a href="#dispatch">Диспетчеризация</a><a href="#routes">Маршруты</a><a href="#standards">Стандарты</a>
-    <a href="#analytics">Аналитика</a><a href="#booking">Бронирование</a><a href="#passengers">Пассажирам</a>
-    <a href="#effect">Эффект</a><a href="#tech">Технологии</a><a href="#company">Компания</a><a href="#contacts">Контакты</a>
-  </div>
+  <div class="nav-links"><a href="#quality">Качество</a><a href="#features">Возможности</a><a href="#dispatch">Управление</a><a href="#analytics">Аналитика</a><a href="#effect">Эффект</a></div>
+  <details class="deck-menu"><summary>Содержание <span aria-hidden="true">＋</span></summary><div class="deck-toc"><a href="#hero"><span>01</span>О системе</a><a href="#quality"><span>02</span>Качество перевозок</a><a href="#quality-workspace"><span>03</span>Решения на данных</a><a href="#features"><span>04</span>Возможности</a><a href="#platform"><span>05</span>Платформа</a><a href="#schedules"><span>06</span>Расписания</a><a href="#planning"><span>07</span>Планирование</a><a href="#dispatch"><span>08</span>Диспетчеризация</a><a href="#routes"><span>09</span>Маршруты и контракты</a><a href="#standards"><span>10</span>Доступность и стандарты</a><a href="#analytics"><span>11</span>Аналитика сети</a><a href="#booking"><span>12</span>Бронирование</a><a href="#passengers"><span>13</span>Пассажирам</a><a href="#effect"><span>14</span>Эффект внедрения</a><a href="#tech"><span>15</span>Технологии</a><a href="#company"><span>16</span>Компания</a><a href="#contacts"><span>17</span>Контакты</a></div></details>
+  <button class="deck-motion" type="button" aria-pressed="false" aria-label="Приостановить анимацию" hidden>Ⅱ</button>
 </nav>
 
 <!-- ═══ HERO ═══ -->
@@ -389,31 +610,62 @@
   <div class="side-label">smart-transport.ru</div>
   <div class="inner split" style="align-items:center;">
     <div class="txt">
-      <div class="kick reveal"><span class="kb"></span>Интеллектуальная транспортная система</div>
-      <h1><span class="hl-line">Управление движением</span><span class="hl-line">общественного</span><span class="hl-line"><span class="grad">транспорта</span></span></h1>
+      <div class="kick reveal"><span class="kb"></span>Управление общественным транспортом</div>
+      <h1><span class="hl-line">Качество</span><span class="hl-line">каждой</span><span class="hl-line grad">поездки</span></h1>
       <span class="uline reveal"></span>
-      <p class="lead reveal" style="margin-top:28px;">Платформа полного цикла: ведение обновленного реестра 220-ФЗ, маршрутная сеть, графики движения,
-        планирование транспорта, онлайн-диспетчеризация (МП Водителя), контроль труда и отдыха,
-        контроль контрактов — выявление нарушений, модуль аналитики спроса и сервисы для пассажиров.</p>
+      <p class="lead reveal" style="margin-top:28px;">bus:vision объединяет расписания, диспетчеризацию и аналитику, чтобы управлять надёжностью и доступностью перевозок для жителей.</p><div class="hero-caption reveal"><strong>04</strong><span>составляющие качества —<br>в одной системе управления</span></div>
       <div class="cta reveal">
-        <a class="btn pri" href="mailto:info@smart-transport.ru">Обсудить проект</a>
-        <a class="btn sec" href="#features">Смотреть возможности</a>
+        <a class="btn pri" href="mailto:info@smart-transport.ru?subject=bus%3Avision%20%E2%80%94%20%D0%BA%D0%B0%D1%87%D0%B5%D1%81%D1%82%D0%B2%D0%BE%20%D0%BF%D0%B5%D1%80%D0%B5%D0%B2%D0%BE%D0%B7%D0%BE%D0%BA">Обсудить задачу ↗</a>
+        <a class="btn sec" href="#quality">Качество перевозок ↓</a>
       </div>
-      <p class="cert reveal" style="margin-top:36px; max-width:560px;">Создано на базе ПО «Интеллектуальная Транспортная Система (ИТС)» —
-        свидетельство о государственной регистрации программы для ЭВМ № 2014617300 от 16.07.2014</p>
+
     </div>
-    <div class="shot hero-shot reveal">
-      <img class="hs on" src="assets/web/hero-slide-1.jpg" alt="Диспетчерская карта и объекты" fetchpriority="high">
-      <img class="hs" src="assets/web/hero-slide-2.jpg" alt="Редактор схемы маршрута" loading="lazy" decoding="async">
-      <img class="hs hs-left" src="assets/web/hero-slide-3.jpg" alt="Расписание аналога" loading="lazy" decoding="async">
-      <img class="hs" src="assets/web/hero-slide-4.jpg" alt="Отчёты" loading="lazy" decoding="async">
-      <img class="hs hs-left" src="assets/web/hero-slide-5.jpg" alt="Интервальные графики" loading="lazy" decoding="async">
-      <img class="hs hs-left" src="assets/web/hero-slide-6.jpg" alt="Планирование транспорта" loading="lazy" decoding="async">
+    <div class="shot hero-shot reveal"><div class="hero-screen-head"><span>Внутри bus:vision</span><span class="hero-screen-count">01 / 06</span></div>
+      <img class="hs on" src="assets/web/hero-slide-1.jpg" alt="Диспетчерская карта и объекты" fetchpriority="high" width="1200" height="866">
+      <img class="hs" src="assets/web/hero-slide-2.jpg" alt="Редактор схемы маршрута" loading="lazy" decoding="async" width="1200" height="866">
+      <img class="hs hs-left" src="assets/web/hero-slide-3.jpg" alt="Расписание аналога" loading="lazy" decoding="async" width="839" height="606">
+      <img class="hs" src="assets/web/hero-slide-4.jpg" alt="Отчёты" loading="lazy" decoding="async" width="1200" height="866">
+      <img class="hs hs-left" src="assets/web/hero-slide-5.jpg" alt="Интервальные графики" loading="lazy" decoding="async" width="838" height="605">
+      <img class="hs hs-left" src="assets/web/hero-slide-6.jpg" alt="Планирование транспорта" loading="lazy" decoding="async" width="836" height="604">
       <span class="cap hs-cap">Диспетчерская карта и объекты</span>
     <div class="hs-dots"><button class="on" type="button" aria-label="Слайд 1 — Диспетчерская карта"></button><button type="button" aria-label="Слайд 2 — Редактор схемы"></button><button type="button" aria-label="Слайд 3 — Расписание аналога"></button><button type="button" aria-label="Слайд 4 — Отчёты"></button><button type="button" aria-label="Слайд 5 — Интервальные графики"></button><button type="button" aria-label="Слайд 6 — Планирование транспорта"></button></div>
     </div>
   </div>
-  <div class="scroll-hint">Листайте вниз<i class="sh-dot"></i></div>
+<div class="inner hero-baseline"><span>Для регионов и перевозчиков</span><span>Надёжность</span><span>Территория</span><span>Время</span><span>Стоимость</span></div>
+</section>
+
+
+<section id="quality" class="quality-overview" aria-labelledby="quality-heading">
+  <div class="inner">
+    <div class="kick reveal"><span class="kn">01</span><span class="kb"></span>Качество транспортного обслуживания</div>
+    <h2 id="quality-heading" class="reveal">Четыре составляющие<br><span>качества перевозок</span></h2>
+    <p class="quality-intro reveal">Оценивайте обслуживание глазами пассажира: состоится ли рейс, удобно ли добраться до остановки, сколько займёт дорога и во сколько обойдётся поездка.</p>
+    <div class="quality-dimensions stagger">
+      <article class="quality-dimension"><span class="quality-number">01 / НАДЁЖНОСТЬ</span><h3>Рейс по<br>расписанию</h3><p>Выполнение расписания, регулярность движения, отмены и сходы с причинами.</p><p class="quality-measures">План и факт рейсов · отклонения · события диспетчера</p></article>
+      <article class="quality-dimension"><span class="quality-number">02 / ТЕРРИТОРИЯ</span><h3>Остановка<br>рядом</h3><p>Пешеходная доступность, охват жителей, связь с социальными объектами и пересадочными узлами.</p><p class="quality-measures">Остановки · пешеходные подходы · маршрутная сеть</p></article>
+      <article class="quality-dimension"><span class="quality-number">03 / ВРЕМЯ</span><h3>Поездка<br>предсказуема</h3><p>Время ожидания и в пути, скорость сообщения, количество и удобство пересадок.</p><p class="quality-measures">Прибытия · интервалы · графики · пассажиропоток</p></article>
+      <article class="quality-dimension"><span class="quality-number">04 / СТОИМОСТЬ</span><h3>Доступная<br>цена поездки</h3><p>Тарифы, проездные и льготы с учётом частоты поездок и расходов разных групп пассажиров.</p><p class="quality-measures">Тарифные правила · льготы · типовые поездки · доходы</p></article>
+    </div>
+    <div class="quality-depth reveal"><strong>Комплексная оценка с детализацией</strong><span>Регион &nbsp;→&nbsp; перевозчик &nbsp;→&nbsp; маршрут &nbsp;→&nbsp; рейс</span></div>
+    <p class="quality-method reveal">Показатели связываются с источником, периодом и полнотой данных. Правила сводной оценки настраиваются по согласованной методике; состав показателей и целевые значения определяются для региона.</p>
+  </div>
+</section>
+<section id="quality-workspace" aria-labelledby="quality-workspace-heading">
+  <div class="inner">
+    <div class="quality-workspace-head"><div><div class="kick reveal"><span class="kn">02</span><span class="kb"></span>От данных к управлению</div><h2 id="quality-workspace-heading" class="reveal">Видеть причины.<br><span class="grad">Выбирать действия.</span></h2></div><p class="reveal">bus:vision связывает показатели с рабочими инструментами. Команда видит отклонение, разбирает причину и контролирует результат решения.</p></div>
+    <div class="quality-scenarios" role="group" aria-label="Сценарии управления качеством"><button type="button" data-quality-case="reliability" aria-pressed="true">Надёжность</button><button type="button" data-quality-case="territory" aria-pressed="false">Территория</button><button type="button" data-quality-case="time" aria-pressed="false">Время</button><button type="button" data-quality-case="price" aria-pressed="false">Стоимость</button></div>
+    <div class="quality-case" aria-live="polite" aria-atomic="true">
+      <div class="quality-case-heading"><h3 id="quality-case-title">Рейс не выполнен. Причина должна быть видна.</h3><span class="quality-case-label">Пример рабочего сценария</span></div>
+      <div class="quality-case-steps">
+        <div class="quality-case-step"><span>01 / ДАННЫЕ</span><h4>Сопоставить план и факт</h4><p>Расписание, трек и события диспетчера показывают, где возникло отклонение. Отсутствие трека требует проверки.</p></div>
+        <div class="quality-case-step"><span>02 / РЕШЕНИЕ</span><h4>Подтвердить причину</h4><p>Диспетчер уточняет: неисправность, нехватка водителя или дорожная задержка. Выбирает доступный резерв.</p></div>
+        <div class="quality-case-step"><span>03 / КОНТРОЛЬ</span><h4>Проверить восстановление</h4><p>Заказчик контролирует фактический выпуск и повторяемость срывов по маршруту и перевозчику.</p></div>
+      </div>
+      <div class="quality-case-result"><strong>ДЛЯ ВАШЕЙ КОМАНДЫ</strong><p id="quality-case-result">Управляемый процесс: от сигнала о срыве — до подтверждённого восстановления обслуживания.</p></div>
+    </div>
+    <p class="quality-case-note">Сценарии показывают логику работы с системой. Данные конкретного региона подключаются при внедрении.</p>
+    <div class="quality-roles"><article><h3>Региону</h3><p>Приоритеты развития сети и прозрачная оценка работы перевозчиков.</p></article><article><h3>Диспетчеру</h3><p>Отклонения, причины и инструменты восстановления обслуживания.</p></article><article><h3>Перевозчику</h3><p>Согласованные расписания, выпуск и контроль обязательств.</p></article></div>
+  </div>
 </section>
 
 <!-- ═══ ВОЗМОЖНОСТИ ═══ -->
@@ -421,7 +673,7 @@
   <div class="aurora a"></div>
   <div class="inner">
     <div class="kick reveal"><span class="kb"></span>Возможности системы</div>
-    <h2 class="reveal">Система управления движением общественного транспорта <span class="grad">обеспечивает</span></h2>
+    <h2 class="reveal">Инструменты управления<br><span class="grad">общественным транспортом</span></h2>
     <div class="chips stagger" style="margin-top:36px;">
       <span class="chip">Ведение реестров и данных маршрутной сети</span>
       <span class="chip hl">Управление графиками движения</span>
@@ -452,7 +704,7 @@
 <section id="platform">
   <div class="aurora b"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">01</span><span class="kb"></span>Платформа</div>
+    <div class="kick reveal"><span class="kn">04</span><span class="kb"></span>Платформа</div>
     <h2 class="reveal">Платформа общественного <span class="grad">транспорта</span></h2>
     <div class="split" style="margin-top:44px;">
       <div class="txt">
@@ -465,7 +717,7 @@
           <div class="row"><span class="n">05</span><span class="t">Формирование рейтинга перевозчиков</span></div>
         </div>
       </div>
-      <div class="shot reveal"><img src="assets/web/platform-busmap.jpg" alt="Карта маршрутов с карточкой автобуса"><span class="cap">Карта маршрутов и рейсы</span></div>
+      <div class="shot reveal"><img src="assets/web/platform-busmap.jpg" alt="Карта маршрутов с карточкой автобуса" width="1003" height="972"><span class="cap">Карта маршрутов и рейсы</span></div>
     </div>
     <div class="grid g3 stagger" style="margin-top:28px;">
       <div class="card"><span class="n">06</span><span class="t">Контроль выполнения условий контрактов</span></div>
@@ -482,15 +734,16 @@
 <section id="schedules">
   <div class="aurora a"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">02</span><span class="kb"></span>Графики движения</div>
+    <div class="kick reveal"><span class="kn">05</span><span class="kb"></span>Графики движения</div>
     <h2 class="reveal">Управление графиками движения</h2>
+    <p class="module-context reveal"><strong>Временная доступность.</strong> Согласованные интервалы и пересадки помогают сократить потери времени и сделать поездку предсказуемой.</p>
     <div class="split" style="margin-top:40px; align-items:flex-start;">
       <div class="txt">
         <p class="lead reveal">Сформированные графики движения проверяются на соответствие нормам труда и отдыха водителей.</p>
         <div class="reveal" style="margin:22px 0;"><span class="tag">Приказ Минтранса России № 424 от 16.10.2020 — режим рабочего времени и времени отдыха водителей</span></div>
         <p class="note reveal">Если не пройдена одна или несколько проверок — система формирует уведомление.</p>
       </div>
-      <div class="shot reveal"><img src="assets/web/schedules_card.jpg" alt="Конструктор графиков движения" loading="lazy" decoding="async"><span class="cap">Конструктор графиков</span></div>
+      <div class="shot reveal"><img src="assets/web/schedules_card.jpg" alt="Конструктор графиков движения" loading="lazy" decoding="async" width="570" height="666"><span class="cap">Конструктор графиков</span></div>
     </div>
     <div class="grid g2 reveal" style="margin-top:28px;">
       <div class="card"><span class="n">01</span><span class="t">Создание и редактирование графиков движения по маршрутам в автоматическом и ручном режимах, в том числе на основе интервалов движения</span></div>
@@ -521,7 +774,7 @@
           </g>
         </svg>
       </div>
-      <div class="shot reveal"><img src="assets/web/interval_chart.jpg" alt="Мастер интервальных расписаний" loading="lazy" decoding="async"><span class="cap">Мастер расписаний</span></div>
+      <div class="shot reveal"><img src="assets/web/interval_chart.jpg" alt="Мастер интервальных расписаний" loading="lazy" decoding="async" width="570" height="666"><span class="cap">Мастер расписаний</span></div>
     </div>
   </div>
 </section>
@@ -530,8 +783,9 @@
 <section id="planning">
   <div class="aurora b"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">03</span><span class="kb"></span>Планирование</div>
+    <div class="kick reveal"><span class="kn">06</span><span class="kb"></span>Планирование</div>
     <h2 class="reveal">Управление планированием транспорта</h2>
+    <p class="module-context reveal"><strong>Надёжность обслуживания.</strong> План выпуска связывает расписание с доступным транспортом и требованиями к его работе.</p>
     <div class="split" style="margin-top:44px;">
       <div class="txt">
         <div class="rows reveal">
@@ -541,7 +795,7 @@
           <div class="row"><span class="n">04</span><span class="t">При назначении ТС, не отвечающих требованиям контракта, подсистема уведомляет пользователя об этом</span></div>
         </div>
       </div>
-      <div class="shot reveal"><img src="assets/web/planning.jpg" alt="Календарь планирования транспорта" loading="lazy" decoding="async"><span class="cap">Календарь планирования</span></div>
+      <div class="shot reveal"><img src="assets/web/planning.jpg" alt="Календарь планирования транспорта" loading="lazy" decoding="async" width="570" height="666"><span class="cap">Календарь планирования</span></div>
     </div>
   </div>
 </section>
@@ -550,9 +804,10 @@
 <section id="dispatch">
   <div class="aurora a"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">04</span><span class="kb"></span>Диспетчеризация</div>
+    <div class="kick reveal"><span class="kn">07</span><span class="kb"></span>Диспетчеризация</div>
     <h2 class="reveal">Онлайн-диспетчерская и контроль работы ОТ</h2>
-    <div class="shot reveal" style="margin-top:40px;"><img src="assets/web/dispatch_full.jpg" alt="Рабочее место диспетчера" loading="lazy" decoding="async"><span class="cap">Рабочее место диспетчера</span></div>
+    <p class="module-context reveal"><strong>Надёжность каждого рейса.</strong> План, фактическое движение и события собраны в рабочем пространстве диспетчера.</p>
+    <div class="shot reveal" style="margin-top:40px;"><img src="assets/web/dispatch_full.jpg" alt="Рабочее место диспетчера" loading="lazy" decoding="async" width="1065" height="598"><span class="cap">Рабочее место диспетчера</span></div>
     <div class="board reveal" aria-hidden="true">
       <span class="board-cap">Табло · иллюстративно</span>
       <div class="board-track">
@@ -586,7 +841,7 @@
       <span class="chip hl">Тревожная кнопка</span>
       <span class="chip">Отправка навигационных данных</span>
     </div>
-    <div class="shot reveal"><img src="assets/web/driver_phones.jpg" alt="Экраны мобильного приложения водителя" loading="lazy" decoding="async"><span class="cap">Приложение водителя</span></div>
+    <div class="shot reveal"><img src="assets/web/driver_phones.jpg" alt="Экраны мобильного приложения водителя" loading="lazy" decoding="async" width="1060" height="480"><span class="cap">Приложение водителя</span></div>
   </div>
 </section>
 
@@ -594,8 +849,9 @@
 <section id="routes">
   <div class="aurora b"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">05</span><span class="kb"></span>Маршрутная сеть и контроль</div>
+    <div class="kick reveal"><span class="kn">08</span><span class="kb"></span>Маршрутная сеть и контроль</div>
     <h2 class="reveal">Организация маршрутов общественного транспорта</h2>
+    <p class="module-context reveal"><strong>Обязательства и факт.</strong> Маршрут, условия контракта и выполненная транспортная работа сопоставляются в одной системе.</p>
     <div class="split" style="margin-top:40px; align-items:flex-start;">
       <div class="txt">
         <div class="rows reveal">
@@ -609,7 +865,7 @@
           дорог общего пользования, на которых расположены остановочные пункты.</p>
         </div>
       </div>
-      <div class="shot reveal"><img src="assets/web/route_network.jpg" alt="Схема маршрута на карте" loading="lazy" decoding="async"><span class="cap">Схема маршрута</span></div>
+      <div class="shot reveal"><img src="assets/web/route_network.jpg" alt="Схема маршрута на карте" loading="lazy" decoding="async" width="570" height="666"><span class="cap">Схема маршрута</span></div>
     </div>
     <h3 class="reveal">Контроль выполнения <span class="grad">условий контракта</span></h3>
     <div class="chips reveal">
@@ -628,7 +884,7 @@
           <div class="row"><span class="n">04</span><span class="t" style="font-size:14.5px;">Учета и контроля времени завершения транспортной работы на линии</span></div>
         </div>
       </div>
-      <div class="shot reveal"><img src="assets/web/contract_charts.jpg" alt="Аналитика исполнения контрактов" loading="lazy" decoding="async"><span class="cap">Аналитика исполнения</span></div>
+      <div class="shot reveal"><img src="assets/web/contract_charts.jpg" alt="Аналитика исполнения контрактов" loading="lazy" decoding="async" width="364" height="673"><span class="cap">Аналитика исполнения</span></div>
     </div>
   </div>
 </section>
@@ -637,8 +893,9 @@
 <section id="standards">
   <div class="aurora a"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">05</span><span class="kb"></span>Стандарты обслуживания</div>
+    <div class="kick reveal"><span class="kn">09</span><span class="kb"></span>Стандарты обслуживания</div>
     <h2 class="reveal">Контроль соблюдения социальных стандартов</h2>
+    <p class="module-context reveal"><strong>Доступность для разных пассажиров.</strong> Условия поездки, оснащение транспорта и пересадки дополняют оценку качества обслуживания.</p>
     <div class="split" style="margin-top:40px;">
       <div class="txt">
         <div class="rows reveal">
@@ -647,7 +904,7 @@
           <div class="row"><span class="n">03</span><span class="t" style="font-size:15px;">Экологичность и энергоэффективность: минимальный экологический класс ТС и доля ТС на альтернативном топливе</span></div>
         </div>
       </div>
-      <div class="shot reveal"><img src="assets/web/social_dash.jpg" alt="Оценка транспортного обслуживания" loading="lazy" decoding="async"><span class="cap">Оценка обслуживания</span></div>
+      <div class="shot reveal"><img src="assets/web/social_dash.jpg" alt="Оценка транспортного обслуживания" loading="lazy" decoding="async" width="570" height="666"><span class="cap">Оценка обслуживания</span></div>
     </div>
     <h3 class="reveal">Пассажиропоток и анализ транзакций <span class="grad">АСОП</span></h3>
     <div class="split" style="align-items:flex-start;">
@@ -659,7 +916,7 @@
           <div class="row"><span class="n">04</span><span class="t">Анализ загруженности маршрутов, остановок и пересадочных узлов</span></div>
         </div>
       </div>
-      <div class="shot reveal"><img src="assets/web/passenger_flow.jpg" alt="Объемы пассажирских перевозок" loading="lazy" decoding="async"><span class="cap">Объемы перевозок</span></div>
+      <div class="shot reveal"><img src="assets/web/passenger_flow.jpg" alt="Объемы пассажирских перевозок" loading="lazy" decoding="async" width="864" height="474"><span class="cap">Объемы перевозок</span></div>
     </div>
   </div>
 </section>
@@ -668,8 +925,9 @@
 <section id="analytics">
   <div class="aurora b"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">05</span><span class="kb"></span>Аналитика</div>
+    <div class="kick reveal"><span class="kn">10</span><span class="kb"></span>Аналитика</div>
     <h2 class="reveal">Анализ маршрутной сети</h2>
+    <p class="module-context reveal"><strong>Территориальная доступность.</strong> Анализ сети показывает, какие территории обслуживаются, где нужен подвоз и какие маршруты требуют внимания.</p>
     <div class="split" style="margin-top:40px; align-items:flex-start;">
       <div class="txt">
         <div class="rows reveal">
@@ -679,7 +937,7 @@
           <div class="row"><span class="n">04</span><span class="t" style="font-size:14.5px;">Анализ загруженности маршрутной сети</span></div>
         </div>
       </div>
-      <div class="shot reveal"><img src="assets/web/route_network.jpg" alt="Схема маршрута на карте" loading="lazy" decoding="async"><span class="cap">Проверка маршрутной сети</span></div>
+      <div class="shot reveal"><img src="assets/web/route_network.jpg" alt="Схема маршрута на карте" loading="lazy" decoding="async" width="570" height="666"><span class="cap">Проверка маршрутной сети</span></div>
     </div>
     <h3 class="reveal">Рейтинг <span class="grad">перевозчиков</span></h3>
     <div class="split" style="align-items:flex-start;">
@@ -726,7 +984,7 @@
 <section id="booking">
   <div class="aurora a"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">06</span><span class="kb"></span>Билетная система</div>
+    <div class="kick reveal"><span class="kn">11</span><span class="kb"></span>Билетная система</div>
     <h2 class="reveal">Модуль «Бронирования платного <span class="grad">проезда и сервисов»</span></h2>
     <p class="lead reveal" style="margin-top:22px;">Продажа, возврат и контроль билетов — от касс автовокзалов до систем-агрегаторов.</p>
     <div class="grid g2 stagger" style="margin-top:36px;">
@@ -751,10 +1009,10 @@
 <section id="passengers">
   <div class="aurora b"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">07</span><span class="kb"></span>Пассажирам</div>
+    <div class="kick reveal"><span class="kn">12</span><span class="kb"></span>Пассажирам</div>
     <h2 class="reveal">Комплексное информирование. <span class="grad">Интерактивные панели</span></h2>
     <div class="shot reveal" style="margin-top:40px; background:transparent; border:none; box-shadow:none;">
-      <img src="assets/web/info_phones.jpg" alt="Экраны информирования пассажиров" loading="lazy" decoding="async" style="border-radius:20px; background:rgba(255,255,255,0.02);">
+      <img src="assets/web/info_phones.jpg" alt="Экраны информирования пассажиров" loading="lazy" decoding="async" style="border-radius:20px; background:rgba(255,255,255,0.02);" width="890" height="474">
     </div>
     <h3 class="reveal">Функции <span class="grad">для пользователя</span></h3>
     <div class="chips reveal">
@@ -781,8 +1039,8 @@
 <section id="effect">
   <div class="aurora a"></div><div class="aurora b"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">08</span><span class="kb"></span>Результаты внедрения</div>
-    <h2 class="reveal">Эффективность</h2>
+    <div class="kick reveal"><span class="kn">13</span><span class="kb"></span>Результаты внедрения</div>
+    <h2 class="reveal">Эффект внедрения<br><span class="grad">в транспортной работе</span></h2><p class="module-context reveal">Операционные результаты связываются с качеством поездки: регулярностью, временем ожидания и исполнением обязательств.</p>
     <div class="grid g2 reveal" style="margin-top:40px; max-width:720px;">
       <div class="panel" style="display:flex; flex-direction:column; align-items:flex-start;">
         <div class="stat-num"><span class="counter" data-count="36" data-prefix="+" data-suffix="%">+36%</span></div>
@@ -793,6 +1051,7 @@
         <div class="stat-lbl">случаев пересечения ТС на сходной части маршрутов — за счет анализа маршрутной сети и расписаний</div>
       </div>
     </div>
+    <p class="outcome-note reveal">Показатели приведены по материалам ИТС. Результат конкретного внедрения зависит от исходных условий, состава модулей и полноты данных.</p>
     <div class="rows reveal" style="margin-top:26px;">
       <div class="row"><span class="n">01</span><span class="t" style="font-size:15px;">Прозрачный контроль исполнения контрактов повысил качество работы и выявил недобросовестных подрядчиков</span></div>
       <div class="row"><span class="n">02</span><span class="t" style="font-size:15px;">Качество сервисов информирования граждан: мобильное приложение, информационные табло, интерактивные панели — прогнозы прибытия, поиск и покупка билетов</span></div>
@@ -800,8 +1059,8 @@
     </div>
     <div class="panel reveal" style="margin-top:26px; display:flex; align-items:center; gap:24px; flex-wrap:wrap;">
       <div style="flex:1; min-width:260px;">
-        <div style="font-size:18px; font-weight:700;">Хотите те же результаты в вашем регионе?</div>
-        <p class="note" style="margin-top:6px;">Покажем систему на ваших данных и подскажем модель внедрения.</p>
+        <div style="font-size:18px; font-weight:700;">Какие показатели важны вашему региону?</div>
+        <p class="note" style="margin-top:6px;">Покажем рабочие сценарии, согласуем показатели и источники данных.</p>
       </div>
       <a class="btn pri" href="mailto:info@smart-transport.ru?subject=Внедрение bus:vision">Обсудить внедрение</a>
     </div>
@@ -812,7 +1071,7 @@
 <section id="tech">
   <div class="aurora b"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">08</span><span class="kb"></span>Технологии</div>
+    <div class="kick reveal"><span class="kn">14</span><span class="kb"></span>Технологии</div>
     <h2 class="reveal">Стек технологий и масштабируемость</h2>
     <div class="split" style="margin-top:44px; align-items:flex-start;">
       <div class="txt">
@@ -832,6 +1091,8 @@
         <p class="note" style="margin-top:22px;">Единый open source стек для backend-сервисов, веб-интерфейса и мобильных приложений водителей и пассажиров.</p>
       </div>
     </div>
+      <p class="cert reveal" style="margin-top:36px; max-width:560px;">Создано на базе ПО «Интеллектуальная Транспортная Система (ИТС)» —
+        свидетельство о государственной регистрации программы для ЭВМ № 2014617300 от 16.07.2014</p>
   </div>
 </section>
 
@@ -839,7 +1100,7 @@
 <section id="company">
   <div class="aurora a"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">09</span><span class="kb"></span>О компании</div>
+    <div class="kick reveal"><span class="kn">15</span><span class="kb"></span>О компании</div>
     <h2 class="reveal">Компания в цифрах</h2>
     <div class="grid g2 stagger" style="margin-top:40px;">
       <div class="card" style="align-items:center;"><div class="stat-num" style="font-size:72px;"><span class="counter" data-count="9" data-suffix="+">9+</span></div>
@@ -871,7 +1132,9 @@
 <section id="contacts">
   <div class="aurora b"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">10</span><span class="kb"></span>Контакты</div>
+    <div class="implementation-invite"><div><div class="kick">Следующий шаг</div><h2>Качество перевозок<br><span class="grad">в вашем регионе</span></h2><p>Начнём с вашей задачи: регулярность, доступность, ожидание или тарифы. Покажем сценарий работы и определим данные для внедрения.</p></div><a class="btn pri" href="mailto:info@smart-transport.ru?subject=bus%3Avision%20%E2%80%94%20%D0%B4%D0%B5%D0%BC%D0%BE%D0%BD%D1%81%D1%82%D1%80%D0%B0%D1%86%D0%B8%D1%8F%20%D0%BA%D0%B0%D1%87%D0%B5%D1%81%D1%82%D0%B2%D0%B0%20%D0%BF%D0%B5%D1%80%D0%B5%D0%B2%D0%BE%D0%B7%D0%BE%D0%BA">Запросить демонстрацию ↗</a></div>
+
+    <div class="kick reveal"><span class="kn">16</span><span class="kb"></span>Контакты</div>
     <div class="split" style="align-items:flex-start;">
       <div class="txt">
         <h2 class="reveal">Контакты</h2>
@@ -937,90 +1200,133 @@
   <span class="pg">its · smart-transport.ru</span>
 </footer>
 
-<script>
-(function(){
-  var io = new IntersectionObserver(function(es){
-    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
-  var sio = new IntersectionObserver(function(es){
-    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); sio.unobserve(e.target); } });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.stagger').forEach(function(el){ sio.observe(el); });
-  // hero: слайд-шоу скриншотов, переключение каждые 2.44 с (пауза вне вьюпорта и при reduced-motion)
-  (function(){
-    var slides = document.querySelectorAll('.hero-shot .hs');
-    var dots = document.querySelectorAll('.hero-shot .hs-dots button');
-    var cap = document.querySelector('.hero-shot .hs-cap');
-    var box = document.querySelector('.hero-shot');
-    if (slides.length < 2) return;
-    var i = 0, visible = true;
-    function show(n){
-      slides[i].classList.remove('on'); dots[i] && dots[i].classList.remove('on');
-      i = (n + slides.length) % slides.length;
-      slides[i].classList.add('on'); dots[i] && dots[i].classList.add('on');
-      if (cap) cap.textContent = slides[i].alt;
-    }
-    Array.prototype.forEach.call(dots, function(d, n){ d.addEventListener('click', function(){ show(n); }); });
-    new IntersectionObserver(function(es){ es.forEach(function(e){ visible = e.isIntersecting; }); }).observe(box);
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { show(0); return; }
-    setInterval(function(){ if (visible) show(i + 1); }, 2440);
-  })();
-
-  var prog = document.getElementById('progress');
-  var links = Array.prototype.slice.call(document.querySelectorAll('.nav-links a'));
-  var secs = Array.prototype.slice.call(document.querySelectorAll('section[id]'));
-  function onScroll(){
-    var h = document.documentElement;
-    var p = h.scrollTop / (h.scrollHeight - h.clientHeight);
-    prog.style.width = (p * 100).toFixed(2) + '%';
-    var cur = null;
-    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 60) cur = 'contacts';
-    else secs.forEach(function(s){ if (s.getBoundingClientRect().top <= 120) cur = s.id; });
-    links.forEach(function(a){ a.classList.toggle('active', a.getAttribute('href') === '#' + cur); });
-    if (!rm) {
-      par.forEach(function(el){
-        var host = el.closest('section') || el.parentElement;
-        var r = host.getBoundingClientRect();
-        if (r.bottom < -200 || r.top > innerHeight + 200) return;
-        var off = (r.top + r.height / 2 - innerHeight / 2) * (el.classList.contains('topo') ? -0.045 : -0.08);
-        el.style.transform = 'translate3d(0,' + off.toFixed(1) + 'px,0)';
-      });
-    }
-  }
-  document.addEventListener('scroll', onScroll, { passive: true });
-
-  // hero lines: последовательный взлёт
-  var lines = document.querySelectorAll('.hl-line');
-  lines.forEach(function(l, i){ setTimeout(function(){ l.classList.add('in'); }, 200 + i * 190); });
-  // route-stop light wave по спискам
-  document.querySelectorAll('.rows').forEach(function(r){
-    Array.prototype.forEach.call(r.children, function(c, i){ c.style.setProperty('--i', i); });
-  });
-  // лёгкий параллакс аврор и тополиний
-  var par = Array.prototype.slice.call(document.querySelectorAll('.aurora, .topo'));
-  var rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  onScroll();
-
-  var cio = new IntersectionObserver(function(es){
-    es.forEach(function(e){
-      if (!e.isIntersecting) return;
-      var el = e.target, target = parseInt(el.dataset.count, 10);
-      var pre = el.dataset.prefix || '', suf = el.dataset.suffix || '';
-      var t0 = null;
-      if (rm) { el.textContent = pre + target + suf; cio.unobserve(el); return; }
-      function step(t){
-        if (!t0) t0 = t;
-        var k = Math.min((t - t0) / 1200, 1);
-        var v = Math.round(target * (1 - Math.pow(1 - k, 3)));
-        el.textContent = pre + v + suf;
-        if (k < 1) requestAnimationFrame(step);
-      }
-      requestAnimationFrame(step);
-      cio.unobserve(el);
+<script>/* Presentation interactions use illustrative scenarios, not live transport data. */
+(() => {
+  'use strict';
+  const all = selector => [...document.querySelectorAll(selector)];
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const sections = all('section[id]');
+  const menu = document.querySelector('.deck-menu');
+  const motion = document.querySelector('.deck-motion');
+  let paused = reduced.matches;
+  let timer = 0;
+  let heroVisible = false;
+  const slides = all('.hero-shot .hs');
+  const dots = all('.hero-shot .hs-dots button');
+  let activeSlide = 0;
+  function showSlide(index) {
+    activeSlide = (index + slides.length) % slides.length;
+    slides.forEach((slide, i) => {
+      slide.classList.toggle('on', i === activeSlide);
+      slide.setAttribute('aria-hidden', String(i !== activeSlide));
     });
-  }, { threshold: 0.6 });
-  document.querySelectorAll('.counter').forEach(function(el){ cio.observe(el); });
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('on', i === activeSlide);
+      dot.setAttribute('aria-pressed', String(i === activeSlide));
+    });
+    document.querySelector('.hs-cap').textContent = slides[activeSlide].alt;
+    document.querySelector('.hero-screen-count').textContent = `${String(activeSlide + 1).padStart(2, '0')} / 06`;
+  }
+  function syncMotion() {
+    const stopped = paused || reduced.matches;
+    document.body.classList.toggle('deck-paused', stopped);
+    document.body.classList.toggle('deck-hidden', document.hidden);
+    motion.setAttribute('aria-pressed', String(stopped));
+    motion.setAttribute('aria-label', reduced.matches ? 'Анимация отключена системной настройкой' : stopped ? 'Включить анимацию' : 'Приостановить анимацию');
+    motion.title = motion.getAttribute('aria-label');
+    motion.textContent = stopped ? '▷' : 'Ⅱ';
+    motion.disabled = reduced.matches;
+    clearInterval(timer);
+    if (!stopped && !document.hidden && heroVisible) timer = setInterval(() => showSlide(activeSlide + 1), 6000);
+  }
+  dots.forEach((dot, index) => dot.addEventListener('click', () => { showSlide(index); paused = true; syncMotion(); }));
+  motion.hidden = false;
+  motion.addEventListener('click', () => { paused = !paused; syncMotion(); });
+  reduced.addEventListener('change', () => { paused = reduced.matches; syncMotion(); });
+  document.addEventListener('visibilitychange', syncMotion);
+  showSlide(0);
+
+  if ('IntersectionObserver' in window) {
+    document.body.classList.add('deck-enhanced');
+    const reveal = new IntersectionObserver(entries => entries.forEach(entry => {
+      if (entry.isIntersecting) { entry.target.classList.add('in'); reveal.unobserve(entry.target); }
+    }), { threshold: 0.04 });
+    all('.reveal,.stagger').forEach(el => reveal.observe(el));
+    const scenes = new IntersectionObserver(entries => entries.forEach(entry => {
+      entry.target.classList.toggle('scene-visible', entry.isIntersecting);
+      if (entry.target.id === 'hero') { heroVisible = entry.isIntersecting; syncMotion(); }
+    }));
+    sections.forEach(section => scenes.observe(section));
+  } else {
+    heroVisible = true;
+    sections.forEach(section => section.classList.add('scene-visible'));
+  }
+  all('.hl-line').forEach(line => line.classList.add('in'));
+  syncMotion();
+
+  const navLinks = all('nav a[href^="#"]');
+  const primaryLinks = all('.nav-links a');
+  let scrollFrame = 0;
+  function updateNavigation() {
+    scrollFrame = 0;
+    const height = document.documentElement.scrollHeight - innerHeight;
+    document.querySelector('#progress').style.width = `${Math.max(0, Math.min(100, scrollY / Math.max(1, height) * 100))}%`;
+    let current = 'hero';
+    sections.forEach(section => { if (section.getBoundingClientRect().top <= 140) current = section.id; });
+    navLinks.forEach(link => {
+      const selected = link.hash === `#${current}`;
+      link.classList.toggle('active', selected);
+      if (selected) link.setAttribute('aria-current', 'location'); else link.removeAttribute('aria-current');
+    });
+    const groups = { 'quality-workspace':'quality', platform:'features', schedules:'dispatch', planning:'dispatch', routes:'dispatch', standards:'quality', booking:'features', passengers:'features', tech:'effect', company:'effect' };
+    primaryLinks.forEach(link => link.classList.toggle('active', link.hash === `#${groups[current] || current}`));
+  }
+  const queueNavigation = () => { if (!scrollFrame) scrollFrame = requestAnimationFrame(updateNavigation); };
+  addEventListener('scroll', queueNavigation, { passive:true });
+  addEventListener('resize', queueNavigation, { passive:true });
+  navLinks.forEach(link => link.addEventListener('click', () => { menu.open = false; }));
+  document.addEventListener('keydown', event => { if (event.key === 'Escape' && menu.open) { menu.open = false; menu.querySelector('summary').focus(); } });
+  document.addEventListener('click', event => { if (!menu.contains(event.target)) menu.open = false; });
+  updateNavigation();
+
+  const cases = {
+    reliability: {
+      heading:'Рейс не выполнен. Причина должна быть видна.',
+      titles:['Сопоставить план и факт','Подтвердить причину','Проверить восстановление'],
+      texts:['Расписание, трек и события диспетчера показывают, где возникло отклонение. Отсутствие трека требует проверки.','Диспетчер уточняет: неисправность, нехватка водителя или дорожная задержка. Выбирает доступный резерв.','Заказчик контролирует фактический выпуск и повторяемость срывов по маршруту и перевозчику.'],
+      result:'Управляемый процесс: от сигнала о срыве — до подтверждённого восстановления обслуживания.'
+    },
+    territory: {
+      heading:'Остановка рядом — маршрут действительно доступен.',
+      titles:['Оценить пешеходный доступ','Сравнить варианты сети','Проверить охват жителей'],
+      texts:['Остановки, пешеходные подходы и жилые территории помогают увидеть участки с недостаточным обслуживанием.','Специалист рассматривает перенос остановки, изменение трассы или подвоз к регулярной сети.','Сопоставляются доступ к социальным объектам, пересадки и ограничения для маломобильных пассажиров.'],
+      result:'Решения по маршрутной сети опираются на доступность поездки для жителей конкретной территории.'
+    },
+    time: {
+      heading:'Расписание учитывает ожидание и пересадки.',
+      titles:['Найти потери времени','Согласовать расписания','Сопоставить результат'],
+      texts:['Плановые и фактические прибытия помогают разобрать интервалы, задержки и время ожидания.','Интервальные графики и пассажиропоток используются для выбора выпуска и согласования пересадок.','Изменения оцениваются на сопоставимых периодах с учётом времени суток и условий движения.'],
+      result:'Команда видит, какие изменения расписания помогают сделать поездку предсказуемее.'
+    },
+    price: {
+      heading:'Стоимость поездки оценивается вместе с условиями оплаты.',
+      titles:['Собрать тарифные данные','Рассмотреть группы пассажиров','Сравнить сценарии'],
+      texts:['Тарифы, проездные, пересадочные правила и льготы объединяются с данными о поездках.','Учитываются частота поездок, категории льготников и доступная статистика доходов.','Регион сопоставляет стоимость типовых поездок и месячные расходы при разных тарифных решениях.'],
+      result:'Прозрачная основа для обсуждения тарифов и мер поддержки разных групп пассажиров.'
+    }
+  };
+  const scenarioButtons = all('[data-quality-case]');
+  scenarioButtons.forEach(button => button.addEventListener('click', () => {
+    const item = cases[button.dataset.qualityCase];
+    scenarioButtons.forEach(other => other.setAttribute('aria-pressed', String(button === other)));
+    document.querySelector('#quality-case-title').textContent = item.heading;
+    all('.quality-case-step').forEach((step, index) => {
+      step.querySelector('h4').textContent = item.titles[index];
+      step.querySelector('p').textContent = item.texts[index];
+    });
+    document.querySelector('#quality-case-result').textContent = item.result;
+    queueNavigation();
+  }));
 })();
 </script>
 </body>
