@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>ИТС — Цифровая трансформация транспорта | Форум ИТС России 2026</title>
+  <meta name="description" content="ООО «ИТС» — построение интеллектуальных транспортных систем: платформа ИТС, управление общественным транспортом, содержание дорог, интеграция и аналитика. 20 отраслевых проектов, 50+ разработчиков.">
+  <meta name="theme-color" content="#15181B">
+  <meta property="og:title" content="ИТС — Цифровая трансформация транспорта">
+  <meta property="og:description" content="Интеллектуальные транспортные системы для государственных и коммерческих структур. Форум ИТС России 2026, Москва.">
+  <meta property="og:type" content="website">
+  <!-- ВАЖНО: og:image мессенджеры понимают только в абсолютном виде.
+       После деплоя замените content на https://ВАШ-ДОМЕН/assets/og.png -->
+  <meta property="og:image" content="https://nevelim.github.io/site-preview-2026/assets/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://its.dev">
+  <link rel="dns-prefetch" href="https://bus.vision">
+  <link rel="dns-prefetch" href="https://run.vision">
+  <link rel="dns-prefetch" href="https://hosta.dev">
+  <link rel="dns-prefetch" href="https://2026.itsrussiaforum.ru">
+  <link rel="preload" href="assets/fonts/Gilroy-Bold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/Gilroy-Semibold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+  <script>
+    // Тема применяется до отрисовки, чтобы не было вспышки неправильной схемы.
+    // Приоритет: выбор пользователя (localStorage) → системная схема → тёмная.
+    (function () {
+      var t = 'dark';
+      try {
+        t = localStorage.getItem('its-theme') ||
+          (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+      } catch (e) {}
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+  <link rel="stylesheet" href="styles.css?v=14">
+</head>
+<body>
+
+  <header class="header">
+    <div class="container header__row">
+      <a class="header__logo" href="#top" aria-label="ИТС — на главную">
+        <img src="assets/logo.png?v=2" alt="ИТС" width="192" height="63">
+      </a>
+      <div class="header__right">
+        <a class="header__badge" href="#program">Программа форума ИТС России 2026 · Москва</a>
+        <a class="header__cta" href="#contacts">Обсудить проект</a>
+        <button class="theme-toggle" type="button" aria-label="Переключить тему" title="Переключить тему">
+          <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4l1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4m11.4-11.4l1.4-1.4"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- Герой -->
+    <section class="hero">
+      <div class="container">
+        <h1 class="hero__title">
+          <span class="hero__word"><i>Цифровая</i></span>
+          <span class="hero__word hero__word--accent"><i>трансформация</i></span>
+          <span class="hero__word"><i>транспорта</i></span>
+        </h1>
+        <p class="hero__subtitle">Строим интеллектуальные транспортные системы для государственных
+          и коммерческих структур: от мониторинга перевозок до единой платформы
+          управления транспортной системой региона.</p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="#contacts">Обсудить проект</a>
+          <a class="btn btn--ghost" href="#products">Наши системы</a>
+        </div>
+        <ul class="hero__tags">
+          <li>ГИС</li>
+          <li>Мобильные приложения</li>
+          <li>AI</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Полоса доверия -->
+    <section class="trust" aria-label="Подтверждённые компетенции">
+      <div class="container">
+        <ul class="trust__grid">
+          <li class="trust__item">
+            <svg class="trust__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.4-3 8.4-7 10-4-1.6-7-5.6-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+            <span>ПО сертифицировано<br>по ГОСТ Р 71092 и 71158</span>
+          </li>
+          <li class="trust__item">
+            <svg class="trust__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.4-3 8.4-7 10-4-1.6-7-5.6-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+            <span>Платформа соответствует<br>архитектуре ИТС Минтранса России</span>
+          </li>
+          <li class="trust__item">
+            <svg class="trust__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.4-3 8.4-7 10-4-1.6-7-5.6-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+            <span>Аккредитация Минцифры<br>(Приказ № 449)</span>
+          </li>
+          <li class="trust__item">
+            <svg class="trust__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-5.1-7-11a7 7 0 0114 0c0 5.9-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+            <span>Внедрения в 12 регионах —<br>от Тюмени до Севастополя</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- О компании в цифрах -->
+    <section class="stats">
+      <div class="container">
+        <h2 class="section-title"><span class="section-num">01</span>О компании</h2>
+        <div class="stats__grid">
+          <div class="stats__item">
+            <span class="stats__num">20</span>
+            <span class="stats__label">отраслевых проектов</span>
+          </div>
+          <div class="stats__item">
+            <span class="stats__num">50+</span>
+            <span class="stats__label">разработчиков</span>
+          </div>
+          <div class="stats__item">
+            <span class="stats__num">6+</span>
+            <span class="stats__label">лет на рынке</span>
+          </div>
+          <div class="stats__item">
+            <span class="stats__num stats__num--long">406&nbsp;000+</span>
+            <span class="stats__label">объектов города на карте</span>
+          </div>
+        </div>
+        <p class="stats__note">Аккредитация Минцифры России · Офисы в Тюмени и Екатеринбурге ·
+          Работаем с государственными заказчиками транспорта и дорожной эксплуатации,
+          ИТ-подразделениями интеграторов и корпораций</p>
+      </div>
+    </section>
+
+    <!-- Продукты -->
+    <section class="products" id="products">
+      <div class="container">
+        <h2 class="section-title"><span class="section-num">02</span>Наши системы</h2>
+        <p class="section-sub">Нажмите на карточку — откроется сайт системы</p>
+        <div class="products__grid">
+
+          <a class="card" data-system="platform" href="https://its.dev/platform" target="_blank" rel="noopener">
+            <div class="card__body">
+              <img class="card__shot" src="assets/shots/platform.jpg?v=2" alt="Интерфейс платформы ИТС" loading="lazy" decoding="async">
+              <h3 class="card__title"><svg class="card__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/></svg>Платформа ИТС</h3>
+              <p class="card__text">Единая цифровая платформа управления транспортной системой
+                городской агломерации: 14 модулей — от координированного управления движением
+                до цифрового двойника. Соответствует архитектуре ИТС Минтранса России.</p>
+              <ul class="card__tags"><li>14 модулей</li><li>АСУДД</li><li>цифровой двойник</li></ul>
+            </div>
+            <span class="card__link">Подробнее →</span>
+          </a>
+
+          <a class="card" data-system="bus" href="busvision.html" title="Открыть презентацию bus:vision">
+            <div class="card__body">
+              <img class="card__shot" src="assets/shots/bus.jpg?v=2" alt="Интерфейс bus:vision" loading="lazy" decoding="async">
+              <h3 class="card__title"><svg class="card__icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="13" rx="2"/><path d="M4 11h16M8 4v7M16 4v7"/><path d="M7 17v2.5M17 17v2.5"/></svg>bus:vision</h3>
+              <p class="card__text">Планирование и управление общественным транспортом:
+                диспетчерский центр, автоматическая генерация расписаний, информирование
+                пассажиров, рейтинг перевозчиков.</p>
+              <ul class="card__tags"><li>расписания</li><li>диспетчеризация</li><li>пассажиры</li></ul>
+              <span class="card__badge">ГОСТ Р 71092-2023</span>
+            </div>
+            <span class="card__link">Подробнее →</span>
+          </a>
+
+          <a class="card" data-system="run" href="https://run.vision/" target="_blank" rel="noopener">
+            <div class="card__body">
+              <img class="card__shot" src="assets/shots/run.jpg?v=2" alt="Интерфейс run:vision" loading="lazy" decoding="async">
+              <h3 class="card__title"><svg class="card__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3L5 21M15 3l4 18"/><path d="M12 5v3M12 11v3M12 17v3"/></svg>run:vision</h3>
+              <p class="card__text">Диспетчерское управление транспортом для обслуживания
+              дорожной инфраструктуры: ИИ-диагностика полотна, контроль содержания дорог,
+              цифрового двойника УДС и контрактов подряда.</p>
+            <ul class="card__tags"><li>ИИ-диагностика</li><li>контроль контрактов</li><li>уборка дорог</li></ul>
+            <span class="card__badge">ГОСТ Р 71158-2023</span>
+            </div>
+            <span class="card__link">Подробнее →</span>
+          </a>
+
+          <a class="card" data-system="hosta" href="https://hosta.dev/" target="_blank" rel="noopener">
+            <div class="card__body">
+              <img class="card__shot" src="assets/shots/hosta.jpg?v=2" alt="Интерфейс hosta:dev" loading="lazy" decoding="async">
+              <h3 class="card__title"><svg class="card__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V11M10 20V5M16 20v-7M2 20h20"/></svg>hosta:dev</h3>
+              <p class="card__text">Интеграция, аналитика и визуализация данных: ситуационный
+                центр, 50+ виджетов, 400&nbsp;000+ объектов города. Интеграции с РНИС, СМЭВ,
+                АСУДД, метеостанциями.</p>
+              <ul class="card__tags"><li>50+ виджетов</li><li>ситуационный центр</li><li>СМЭВ и АСУДД</li></ul>
+            </div>
+            <span class="card__link">Подробнее →</span>
+          </a>
+
+          <a class="card" data-system="nav" href="https://its.dev/enterprise_logistics" target="_blank" rel="noopener">
+            <div class="card__body">
+              <h3 class="card__title"><svg class="card__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-5.1-7-11a7 7 0 0114 0c0 5.9-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Навигационная платформа</h3>
+              <p class="card__text">Спутниковый мониторинг и история передвижения мобильных
+                объектов: транспорт, спецтехника, суда. Поддержка широкого парка
+                навигационного оборудования.</p>
+              <ul class="card__tags"><li>мониторинг</li><li>треки</li><li>флот устройств</li></ul>
+            </div>
+            <span class="card__link">Подробнее →</span>
+          </a>
+
+          <a class="card card--more" href="https://its.dev/" target="_blank" rel="noopener">
+            <div class="card__body">
+              <h3 class="card__title"><svg class="card__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>Все решения ИТС</h3>
+              <p class="card__text">Дорожная деятельность, логистика предприятий, гос.такси,
+                мониторинг судов, СМЭВ 3 и заказная разработка — на сайте компании.</p>
+            </div>
+            <span class="card__link">its.dev →</span>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Декоративный «маршрут» между секциями -->
+    <div class="route" aria-hidden="true">
+      <svg viewBox="0 0 1000 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path class="route__line" d="M0,80 L200,40 L400,80 L600,40 L800,80 L1000,50">
+                  </path>
+        <circle class="route__stop" cx="200" cy="40" r="5"/>
+        <circle class="route__stop" cx="400" cy="80" r="5"/>
+        <circle class="route__stop" cx="600" cy="40" r="5"/>
+        <circle class="route__stop" cx="800" cy="80" r="5"/>
+        <g class="route__veh route__veh--bus" data-dur="13" data-begin="0" transform="translate(-60,86)">
+          <g>
+            <rect x="-21" y="-19" width="42" height="15" rx="3" fill="#008774"/>
+            <rect x="-21" y="-11" width="42" height="1.2" fill="#FFFFFF" opacity="0.3"/>
+            <rect x="14" y="-22.5" width="6" height="2.6" rx="0.8" fill="#D5F0EB" opacity="0.85"/>
+            <rect x="-19" y="-17" width="7" height="6.5" rx="1" fill="#D5F0EB"/>
+            <rect x="-10.5" y="-17" width="7" height="6.5" rx="1" fill="#D5F0EB"/>
+            <rect x="-2" y="-17" width="7" height="6.5" rx="1" fill="#D5F0EB"/>
+            <rect x="6.5" y="-17" width="7" height="6.5" rx="1" fill="#D5F0EB"/>
+            <rect x="15" y="-17" width="4.5" height="6.5" rx="1" fill="#D5F0EB"/>
+            <circle cx="20.5" cy="-9" r="1.4" fill="#FFE082"/>
+            <g transform="translate(-12,-4)">
+              <circle r="3.6" fill="#23272E"/><circle r="1.3" fill="#9AA7B8"/>
+              <g class="veh-spin"><line x1="-3.6" y1="0" x2="3.6" y2="0" stroke="#9AA7B8" stroke-width="0.8"/><line x1="0" y1="-3.6" x2="0" y2="3.6" stroke="#9AA7B8" stroke-width="0.8"/></g>
+            </g>
+            <g transform="translate(12,-4)">
+              <circle r="3.6" fill="#23272E"/><circle r="1.3" fill="#9AA7B8"/>
+              <g class="veh-spin"><line x1="-3.6" y1="0" x2="3.6" y2="0" stroke="#9AA7B8" stroke-width="0.8"/><line x1="0" y1="-3.6" x2="0" y2="3.6" stroke="#9AA7B8" stroke-width="0.8"/></g>
+            </g>
+          </g>
+        </g>
+        <g class="route__veh route__veh--sweeper" data-dur="18" data-begin="-6" transform="translate(-60,86)">
+          <g>
+            <rect x="-19" y="-15" width="24" height="10" rx="2" fill="#C26B61"/>
+            <rect x="-19" y="-15" width="24" height="2" rx="1" fill="#D08A82"/>
+            <rect x="5" y="-17" width="13" height="12" rx="2" fill="#B25D54"/>
+            <rect x="7" y="-15.5" width="9" height="6" rx="1" fill="#DCEBFF"/>
+            <circle cx="11.5" cy="-19.5" r="3" fill="#FF5252" opacity="0.25"/>
+            <circle class="veh-beacon" cx="11.5" cy="-19.5" r="1.7" fill="#FF5252"/>
+            <g transform="translate(-5,-1.5)">
+              <circle r="3.8" fill="#8D6E63"/>
+              <g class="veh-spin"><line x1="-3.8" y1="0" x2="3.8" y2="0" stroke="#5D4037" stroke-width="1"/><line x1="0" y1="-3.8" x2="0" y2="3.8" stroke="#5D4037" stroke-width="1"/></g>
+            </g>
+            <g transform="translate(-13,-3.6)"><circle r="3.2" fill="#23272E"/><circle r="1.2" fill="#9AA7B8"/></g>
+            <g transform="translate(11,-3.6)"><circle r="3.2" fill="#23272E"/><circle r="1.2" fill="#9AA7B8"/></g>
+          </g>
+        </g>
+        <g class="route__veh route__veh--bus2" data-dur="15" data-begin="-10" transform="translate(-60,86)">
+          <g>
+            <rect x="-21" y="-19" width="42" height="15" rx="3" fill="#007AFC"/>
+            <rect x="-21" y="-11" width="42" height="1.2" fill="#FFFFFF" opacity="0.3"/>
+            <rect x="14" y="-22.5" width="6" height="2.6" rx="0.8" fill="#DCEBFF" opacity="0.85"/>
+            <rect x="-19" y="-17" width="7" height="6.5" rx="1" fill="#DCEBFF"/>
+            <rect x="-10.5" y="-17" width="7" height="6.5" rx="1" fill="#DCEBFF"/>
+            <rect x="-2" y="-17" width="7" height="6.5" rx="1" fill="#DCEBFF"/>
+            <rect x="6.5" y="-17" width="7" height="6.5" rx="1" fill="#DCEBFF"/>
+            <rect x="15" y="-17" width="4.5" height="6.5" rx="1" fill="#DCEBFF"/>
+            <circle cx="20.5" cy="-9" r="1.4" fill="#FFE082"/>
+            <g transform="translate(-12,-4)">
+              <circle r="3.6" fill="#23272E"/><circle r="1.3" fill="#9AA7B8"/>
+              <g class="veh-spin"><line x1="-3.6" y1="0" x2="3.6" y2="0" stroke="#9AA7B8" stroke-width="0.8"/><line x1="0" y1="-3.6" x2="0" y2="3.6" stroke="#9AA7B8" stroke-width="0.8"/></g>
+            </g>
+            <g transform="translate(12,-4)">
+              <circle r="3.6" fill="#23272E"/><circle r="1.3" fill="#9AA7B8"/>
+              <g class="veh-spin"><line x1="-3.6" y1="0" x2="3.6" y2="0" stroke="#9AA7B8" stroke-width="0.8"/><line x1="0" y1="-3.6" x2="0" y2="3.6" stroke="#9AA7B8" stroke-width="0.8"/></g>
+            </g>
+          </g>
+        </g>
+        <g class="route__veh route__veh--sweeper2" data-dur="20" data-begin="-15" transform="translate(-60,86)">
+          <g>
+            <rect x="-19" y="-15" width="24" height="10" rx="2" fill="#D08A82"/>
+            <rect x="-19" y="-15" width="24" height="2" rx="1" fill="#E0B0A9"/>
+            <rect x="5" y="-17" width="13" height="12" rx="2" fill="#C26B61"/>
+            <rect x="7" y="-15.5" width="9" height="6" rx="1" fill="#D8F3FA"/>
+            <circle cx="11.5" cy="-19.5" r="3" fill="#FF5252" opacity="0.25"/>
+            <circle class="veh-beacon" cx="11.5" cy="-19.5" r="1.7" fill="#FF5252"/>
+            <g transform="translate(-5,-1.5)">
+              <circle r="3.8" fill="#8D6E63"/>
+              <g class="veh-spin"><line x1="-3.8" y1="0" x2="3.8" y2="0" stroke="#5D4037" stroke-width="1"/><line x1="0" y1="-3.8" x2="0" y2="3.8" stroke="#5D4037" stroke-width="1"/></g>
+            </g>
+            <g transform="translate(-13,-3.6)"><circle r="3.2" fill="#23272E"/><circle r="1.2" fill="#9AA7B8"/></g>
+            <g transform="translate(11,-3.6)"><circle r="3.2" fill="#23272E"/><circle r="1.2" fill="#9AA7B8"/></g>
+          </g>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Опыт и география -->
+    <section class="experience">
+      <div class="container">
+        <h2 class="section-title"><span class="section-num">03</span>Опыт и география</h2>
+
+        <div class="experience__block">
+          <h3 class="experience__heading">Заказчики — ИОГВ</h3>
+          <p class="experience__note">Исполнительные органы государственной власти субъектов РФ</p>
+          <p class="experience__note experience__note--sys"><span><i style="--c:#008774"></i>bus:vision</span><span><i style="--c:#C26B61"></i>run:vision</span><span><i style="--c:#1677FF"></i>hosta:dev</span> — системы ИТС в регионе (цвета как на карте выше)</p>
+          <ul class="regions">
+            <li title="В регионе: bus:vision · run:vision · hosta:dev"><img loading="lazy" decoding="async" src="assets/partners/tyumen.png?v=2" alt="Герб Тюменской области" width="36" height="42"><span>Тюменская область</span><span class="r-dots"><i style="--c:#008774"></i><i style="--c:#C26B61"></i><i style="--c:#1677FF"></i></span></li>
+            <li title="В регионе: bus:vision"><img loading="lazy" decoding="async" src="assets/partners/chelyab.png?v=2" alt="Герб Челябинской области" width="36" height="42"><span>Челябинская область</span><span class="r-dots"><i style="--c:#008774"></i></span></li>
+            <li title="В регионе: bus:vision"><img loading="lazy" decoding="async" src="assets/partners/orenburg.png?v=2" alt="Герб Оренбургской области" width="36" height="42"><span>Оренбургская область</span><span class="r-dots"><i style="--c:#008774"></i></span></li>
+            <li title="В регионе: bus:vision"><img loading="lazy" decoding="async" src="assets/partners/mordovia.png?v=2" alt="Герб Республики Мордовия" width="36" height="42"><span>Республика Мордовия</span><span class="r-dots"><i style="--c:#008774"></i></span></li>
+            <li title="В регионе: bus:vision"><img loading="lazy" decoding="async" src="assets/partners/krasnoyarsk.png?v=2" alt="Герб Красноярского края" width="36" height="42"><span>Красноярский край</span><span class="r-dots"><i style="--c:#008774"></i></span></li>
+            <li title="В регионе: bus:vision"><img loading="lazy" decoding="async" src="assets/partners/omsk.png?v=2" alt="Герб Омской области" width="36" height="42"><span>Омская область</span><span class="r-dots"><i style="--c:#008774"></i></span></li>
+            <li title="В регионе: bus:vision"><img loading="lazy" decoding="async" src="assets/partners/voronezh.png?v=2" alt="Герб Воронежской области" width="36" height="42"><span>Воронежская область</span><span class="r-dots"><i style="--c:#008774"></i></span></li>
+            <li title="В регионе: bus:vision"><img loading="lazy" decoding="async" src="assets/partners/sevastopol.png?v=2" alt="Герб Севастополя" width="36" height="42"><span>Севастополь</span><span class="r-dots"><i style="--c:#008774"></i></span></li>
+            <li title="В регионе: bus:vision"><img loading="lazy" decoding="async" src="assets/partners/lipetsk.png?v=2" alt="Герб Липецкой области" width="36" height="42"><span>Липецкая область</span><span class="r-dots"><i style="--c:#008774"></i></span></li>
+            <li title="В регионе: run:vision"><img loading="lazy" decoding="async" src="assets/partners/ekat.png?v=2" alt="Герб Свердловской области" width="36" height="42"><span>Свердловская область</span><span class="r-dots"><i style="--c:#C26B61"></i></span></li>
+            <li title="В регионе: run:vision"><img loading="lazy" decoding="async" src="assets/partners/cheboksary.png?v=2" alt="Герб города Чебоксары" width="36" height="42"><span>Чебоксары</span><span class="r-dots"><i style="--c:#C26B61"></i></span></li>
+            <li title="В регионе: run:vision"><img loading="lazy" decoding="async" src="assets/partners/belgorod.png?v=2" alt="Герб города Белгорода" width="36" height="42"><span>Белгород</span><span class="r-dots"><i style="--c:#C26B61"></i></span></li>
+          </ul>
+        </div>
+
+        <div class="experience__block">
+          <h3 class="experience__heading">Партнёры</h3>
+          <p class="experience__note">Работаем вместе с</p>
+          <ul class="partners">
+            <li><img loading="lazy" decoding="async" class="p-img p-word" src="assets/partners/ugmk-brand.png?v=2" alt="УГМК-Телеком"></li>
+            <li><img loading="lazy" decoding="async" class="p-img p-word" src="assets/partners/citto-brand.png?v=2" alt="ЦИТТО"></li>
+            <li><img loading="lazy" decoding="async" class="p-img p-word" src="assets/partners/anlim-brand.png?v=2" alt="Unlim Group"></li>
+            <li><img loading="lazy" decoding="async" class="p-img p-word" src="assets/partners/innova-brand.png?v=2" alt="Innovalab"></li>
+            <li><img loading="lazy" decoding="async" class="p-img p-word" src="assets/partners/dorconsalt-brand.png?v=2" alt="Дорконсалт"></li>
+            <li><img loading="lazy" decoding="async" class="p-img" src="assets/partners/atomdata.png?v=2" alt="Атомдата-Интеграция"></li>
+            <li><img loading="lazy" decoding="async" class="p-img" src="assets/partners/rostelecom.png?v=2" alt="ПАО «Ростелеком»"></li>
+            <li class="partners__brand" style="--pc:#995A4C">ООО «Либрам»</li>
+            <li><img loading="lazy" decoding="async" class="p-img p-word" src="assets/partners/uralupravtodor.png?v=2" alt="ФКУ «Уралуправтодор»"></li>
+            <li><img loading="lazy" decoding="async" class="p-img" src="assets/partners/simetra.png?v=3" alt="ГК «Симетра»"></li>
+            <li><img loading="lazy" decoding="async" class="p-img" src="assets/partners/invian.png?v=1" alt="Инвиан"></li>
+            <li><img loading="lazy" decoding="async" class="p-img" src="assets/partners/trafficdata.png?v=1" alt="Трафикдата"></li>
+            <li><img loading="lazy" decoding="async" class="p-img" src="assets/partners/voicelink.png?v=1" alt="Войслинк"></li>
+            <li><img loading="lazy" decoding="async" class="p-img" src="assets/partners/urc.png?v=1" alt="Союз российских городов"></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Бегущая строка регионов -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track"><span>Тюменская область</span><i aria-hidden="true"></i><span>Челябинская область</span><i aria-hidden="true"></i><span>Оренбургская область</span><i aria-hidden="true"></i><span>Республика Мордовия</span><i aria-hidden="true"></i><span>Красноярский край</span><i aria-hidden="true"></i><span>Омская область</span><i aria-hidden="true"></i><span>Воронежская область</span><i aria-hidden="true"></i><span>Севастополь</span><i aria-hidden="true"></i><span>Липецкая область</span><i aria-hidden="true"></i><span>Свердловская область</span><i aria-hidden="true"></i><span>Чебоксары</span><i aria-hidden="true"></i><span>Белгород</span><i aria-hidden="true"></i><span>Тюменская область</span><i aria-hidden="true"></i><span>Челябинская область</span><i aria-hidden="true"></i><span>Оренбургская область</span><i aria-hidden="true"></i><span>Республика Мордовия</span><i aria-hidden="true"></i><span>Красноярский край</span><i aria-hidden="true"></i><span>Омская область</span><i aria-hidden="true"></i><span>Воронежская область</span><i aria-hidden="true"></i><span>Севастополь</span><i aria-hidden="true"></i><span>Липецкая область</span><i aria-hidden="true"></i><span>Свердловская область</span><i aria-hidden="true"></i><span>Чебоксары</span><i aria-hidden="true"></i><span>Белгород</span><i aria-hidden="true"></i></div>
+    </div>
+
+    <!-- Программа форума -->
+    <section class="program" id="program">
+      <div class="container">
+        <h2 class="section-title"><span class="section-num">04</span>Программа форума</h2>
+        <p class="section-sub">28–29 сентября 2026 · Москва, Azimut Отель Олимпик · Вход по регистрации</p>
+        <div class="program__tabs" role="tablist" aria-label="Дни форума">
+          <button class="program__tab is-active" type="button" role="tab" aria-selected="true" data-day="1">28 сентября · понедельник</button>
+          <button class="program__tab" type="button" role="tab" aria-selected="false" data-day="2">29 сентября · вторник</button>
+        </div>
+
+        <div class="program__day is-active" data-day="1">
+          <ol class="program__list">
+          <li class="program__item " data-kind="открытие">
+            <span class="program__time">09:00–10:00</span>
+            <div class="program__body">
+              <span class="program__kind program__kind--открытие">открытие</span>
+              <h3 class="program__title">Регистрация участников · начало работы выставки · приветственный кофе-брейк</h3>
+              
+              <span class="program__hall">Фойе, зона выставки</span>
+            </div>
+          </li>
+          <li class="program__item " data-kind="сессия">
+            <span class="program__time">10:00–12:00</span>
+            <div class="program__body">
+              <span class="program__kind program__kind--сессия">сессия</span>
+              <h3 class="program__title">Кибербезопасность</h3>
+              <p class="program__people">Безопасность ИТС и дорожно-транспортной инфраструктуры · Модератор: А. Сёмкин (Ассоциация «ЦЭТ») · Минцифры, ФСТЭК, ЕЭК, ФГУП «ЗащитаИнфоТранс», ФГБУ «СИЦ Минтранса»</p>
+              <span class="program__hall">Зал «Театр»</span>
+            </div>
+          </li>
+          <li class="program__item " data-kind="перерыв">
+            <span class="program__time">12:00–12:30</span>
+            <div class="program__body">
+              <span class="program__kind program__kind--перерыв">перерыв</span>
+              <h3 class="program__title">Кофе-брейк</h3>
+              
+              <span class="program__hall">Фойе, зона выставки</span>
+            </div>
+          </li>
+          <li class="program__item program__item--key" data-kind="сессия">
+            <span class="program__time">12:30–14:30</span>
+            <div class="program__body">
+              <span class="program__kind program__kind--сессия">сессия</span>
+              <h3 class="program__title">Стратегическая сессия «ИТС России»</h3>
+              <p class="program__people">Внедрение ИТС в субъектах РФ · Модераторы: А. Сёмкин, А. Журавлев (РОСДОРНИИ) · Росавтодор, Минтранс, ключевой доклад «Оценка эффективности ИТС»</p>
+              <span class="program__hall">Зал «Театр»</span>
+            </div>
+          </li>
+          <li class="program__item " data-kind="перерыв">
+            <span class="program__time">14:30–15:00</span>
+            <div class="program__body">
+              <span class="program__kind program__kind--перерыв">перерыв</span>
+              <h3 class="program__title">Кофе-брейк</h3>
+              
+              <span class="program__hall">Фойе, зона выставки</span>
+            </div>
+          </li>
+          <li class="program__item " data-kind="сессия">
+            <span class="program__time">15:00–16:30</span>
+            <div class="program__body">
+              <span class="program__kind program__kind--сессия">сессия</span>
+              <h3 class="program__title">Сессия «БДД и ИИ»</h3>
+              <p class="program__people">ИТС и ИИ в безопасности дорожного движения и общественном транспорте · Модератор: С. Тен (Госдума) · МВД, ЦОДД Москвы, Госкомпания «Автодор»</p>
+              <span class="program__hall">Зал «Театр»</span>
+            </div>
+          </li>
+          <li class="program__item " data-kind="чемпионат">
+            <span class="program__time">17:00–19:00</span>
+            <div class="program__body">
+              <span class="program__kind program__kind--чемпионат">чемпионат</span>
+              <h3 class="program__title">Защита проектов финала ИТ-чемпионата «Цифровая Эра Транспорта»</h3>
+              
+              <span class="program__hall">Зал «Театр»</span>
+            </div>
+          </li>
+          </ol>
+        </div>
+        <div class="program__day" data-day="2">
+          <ol class="program__list">
+          <li class="program__item " data-kind="открытие">
+            <span class="program__time">09:00–10:00</span>
+            <div class="program__body">
+              <span class="program__kind program__kind--открытие">открытие</span>
+              <h3 class="program__title">Регистрация участников · начало работы выставки · кофе-брейк</h3>
+              
+              <span class="program__hall">Фойе, зона выставки</span>
+            </div>
+          </li>
+          <li class="program__item " data-kind="сессия">
+            <span class="program__time">10:00–13:00</span>
+            <div class="program__body">
+              <span class="program__kind program__kind--сессия">сессия</span>
+              <h3 class="program__title">Сессия «Технологии»</h3>
+              <p class="program__people">Передовые технологии, оборудование и ПО в области ИТС · Модераторы: Д. Ольховиков (Ассоциация «ЦЭТ»), И. Жевжиков (РОСДОРНИИ) · ISS, «Траффик Дэйта», «Комплексы Мониторинга»</p>
+              <span class="program__hall">Зал «Театр»</span>
+            </div>
+          </li>
+          <li class="program__item " data-kind="перерыв">
+            <span class="program__time">13:00–14:00</span>
+            <div class="program__body">
+              <span class="program__kind program__kind--перерыв">перерыв</span>
+              <h3 class="program__title">Обед</h3>
+              
+              <span class="program__hall">Зал «Театр»</span>
+            </div>
+          </li>
+          <li class="program__item " data-kind="выставка">
+            <span class="program__time">14:00–14:30</span>
+            <div class="program__body">
+              <span class="program__kind program__kind--выставка">выставка</span>
+              <h3 class="program__title">Официальный обход выставочной экспозиции · подписания соглашений</h3>
+              
+              <span class="program__hall">Фойе, зона выставки</span>
+            </div>
+          </li>
+          <li class="program__item program__item--key" data-kind="пленарное">
+            <span class="program__time">14:30–17:00</span>
+            <div class="program__body">
+              <span class="program__kind program__kind--пленарное">пленарное</span>
+              <h3 class="program__title">Пленарное заседание · Эффективность интеллектуальных транспортных систем</h3>
+              <p class="program__people">Замминистра транспорта И. Костюченко · Руководитель Росавтодора Р. Новиков · Госкомпания «Автодор», ЕЭК, Госдума · Награждение лауреатов Премии «ИТС России» и победителей ИТ-чемпионата</p>
+              <span class="program__hall">Зал «Театр»</span>
+            </div>
+          </li>
+          <li class="program__item " data-kind="приём">
+            <span class="program__time">18:00–21:00</span>
+            <div class="program__body">
+              <span class="program__kind program__kind--приём">приём</span>
+              <h3 class="program__title">Вечерний прием Ассоциации «Цифровая Эра Транспорта»</h3>
+              
+              <span class="program__hall">Награждение партнёров и участников выставки</span>
+            </div>
+          </li>
+          </ol>
+        </div>
+
+        <details class="expo">
+          <summary class="expo__summary">
+            <span class="expo__summary-text">
+              <span class="expo__heading">Схема выставки</span>
+              <span class="expo__note">Фойе отеля Azimut Олимпик · найдите стенд ИТС и партнёров на плане</span>
+            </span>
+            <svg class="expo__chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </summary>
+          <div class="expo__content">
+            <a class="expo__link" href="assets/expo-scheme.pdf" target="_blank" title="Открыть схему в полном размере">
+              <img src="assets/expo-scheme.jpg?v=3" alt="Схема выставки — план помещений со стендами" loading="lazy" decoding="async">
+            </a>
+            <a class="program__more" href="assets/expo-scheme.pdf" target="_blank" download="Shema-vystavki-ITS-2026.pdf">Скачать схему (PDF · 1,4 МБ)</a>
+          </div>
+        </details>
+
+        <a class="program__more" href="https://2026.itsrussiaforum.ru/program/" target="_blank" rel="noopener">Полная программа и регистрация — на сайте форума →</a>
+      </div>
+    </section>
+
+    <!-- Как начать работу -->
+    <section class="steps">
+      <div class="container">
+        <h2 class="section-title"><span class="section-num">05</span>Как начать работу</h2>
+        <p class="section-sub">Короткий маршрут от знакомства до запуска системы</p>
+        <ol class="steps__grid">
+          <li class="steps__item">
+            <span class="steps__num">1</span>
+            <h3 class="steps__title">Знакомство</h3>
+            <p class="steps__text">Обсудим вашу задачу на форуме, по телефону или онлайн</p>
+          </li>
+          <li class="steps__item">
+            <span class="steps__num">2</span>
+            <h3 class="steps__title">Демонстрация</h3>
+            <p class="steps__text">Покажем системы на реальных данных регионов</p>
+          </li>
+          <li class="steps__item">
+            <span class="steps__num">3</span>
+            <h3 class="steps__title">Пилот</h3>
+            <p class="steps__text">Запустим на ваших данных и посчитаем эффект</p>
+          </li>
+          <li class="steps__item">
+            <span class="steps__num">4</span>
+            <h3 class="steps__title">Внедрение</h3>
+            <p class="steps__text">Разворачивание, обучение и постоянная поддержка</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Контакты -->
+    <section class="contacts" id="contacts">
+      <div class="container">
+        <h2 class="section-title"><span class="section-num">06</span>Обсудим ваш проект</h2>
+        <p class="section-sub">Мы на форуме 28–29 сентября — найдёмся и на стенде, и в программе.
+          Пишите или звоните напрямую:</p>
+        <div class="contacts__grid">
+
+          <div class="contact-card">
+            <div class="contact-card__head">
+              <img class="contact-card__photo" src="assets/contacts/kuznetsov.jpg?v=6" alt="Валерий Кузнецов" width="112" height="112" loading="lazy" decoding="async">
+              <div class="contact-card__who">
+                <span class="contact-card__role">Директор по развитию</span>
+                <h3 class="contact-card__name">Кузнецов Валерий</h3>
+              </div>
+            </div>
+            <a class="contact-card__line" href="tel:+79044909106">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg>
+              +7 (904) 490-91-06
+            </a>
+            <a class="contact-card__line" href="mailto:kuznetsov_vv@its.dev">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+              kuznetsov_vv@its.dev
+            </a>
+            <a class="contact-card__save" href="assets/contacts/kuznetsov.vcf" download>
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v10m0 0l4-4m-4 4L8 9M5 21h14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Сохранить контакт
+            </a>
+          </div>
+
+          <div class="contact-card">
+            <div class="contact-card__head">
+              <img class="contact-card__photo" src="assets/contacts/zabaluev.jpg?v=4" alt="Павел Забалуев" width="112" height="112" loading="lazy" decoding="async">
+              <div class="contact-card__who">
+                <span class="contact-card__role">Менеджер по региональным продажам</span>
+                <h3 class="contact-card__name">Забалуев Павел</h3>
+              </div>
+            </div>
+            <a class="contact-card__line" href="tel:+79199201234">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg>
+              +7 (919) 920-12-34
+            </a>
+            <a class="contact-card__line" href="mailto:zabaluev_pv@its.dev">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+              zabaluev_pv@its.dev
+            </a>
+            <a class="contact-card__save" href="assets/contacts/zabaluev.vcf" download>
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v10m0 0l4-4m-4 4L8 9M5 21h14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Сохранить контакт
+            </a>
+          </div>
+
+          <div class="contact-card">
+            <div class="contact-card__head">
+              <img class="contact-card__photo" src="assets/contacts/smirnov.jpg?v=1" alt="Владимир Смирнов" width="112" height="112" loading="lazy" decoding="async">
+              <div class="contact-card__who">
+                <span class="contact-card__role">Менеджер по региональным продажам</span>
+                <h3 class="contact-card__name">Смирнов Владимир</h3>
+              </div>
+            </div>
+            <a class="contact-card__line" href="tel:+79199407557">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg>
+              +7 (919) 940-75-57
+            </a>
+            <a class="contact-card__line" href="mailto:smirnov_vv@its.dev">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+              smirnov_vv@its.dev
+            </a>
+            <a class="contact-card__save" href="assets/contacts/smirnov.vcf" download>
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v10m0 0l4-4m-4 4L8 9M5 21h14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Сохранить контакт
+            </a>
+          </div>
+
+        </div>
+
+        <div class="contacts__actions">
+          <a class="btn btn--primary" href="assets/presentation-its.pdf" download="ITS-presentation.pdf" target="_blank">
+            <svg class="icon icon--lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16 6 10l1.4-1.4L11 12.2V4h2v8.2l3.6-3.6L18 10l-6 6zm-7 4v-5h2v3h10v-3h2v5H5z"/></svg>
+            Презентация компании · PDF · 3,4 МБ
+          </a>
+          <a class="btn btn--ghost" href="https://its.dev/" target="_blank" rel="noopener">its.dev</a>
+          <button class="btn btn--ghost" type="button" id="share-btn">
+            <svg class="icon icon--lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7M8 12h13" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Отправить коллеге
+          </button>
+          <a class="btn btn--ghost" href="assets/events/forum-2026.ics" download>
+            <svg class="icon icon--lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2v3M17 2v3M3 9h18M5 5h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z"/></svg>
+            Форум — в календарь
+          </a>
+        </div>
+
+        <div class="contacts__social">
+          <a href="https://vk.com/public210656904" target="_blank" rel="noopener">ВКонтакте</a>
+          <a href="https://www.youtube.com/channel/UCrXnvuIavrnwYaGlrJh4kXA" target="_blank" rel="noopener">YouTube</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Мобильная панель быстрых действий (появляется после прокрутки) -->
+  <div class="mobile-cta" aria-label="Быстрые действия">
+    <a class="mobile-cta__call" href="tel:+79044909106" aria-label="Позвонить директору по развитию">
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg>
+    </a>
+    <a class="mobile-cta__main" href="#contacts">Обсудить проект</a>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <p class="footer__copy">© 2014–2026 ООО «ИТС» · Интеллектуальные транспортные системы</p>
+      <p class="footer__requisites">ИНН 7203309686 · КПП 720301001 · ОГРН 1147232022783 ·
+        г. Тюмень, ул. Пермякова 1, ст. 5, оф. 1102 · +7 (3452) 654-444 · info@its.dev</p>
+    </div>
+  </footer>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "ООО «ИТС» — Интеллектуальные транспортные системы",
+    "url": "https://its.dev/",
+    "logo": "assets/logo.png",
+    "telephone": "+7 (3452) 654-444",
+    "email": "info@its.dev",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Тюмень",
+      "streetAddress": "ул. Пермякова 1, ст. 5, оф. 1102",
+      "addressCountry": "RU"
+    },
+    "sameAs": [
+      "https://vk.com/public210656904",
+      "https://www.youtube.com/channel/UCrXnvuIavrnwYaGlrJh4kXA"
+    ]
+  }
+  </script>
+  <script src="assets/russia-map.js?v=2" defer></script>
+  <script src="script.js?v=21" defer></script>
+
+  <!-- Яндекс.Метрика — счётчик посещений и целей.
+       Чтобы включить: создайте счётчик на https://metrika.yandex.ru (2 минуты)
+       и впишите его номер в ITS_METRIKA_ID ниже вместо нуля.
+       Вместе со счётчиком автоматически включатся цели: звонок (tel:),
+       сохранение визитки (.vcf), календарь форума и «моя программа» (.ics),
+       отправка коллеге (share). Цели создайте в Метрике с такими же id-именами. -->
+  <script>window.ITS_METRIKA_ID = 0;</script>
+  <script>
+    if (window.ITS_METRIKA_ID) {
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+      ym(window.ITS_METRIKA_ID, "init", { clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true });
+    }
+  </script>
+  <!-- когда номер счётчика известен, снимите комментарий с noscript-счётчика и подставьте номер:
+  <noscript><div><img src="https://mc.yandex.ru/watch/НОМЕР" style="position:absolute; left:-9999px;" alt=""></div></noscript>
+  -->
+</body>
+</html>

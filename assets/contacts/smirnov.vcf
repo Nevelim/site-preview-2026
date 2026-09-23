@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Смирнов;Владимир;;;
+FN:Владимир Смирнов
+ORG:ООО «ИТС»
+TITLE:Менеджер по региональным продажам
+TEL;TYPE=CELL:+79199407557
+EMAIL:smirnov_vv@its.dev
+URL:https://its.dev/
+NOTE:Форум ИТС России 2026, Москва
+END:VCARD

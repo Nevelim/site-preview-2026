@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>bus:vision — презентация системы · Форум ИТС России 2026</title>
+<meta name="description" content="Презентация системы bus:vision: планирование и управление общественным транспортом, диспетчерский центр, расписания, информирование пассажиров, рейтинг перевозчиков.">
+<link rel="stylesheet" href="styles.css?v=14">
+<style>
+  /* ===== страница-презентация bus:vision ===== */
+  html, body { height: 100%; }
+  body { display: flex; flex-direction: column; overflow: hidden; }
+
+  .pv-toolbar {
+    flex: 0 0 auto; display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    padding: 10px 20px;
+    background: linear-gradient(90deg, rgba(0,135,116,0.16), rgba(21,24,27,0.9) 40%);
+    border-bottom: 1px solid rgba(0,135,116,0.35);
+  }
+  .pv-back {
+    display: inline-flex; align-items: center; gap: 7px;
+    color: var(--text-muted); text-decoration: none; font-size: 13.5px; font-weight: 600;
+    padding: 7px 12px; border-radius: 9px; border: 1px solid var(--border);
+    transition: color .2s, border-color .2s;
+  }
+  .pv-back:hover { color: var(--text); border-color: rgba(0,135,116,0.6); }
+  .pv-title { display: flex; align-items: center; gap: 9px; font-size: 14.5px; font-weight: 700; }
+  .pv-title .sys { color: #17BFA6; }
+  .pv-title .badge-gost { font-size: 10.5px; font-weight: 700; letter-spacing: .04em; color: var(--text-muted);
+    border: 1px solid var(--border); border-radius: 7px; padding: 3px 8px; }
+  .pv-actions { margin-left: auto; display: flex; gap: 9px; flex-wrap: wrap; }
+  .pv-btn {
+    display: inline-flex; align-items: center; gap: 7px; text-decoration: none; cursor: pointer;
+    font-size: 13px; font-weight: 700; padding: 9px 14px; border-radius: 10px;
+    border: 1px solid rgba(23,191,166,0.55); background: rgba(0,135,116,0.18); color: #E8FFF9;
+    transition: background .2s, transform .2s;
+  }
+  .pv-btn:hover { background: rgba(0,135,116,0.34); transform: translateY(-1px); }
+  .pv-btn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .pv-btn.ext { border-color: var(--border); background: var(--bg-card); color: var(--text-muted); }
+  .pv-btn.ext:hover { color: var(--text); background: var(--bg-card-hover); }
+
+  .pv-frame { flex: 1 1 auto; position: relative; background: #070C14; }
+  .pv-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #070C14; }
+
+  @media (max-width: 760px) {
+    .pv-toolbar { padding: 9px 12px; gap: 8px; }
+    .pv-title .badge-gost { display: none; }
+    .pv-btn span { display: none; } /* на телефоне — только иконки */
+    .pv-btn { padding: 9px 11px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="pv-toolbar">
+  <a class="pv-back" href="index.html#products">
+    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg>
+    На сайт
+  </a>
+  <div class="pv-title">
+    <span class="sys">bus:vision</span>
+    <span>— презентация системы</span>
+    <span class="badge-gost">ГОСТ Р 71092-2023</span>
+  </div>
+  <div class="pv-actions">
+    <a class="pv-btn" href="presentation-busvision-desktop.html" download="busvision-prezentaciya-PK.html" aria-label="Скачать HTML для компьютера" title="Скачать один HTML-файл для компьютера — открывается офлайн двойным кликом">
+      <svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 19h16"/></svg>
+      <span>HTML · компьютер</span>
+    </a>
+    <a class="pv-btn" href="presentation-busvision-mobile.html" download="busvision-prezentaciya-telefon.html" aria-label="Скачать HTML для телефона" title="Скачать один HTML-файл для телефона — открывается офлайн двойным кликом">
+      <svg viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18.5h2"/></svg>
+      <span>HTML · телефон</span>
+    </a>
+    <a class="pv-btn ext" id="pv-full" href="presentation-busvision-desktop.html" title="Открыть презентацию на весь экран">
+      <svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-7 7M10 20H4v-6M4 20l7-7"/></svg>
+      <span>Во весь экран</span>
+    </a>
+  </div>
+</div>
+
+<div class="pv-frame">
+  <noscript><iframe src="presentation-busvision-desktop.html" title="Презентация bus:vision"></iframe></noscript>
+  <iframe id="pv" title="Презентация bus:vision"></iframe>
+</div>
+
+<script>
+  // вариант презентации выбирается сразу по ширине окна (порог 1180 = min-width desktop-версии)
+  (function(){
+    var f = document.getElementById('pv');
+    var DESK = 'presentation-busvision-desktop.html', MOB = 'presentation-busvision-mobile.html';
+    var mq = window.matchMedia('(max-width: 1180px)');
+    function pick(){ f.src = mq.matches ? MOB : DESK; }
+    pick();
+    if (mq.addEventListener) mq.addEventListener('change', pick); else mq.addListener(pick);
+    var fs = document.getElementById('pv-full');
+    fs && fs.addEventListener('click', function(e){ e.preventDefault(); window.open(f.src, '_blank', 'noopener'); });
+  })();
+</script>
+</body>
+</html>
