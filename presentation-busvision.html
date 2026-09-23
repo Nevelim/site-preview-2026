@@ -341,6 +341,41 @@
     footer { padding:24px 20px; gap:16px; flex-wrap:wrap; }
   }
   @media print { nav { display:none; } }
+
+  /* Additions within the existing presentation design. */
+  .quality-block { margin-top:56px; scroll-margin-top:120px; }
+  .quality-block h3 { margin:0 0 18px; max-width:850px; }
+  .quality-block > .lead { max-width:880px; }
+  .quality-grid { margin-top:28px; gap:16px; }
+  .quality-card { align-items:flex-start; padding:24px; }
+  .quality-card h4 { color:#E4EAF6; font-size:18px; font-weight:700; line-height:1.35; margin:3px 0 12px; }
+  .quality-card p { color:#C3CDE0; font-size:15px; font-weight:500; line-height:1.6; }
+  .quality-card .quality-tools { color:var(--muted); font-size:12px; line-height:1.55; margin-top:14px; }
+  .quality-summary { margin-top:20px; }
+  .quality-summary strong { display:block; color:#8FEAF6; font-size:16px; line-height:1.5; margin-bottom:12px; }
+  .quality-summary .note + .note { margin-top:10px; }
+  .quality-context { margin-top:22px; max-width:830px; }
+  .quality-context strong { color:#8FEAF6; font-weight:600; }
+  a.chip { text-decoration:none; }
+  a.chip:hover { border-color:#17BFA6; color:#fff; }
+  .shot:not(.hero-shot) img { height:auto; }
+  .hero-shot .hs-cap { bottom:36px; max-width:calc(100% - 28px); }
+  .hero-shot .hs-dots button::after { content:''; display:block; width:24px; height:24px; position:relative; left:50%; top:50%; transform:translate(-50%,-50%); }
+  .hero-shot .hs-toggle { position:absolute; top:14px; right:14px; z-index:3; cursor:pointer; width:32px; height:32px; border:1px solid rgba(255,255,255,.3); border-radius:8px; background:rgba(7,12,20,.85); color:#8FEAF6; font-size:14px; }
+  .hero-shot .hs-toggle[hidden] { display:none; }
+@media (max-width:760px) {
+    .quality-block { margin-top:40px; }
+    .quality-card { padding:20px; display:grid; grid-template-columns:34px minmax(0,1fr); gap:12px; }
+    .quality-card > div { display:contents; }
+    .quality-card h4 { font-size:17px; margin:3px 0 0; }
+    .quality-card p { grid-column:1 / -1; }
+    .quality-card .quality-tools { margin-top:0; }
+    .quality-summary { padding:22px; }
+    .hero-shot .hs-cap { font-size:9px; padding:6px 9px; letter-spacing:.07em; }
+    .hero-shot .hs-toggle { top:10px; right:10px; }
+  }
+  @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
+  @media print { .hs-toggle { display:none!important; } .quality-card { break-inside:avoid; } }
 </style>
 </head>
 <body>
@@ -403,12 +438,13 @@
         свидетельство о государственной регистрации программы для ЭВМ № 2014617300 от 16.07.2014</p>
     </div>
     <div class="shot hero-shot reveal">
-      <img class="hs on" src="assets/web/hero-slide-1.jpg" alt="Диспетчерская карта и объекты" fetchpriority="high">
-      <img class="hs" src="assets/web/hero-slide-2.jpg" alt="Редактор схемы маршрута" loading="lazy" decoding="async">
-      <img class="hs hs-left" src="assets/web/hero-slide-3.jpg" alt="Расписание аналога" loading="lazy" decoding="async">
-      <img class="hs" src="assets/web/hero-slide-4.jpg" alt="Отчёты" loading="lazy" decoding="async">
-      <img class="hs hs-left" src="assets/web/hero-slide-5.jpg" alt="Интервальные графики" loading="lazy" decoding="async">
-      <img class="hs hs-left" src="assets/web/hero-slide-6.jpg" alt="Планирование транспорта" loading="lazy" decoding="async">
+      <button class="hs-toggle" type="button" aria-pressed="false" aria-label="Приостановить смену экранов" hidden>Ⅱ</button>
+      <img class="hs on" src="assets/web/hero-slide-1.jpg" alt="Диспетчерская карта и объекты" fetchpriority="high" width="1200" height="866">
+      <img class="hs" src="assets/web/hero-slide-2.jpg" alt="Редактор схемы маршрута" loading="lazy" decoding="async" width="1200" height="866">
+      <img class="hs hs-left" src="assets/web/hero-slide-3.jpg" alt="Расписание аналога" loading="lazy" decoding="async" width="839" height="606">
+      <img class="hs" src="assets/web/hero-slide-4.jpg" alt="Отчёты" loading="lazy" decoding="async" width="1200" height="866">
+      <img class="hs hs-left" src="assets/web/hero-slide-5.jpg" alt="Интервальные графики" loading="lazy" decoding="async" width="838" height="605">
+      <img class="hs hs-left" src="assets/web/hero-slide-6.jpg" alt="Планирование транспорта" loading="lazy" decoding="async" width="836" height="604">
       <span class="cap hs-cap">Диспетчерская карта и объекты</span>
     <div class="hs-dots"><button class="on" type="button" aria-label="Слайд 1 — Диспетчерская карта"></button><button type="button" aria-label="Слайд 2 — Редактор схемы"></button><button type="button" aria-label="Слайд 3 — Расписание аналога"></button><button type="button" aria-label="Слайд 4 — Отчёты"></button><button type="button" aria-label="Слайд 5 — Интервальные графики"></button><button type="button" aria-label="Слайд 6 — Планирование транспорта"></button></div>
     </div>
@@ -427,7 +463,7 @@
       <span class="chip hl">Управление графиками движения</span>
       <span class="chip">Управление планированием транспорта</span>
       <span class="chip">Моделирование маршрутной сети</span>
-      <span class="chip">Комплексный показатель качества транспортного обслуживания</span>
+      <a class="chip" href="#quality-service">Комплексный показатель качества транспортного обслуживания ↗</a>
       <span class="chip">Мониторинг обновления парка под Указ 309</span>
       <span class="chip">Прогнозирование спроса</span>
       <span class="chip">Оптимизация расписаний и маршрутных сетей</span>
@@ -465,7 +501,7 @@
           <div class="row"><span class="n">05</span><span class="t">Формирование рейтинга перевозчиков</span></div>
         </div>
       </div>
-      <div class="shot reveal"><img src="assets/web/platform-busmap.jpg" alt="Карта маршрутов с карточкой автобуса"><span class="cap">Карта маршрутов и рейсы</span></div>
+      <div class="shot reveal"><img src="assets/web/platform-busmap.jpg" alt="Карта маршрутов с карточкой автобуса" width="1003" height="972"><span class="cap">Карта маршрутов и рейсы</span></div>
     </div>
     <div class="grid g3 stagger" style="margin-top:28px;">
       <div class="card"><span class="n">06</span><span class="t">Контроль выполнения условий контрактов</span></div>
@@ -484,13 +520,14 @@
   <div class="inner">
     <div class="kick reveal"><span class="kn">02</span><span class="kb"></span>Графики движения</div>
     <h2 class="reveal">Управление графиками движения</h2>
+    <p class="note quality-context reveal"><strong>Качество перевозок:</strong> согласованные интервалы и пересадки помогают снизить время ожидания пассажиров.</p>
     <div class="split" style="margin-top:40px; align-items:flex-start;">
       <div class="txt">
         <p class="lead reveal">Сформированные графики движения проверяются на соответствие нормам труда и отдыха водителей.</p>
         <div class="reveal" style="margin:22px 0;"><span class="tag">Приказ Минтранса России № 424 от 16.10.2020 — режим рабочего времени и времени отдыха водителей</span></div>
         <p class="note reveal">Если не пройдена одна или несколько проверок — система формирует уведомление.</p>
       </div>
-      <div class="shot reveal"><img src="assets/web/schedules_card.jpg" alt="Конструктор графиков движения" loading="lazy" decoding="async"><span class="cap">Конструктор графиков</span></div>
+      <div class="shot reveal"><img src="assets/web/schedules_card.jpg" alt="Конструктор графиков движения" loading="lazy" decoding="async" width="570" height="666"><span class="cap">Конструктор графиков</span></div>
     </div>
     <div class="grid g2 reveal" style="margin-top:28px;">
       <div class="card"><span class="n">01</span><span class="t">Создание и редактирование графиков движения по маршрутам в автоматическом и ручном режимах, в том числе на основе интервалов движения</span></div>
@@ -521,7 +558,7 @@
           </g>
         </svg>
       </div>
-      <div class="shot reveal"><img src="assets/web/interval_chart.jpg" alt="Мастер интервальных расписаний" loading="lazy" decoding="async"><span class="cap">Мастер расписаний</span></div>
+      <div class="shot reveal"><img src="assets/web/interval_chart.jpg" alt="Мастер интервальных расписаний" loading="lazy" decoding="async" width="570" height="666"><span class="cap">Мастер расписаний</span></div>
     </div>
   </div>
 </section>
@@ -541,7 +578,7 @@
           <div class="row"><span class="n">04</span><span class="t">При назначении ТС, не отвечающих требованиям контракта, подсистема уведомляет пользователя об этом</span></div>
         </div>
       </div>
-      <div class="shot reveal"><img src="assets/web/planning.jpg" alt="Календарь планирования транспорта" loading="lazy" decoding="async"><span class="cap">Календарь планирования</span></div>
+      <div class="shot reveal"><img src="assets/web/planning.jpg" alt="Календарь планирования транспорта" loading="lazy" decoding="async" width="570" height="666"><span class="cap">Календарь планирования</span></div>
     </div>
   </div>
 </section>
@@ -552,7 +589,8 @@
   <div class="inner">
     <div class="kick reveal"><span class="kn">04</span><span class="kb"></span>Диспетчеризация</div>
     <h2 class="reveal">Онлайн-диспетчерская и контроль работы ОТ</h2>
-    <div class="shot reveal" style="margin-top:40px;"><img src="assets/web/dispatch_full.jpg" alt="Рабочее место диспетчера" loading="lazy" decoding="async"><span class="cap">Рабочее место диспетчера</span></div>
+    <p class="note quality-context reveal"><strong>Качество перевозок:</strong> план и факт движения, события и связь с водителем помогают выявить причину срыва рейса.</p>
+    <div class="shot reveal" style="margin-top:40px;"><img src="assets/web/dispatch_full.jpg" alt="Рабочее место диспетчера" loading="lazy" decoding="async" width="1065" height="598"><span class="cap">Рабочее место диспетчера</span></div>
     <div class="board reveal" aria-hidden="true">
       <span class="board-cap">Табло · иллюстративно</span>
       <div class="board-track">
@@ -586,7 +624,7 @@
       <span class="chip hl">Тревожная кнопка</span>
       <span class="chip">Отправка навигационных данных</span>
     </div>
-    <div class="shot reveal"><img src="assets/web/driver_phones.jpg" alt="Экраны мобильного приложения водителя" loading="lazy" decoding="async"><span class="cap">Приложение водителя</span></div>
+    <div class="shot reveal"><img src="assets/web/driver_phones.jpg" alt="Экраны мобильного приложения водителя" loading="lazy" decoding="async" width="1060" height="480"><span class="cap">Приложение водителя</span></div>
   </div>
 </section>
 
@@ -609,7 +647,7 @@
           дорог общего пользования, на которых расположены остановочные пункты.</p>
         </div>
       </div>
-      <div class="shot reveal"><img src="assets/web/route_network.jpg" alt="Схема маршрута на карте" loading="lazy" decoding="async"><span class="cap">Схема маршрута</span></div>
+      <div class="shot reveal"><img src="assets/web/route_network.jpg" alt="Схема маршрута на карте" loading="lazy" decoding="async" width="570" height="666"><span class="cap">Схема маршрута</span></div>
     </div>
     <h3 class="reveal">Контроль выполнения <span class="grad">условий контракта</span></h3>
     <div class="chips reveal">
@@ -628,7 +666,7 @@
           <div class="row"><span class="n">04</span><span class="t" style="font-size:14.5px;">Учета и контроля времени завершения транспортной работы на линии</span></div>
         </div>
       </div>
-      <div class="shot reveal"><img src="assets/web/contract_charts.jpg" alt="Аналитика исполнения контрактов" loading="lazy" decoding="async"><span class="cap">Аналитика исполнения</span></div>
+      <div class="shot reveal"><img src="assets/web/contract_charts.jpg" alt="Аналитика исполнения контрактов" loading="lazy" decoding="async" width="364" height="673"><span class="cap">Аналитика исполнения</span></div>
     </div>
   </div>
 </section>
@@ -647,7 +685,7 @@
           <div class="row"><span class="n">03</span><span class="t" style="font-size:15px;">Экологичность и энергоэффективность: минимальный экологический класс ТС и доля ТС на альтернативном топливе</span></div>
         </div>
       </div>
-      <div class="shot reveal"><img src="assets/web/social_dash.jpg" alt="Оценка транспортного обслуживания" loading="lazy" decoding="async"><span class="cap">Оценка обслуживания</span></div>
+      <div class="shot reveal"><img src="assets/web/social_dash.jpg" alt="Оценка транспортного обслуживания" loading="lazy" decoding="async" width="570" height="666"><span class="cap">Оценка обслуживания</span></div>
     </div>
     <h3 class="reveal">Пассажиропоток и анализ транзакций <span class="grad">АСОП</span></h3>
     <div class="split" style="align-items:flex-start;">
@@ -659,7 +697,39 @@
           <div class="row"><span class="n">04</span><span class="t">Анализ загруженности маршрутов, остановок и пересадочных узлов</span></div>
         </div>
       </div>
-      <div class="shot reveal"><img src="assets/web/passenger_flow.jpg" alt="Объемы пассажирских перевозок" loading="lazy" decoding="async"><span class="cap">Объемы перевозок</span></div>
+      <div class="shot reveal"><img src="assets/web/passenger_flow.jpg" alt="Объемы пассажирских перевозок" loading="lazy" decoding="async" width="864" height="474"><span class="cap">Объемы перевозок</span></div>
+    </div>
+
+    <div class="quality-block" id="quality-service" aria-labelledby="quality-service-title">
+      <h3 class="reveal" id="quality-service-title">Комплексный показатель качества <span class="grad">транспортного обслуживания</span></h3>
+      <p class="lead reveal">bus:vision объединяет данные о работе транспорта и условиях поездки. Заказчик видит качество обслуживания по четырём направлениям и определяет, какие маршруты требуют внимания.</p>
+      <div class="grid g2 quality-grid stagger">
+        <article class="card quality-card"><span class="n">01</span><div>
+          <h4>Надёжность перевозок</h4>
+          <p>Выполнение расписания, регулярность движения, отмены и сходы с причинами. Сопоставление плана и факта помогает разбирать срывы обслуживания.</p>
+          <p class="quality-tools">Расписания · ГЛОНАСС-мониторинг · события диспетчера</p>
+        </div></article>
+        <article class="card quality-card"><span class="n">02</span><div>
+          <h4>Территориальная доступность</h4>
+          <p>Пешеходная доступность остановок, охват жителей и связь с социальными объектами. Анализ сети показывает, где необходимо улучшить обслуживание.</p>
+          <p class="quality-tools">Маршрутная сеть · остановки · пешеходные подходы · население</p>
+        </div></article>
+        <article class="card quality-card"><span class="n">03</span><div>
+          <h4>Временная доступность</h4>
+          <p>Ожидание, время в пути, скорость сообщения и пересадки. Интервальные графики помогают согласовать движение и сделать поездку предсказуемее.</p>
+          <p class="quality-tools">Плановые и фактические прибытия · интервалы · пассажиропоток</p>
+        </div></article>
+        <article class="card quality-card"><span class="n">04</span><div>
+          <h4>Ценовая доступность</h4>
+          <p>Тарифы, проездные и льготы в сопоставлении с расходами на типовые поездки и доходами пассажиров. Единая база для оценки тарифных решений.</p>
+          <p class="quality-tools">Тарифы · льготные категории · поездки · статистика доходов</p>
+        </div></article>
+      </div>
+      <div class="panel quality-summary reveal">
+        <strong>Общая оценка региона → перевозчик → маршрут → конкретное отклонение</strong>
+        <p class="note">Показатель связан с исходными данными: команда может уточнить причину, скорректировать расписание или выпуск и сравнить результат за сопоставимые периоды.</p>
+        <p class="note">Методика расчёта, веса и целевые значения настраиваются для региона. Учитываются период, полнота и актуальность данных.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -670,6 +740,7 @@
   <div class="inner">
     <div class="kick reveal"><span class="kn">05</span><span class="kb"></span>Аналитика</div>
     <h2 class="reveal">Анализ маршрутной сети</h2>
+    <p class="note quality-context reveal"><strong>Качество перевозок:</strong> доступность остановок и загрузка сети помогают определить приоритеты изменения маршрутов.</p>
     <div class="split" style="margin-top:40px; align-items:flex-start;">
       <div class="txt">
         <div class="rows reveal">
@@ -679,7 +750,7 @@
           <div class="row"><span class="n">04</span><span class="t" style="font-size:14.5px;">Анализ загруженности маршрутной сети</span></div>
         </div>
       </div>
-      <div class="shot reveal"><img src="assets/web/route_network.jpg" alt="Схема маршрута на карте" loading="lazy" decoding="async"><span class="cap">Проверка маршрутной сети</span></div>
+      <div class="shot reveal"><img src="assets/web/route_network.jpg" alt="Схема маршрута на карте" loading="lazy" decoding="async" width="570" height="666"><span class="cap">Проверка маршрутной сети</span></div>
     </div>
     <h3 class="reveal">Рейтинг <span class="grad">перевозчиков</span></h3>
     <div class="split" style="align-items:flex-start;">
@@ -754,7 +825,7 @@
     <div class="kick reveal"><span class="kn">07</span><span class="kb"></span>Пассажирам</div>
     <h2 class="reveal">Комплексное информирование. <span class="grad">Интерактивные панели</span></h2>
     <div class="shot reveal" style="margin-top:40px; background:transparent; border:none; box-shadow:none;">
-      <img src="assets/web/info_phones.jpg" alt="Экраны информирования пассажиров" loading="lazy" decoding="async" style="border-radius:20px; background:rgba(255,255,255,0.02);">
+      <img src="assets/web/info_phones.jpg" alt="Экраны информирования пассажиров" loading="lazy" decoding="async" style="border-radius:20px; background:rgba(255,255,255,0.02);" width="890" height="474">
     </div>
     <h3 class="reveal">Функции <span class="grad">для пользователя</span></h3>
     <div class="chips reveal">
@@ -947,24 +1018,39 @@
     es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); sio.unobserve(e.target); } });
   }, { threshold: 0.1 });
   document.querySelectorAll('.stagger').forEach(function(el){ sio.observe(el); });
-  // hero: слайд-шоу скриншотов, переключение каждые 2.44 с (пауза вне вьюпорта и при reduced-motion)
+  // Original slideshow, with manual pause and stable screen selection.
   (function(){
     var slides = document.querySelectorAll('.hero-shot .hs');
     var dots = document.querySelectorAll('.hero-shot .hs-dots button');
     var cap = document.querySelector('.hero-shot .hs-cap');
     var box = document.querySelector('.hero-shot');
+    var toggle = document.querySelector('.hero-shot .hs-toggle');
+    var motion = window.matchMedia('(prefers-reduced-motion: reduce)');
     if (slides.length < 2) return;
-    var i = 0, visible = true;
+    var i = 0, visible = false, paused = false, timer = null;
     function show(n){
       slides[i].classList.remove('on'); dots[i] && dots[i].classList.remove('on');
       i = (n + slides.length) % slides.length;
       slides[i].classList.add('on'); dots[i] && dots[i].classList.add('on');
       if (cap) cap.textContent = slides[i].alt;
+      Array.prototype.forEach.call(dots, function(d, index){ d.setAttribute('aria-pressed', String(index === i)); });
+      Array.prototype.forEach.call(slides, function(slide, index){ slide.setAttribute('aria-hidden', String(index !== i)); });
     }
-    Array.prototype.forEach.call(dots, function(d, n){ d.addEventListener('click', function(){ show(n); }); });
-    new IntersectionObserver(function(es){ es.forEach(function(e){ visible = e.isIntersecting; }); }).observe(box);
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { show(0); return; }
-    setInterval(function(){ if (visible) show(i + 1); }, 2440);
+    function sync(){
+      clearInterval(timer);
+      toggle.hidden = motion.matches;
+      toggle.setAttribute('aria-pressed', String(paused));
+      toggle.setAttribute('aria-label', paused ? 'Продолжить смену экранов' : 'Приостановить смену экранов');
+      toggle.title = toggle.getAttribute('aria-label');
+      toggle.textContent = paused ? '▷' : 'Ⅱ';
+      if (visible && !document.hidden && !paused && !motion.matches) timer = setInterval(function(){ show(i + 1); }, 2440);
+    }
+    Array.prototype.forEach.call(dots, function(d, n){ d.addEventListener('click', function(){ show(n); paused = true; sync(); }); });
+    toggle.addEventListener('click', function(){ paused = !paused; sync(); });
+    new IntersectionObserver(function(es){ visible = es[0].isIntersecting; sync(); }).observe(box);
+    document.addEventListener('visibilitychange', sync);
+    motion.addEventListener('change', sync);
+    show(0); sync();
   })();
 
   var prog = document.getElementById('progress');
