@@ -343,8 +343,8 @@
   @media print { nav { display:none; } }
 
   /* Additions within the existing presentation design. */
-  .quality-block { margin-top:56px; scroll-margin-top:120px; }
-  .quality-block h3 { margin:0 0 18px; max-width:850px; }
+  .quality-block { scroll-margin-top:120px; }
+  .quality-block h2 { margin:0 0 18px; max-width:850px; }
   .quality-block > .lead { max-width:880px; }
   .quality-grid { margin-top:28px; gap:16px; }
   .quality-card { align-items:flex-start; padding:24px; }
@@ -364,7 +364,6 @@
   .hero-shot .hs-toggle { position:absolute; top:14px; right:14px; z-index:3; cursor:pointer; width:32px; height:32px; border:1px solid rgba(255,255,255,.3); border-radius:8px; background:rgba(7,12,20,.85); color:#8FEAF6; font-size:14px; }
   .hero-shot .hs-toggle[hidden] { display:none; }
 @media (max-width:760px) {
-    .quality-block { margin-top:40px; }
     .quality-card { padding:20px; display:grid; grid-template-columns:34px minmax(0,1fr); gap:12px; }
     .quality-card > div { display:contents; }
     .quality-card h4 { font-size:17px; margin:3px 0 0; }
@@ -375,6 +374,27 @@
     .hero-shot .hs-toggle { top:10px; right:10px; }
   }
   @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
+
+  .more-details { margin-top:24px; border:1px solid rgba(255,255,255,.13); border-radius:20px; background:rgba(255,255,255,.025); }
+  .more-details > summary { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:20px 24px; list-style:none; cursor:pointer; font-size:15px; font-weight:600; line-height:1.45; color:#C3CDE0; }
+  .more-details > summary::-webkit-details-marker { display:none; }
+  .more-details > summary::after { content:'+'; flex:0 0 26px; text-align:center; color:#17BFA6; font-size:24px; font-weight:500; }
+  .more-details[open] > summary::after { content:'−'; }
+  .more-details > summary:hover { color:var(--text); background:rgba(0,135,116,.08); border-radius:20px; }
+  .more-details > summary:focus-visible, .customer-features a:focus-visible { outline:2px solid #17BFA6; outline-offset:4px; }
+  .more-details[open] > summary { border-bottom:1px solid rgba(255,255,255,.09); }
+  .more-content { padding:24px; }
+  .more-content > :first-child { margin-top:0!important; }
+  .more-content h4 { font-size:16px; line-height:1.4; margin:0 0 10px; color:#E4EAF6; }
+  .more-details[open] .reveal, .more-details[open] .stagger > * { opacity:1; transform:none; }
+  .customer-features .card { text-decoration:none; align-items:flex-start; }
+  .customer-features h4 { font-size:17px; line-height:1.35; margin:4px 0 12px; color:#E4EAF6; }
+  .customer-features p { font-size:14px; line-height:1.6; color:#C3CDE0; }
+  .customer-features a:hover { border-color:#17BFA6; }
+@media (max-width:760px) {
+  .more-details > summary { padding:18px; gap:12px; }
+  .more-content { padding:18px; }
+}
   @media print { .hs-toggle { display:none!important; } .quality-card { break-inside:avoid; } }
 </style>
 </head>
@@ -387,7 +407,7 @@
     bus:vision
   </a>
   <div class="nav-links">
-    <a href="#features">Возможности</a><a href="#platform">Платформа</a><a href="#schedules">Графики</a>
+    <a href="#quality-service">Качество</a><a href="#features">Возможности</a><a href="#platform">Платформа</a><a href="#schedules">Графики</a>
     <a href="#planning">Планирование</a><a href="#dispatch">Диспетчеризация</a><a href="#routes">Маршруты</a><a href="#standards">Стандарты</a>
     <a href="#analytics">Аналитика</a><a href="#booking">Бронирование</a><a href="#passengers">Пассажирам</a>
     <a href="#effect">Эффект</a><a href="#tech">Технологии</a><a href="#company">Компания</a><a href="#contacts">Контакты</a>
@@ -452,13 +472,68 @@
   <div class="scroll-hint">Листайте вниз<i class="sh-dot"></i></div>
 </section>
 
+<!-- ═══ КАЧЕСТВО ПЕРЕВОЗОК ═══ -->
+<section id="quality-service" aria-labelledby="quality-service-title">
+  <div class="aurora b"></div>
+  <div class="inner quality-block">
+    <div class="kick reveal"><span class="kn">02</span><span class="kb"></span>Качество перевозок</div>
+    <h2 class="reveal" id="quality-service-title">Качество перевозок —<br><span class="grad">под контролем</span></h2>
+    <p class="lead reveal">Комплексный показатель качества помогает находить проблемные маршруты, выбирать меры и отслеживать результат.</p>
+    <div class="grid g2 quality-grid stagger">
+      <article class="card quality-card"><span class="n">01</span><div>
+        <h4>Рейсы по расписанию</h4>
+        <p>Контроль выполнения рейсов, интервалов, отмен и сходов с причинами.</p>
+      </div></article>
+      <article class="card quality-card"><span class="n">02</span><div>
+        <h4>Транспорт рядом</h4>
+        <p>Охват жителей остановками и поиск районов, которым не хватает транспортных связей.</p>
+      </div></article>
+      <article class="card quality-card"><span class="n">03</span><div>
+        <h4>Предсказуемая поездка</h4>
+        <p>Оценка ожидания, времени в пути и пересадок для корректировки расписаний.</p>
+      </div></article>
+      <article class="card quality-card"><span class="n">04</span><div>
+        <h4>Доступная стоимость</h4>
+        <p>Оценка тарифов и льгот с учётом расходов на поездки и доходов пассажиров.</p>
+      </div></article>
+    </div>
+    <div class="panel quality-summary reveal">
+      <strong>Регион → перевозчик → маршрут → причина отклонения</strong>
+      <p class="note">От общей оценки — к конкретному решению: изменить расписание, скорректировать выпуск или маршрут.</p>
+    </div>
+    <details class="more-details">
+      <summary>Какие данные входят в оценку качества</summary>
+      <div class="more-content">
+        <div class="grid g2">
+          <div><h4>Надёжность</h4><p class="note">Расписания, ГЛОНАСС-мониторинг и события диспетчера: план и факт рейсов, регулярность, отмены и сходы.</p></div>
+          <div><h4>Территориальная доступность</h4><p class="note">Маршрутная сеть, остановки, пешеходные подходы, население и социальные объекты.</p></div>
+          <div><h4>Временная доступность</h4><p class="note">Плановые и фактические прибытия, интервалы, скорость сообщения, пересадки и пассажиропоток.</p></div>
+          <div><h4>Ценовая доступность</h4><p class="note">Тарифы, льготные категории, типовые поездки и статистика доходов.</p></div>
+        </div>
+        <p class="note" style="margin-top:24px;">Методика расчёта, веса и целевые значения настраиваются для региона. При сравнении учитываются период, полнота и актуальность данных.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
 <!-- ═══ ВОЗМОЖНОСТИ ═══ -->
 <section id="features">
   <div class="aurora a"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kb"></span>Возможности системы</div>
-    <h2 class="reveal">Система управления движением общественного транспорта <span class="grad">обеспечивает</span></h2>
-    <div class="chips stagger" style="margin-top:36px;">
+    <div class="kick reveal"><span class="kn">03</span><span class="kb"></span>Возможности системы</div>
+    <h2 class="reveal">Ключевые задачи <span class="grad">заказчика</span></h2>
+    <div class="grid g3 customer-features stagger" style="margin-top:36px;">
+      <a class="card" href="#schedules"><span class="n">01</span><div><h4>Настроить расписания</h4><p>Интервалы, пересадки и проверка графиков на исполнимость.</p></div></a>
+      <a class="card" href="#planning"><span class="n">02</span><div><h4>Обеспечить выпуск</h4><p>Назначение транспорта на рейсы с проверкой требований.</p></div></a>
+      <a class="card" href="#dispatch"><span class="n">03</span><div><h4>Контролировать рейсы</h4><p>План и факт движения, отклонения и связь с водителем.</p></div></a>
+      <a class="card" href="#routes"><span class="n">04</span><div><h4>Проверять контракты</h4><p>Выявление нарушений и оценка работы перевозчиков.</p></div></a>
+      <a class="card" href="#analytics"><span class="n">05</span><div><h4>Улучшать маршруты</h4><p>Доступность остановок, загрузка сети и пассажиропотоки.</p></div></a>
+      <a class="card" href="#passengers"><span class="n">06</span><div><h4>Помогать пассажирам</h4><p>Маршруты, расписания и информация о поездке.</p></div></a>
+    </div>
+    <details class="more-details">
+      <summary>Полный перечень возможностей системы</summary>
+      <div class="more-content">
+<div class="chips stagger" style="margin-top:36px;">
       <span class="chip">Ведение реестров и данных маршрутной сети</span>
       <span class="chip hl">Управление графиками движения</span>
       <span class="chip">Управление планированием транспорта</span>
@@ -481,6 +556,8 @@
       <span class="chip">Сбор, обработка и хранение данных о параметрах движения в режиме реального времени — с технических средств, установленных на транспортных средствах</span>
       <span class="chip">Отображение информации о соблюдении социальных стандартов транспортного обслуживания населения</span>
     </div>
+      </div>
+    </details>
   </div>
 </section>
 
@@ -488,7 +565,7 @@
 <section id="platform">
   <div class="aurora b"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">01</span><span class="kb"></span>Платформа</div>
+    <div class="kick reveal"><span class="kn">04</span><span class="kb"></span>Платформа</div>
     <h2 class="reveal">Платформа общественного <span class="grad">транспорта</span></h2>
     <div class="split" style="margin-top:44px;">
       <div class="txt">
@@ -503,7 +580,10 @@
       </div>
       <div class="shot reveal"><img src="assets/web/platform-busmap.jpg" alt="Карта маршрутов с карточкой автобуса" width="1003" height="972"><span class="cap">Карта маршрутов и рейсы</span></div>
     </div>
-    <div class="grid g3 stagger" style="margin-top:28px;">
+    <details class="more-details">
+      <summary>Дополнительные возможности платформы</summary>
+      <div class="more-content">
+<div class="grid g3 stagger" style="margin-top:28px;">
       <div class="card"><span class="n">06</span><span class="t">Контроль выполнения условий контрактов</span></div>
       <div class="card"><span class="n">07</span><span class="t">Сбор, обработка и хранение данных о параметрах движения в режиме реального времени — с технических средств, установленных на транспортных средствах</span></div>
       <div class="card"><span class="n">08</span><span class="t">Организация маршрутов общественного транспорта агломерации</span></div>
@@ -511,6 +591,8 @@
       <div class="card"><span class="n">10</span><span class="t">Отображение информации о соблюдении социальных стандартов транспортного обслуживания населения</span></div>
       <div class="card"><span class="n">11</span><span class="t">Анализ и визуализация показателей пассажирских перевозок</span></div>
     </div>
+      </div>
+    </details>
   </div>
 </section>
 
@@ -518,7 +600,7 @@
 <section id="schedules">
   <div class="aurora a"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">02</span><span class="kb"></span>Графики движения</div>
+    <div class="kick reveal"><span class="kn">05</span><span class="kb"></span>Графики движения</div>
     <h2 class="reveal">Управление графиками движения</h2>
     <p class="note quality-context reveal"><strong>Качество перевозок:</strong> согласованные интервалы и пересадки помогают снизить время ожидания пассажиров.</p>
     <div class="split" style="margin-top:40px; align-items:flex-start;">
@@ -529,7 +611,10 @@
       </div>
       <div class="shot reveal"><img src="assets/web/schedules_card.jpg" alt="Конструктор графиков движения" loading="lazy" decoding="async" width="570" height="666"><span class="cap">Конструктор графиков</span></div>
     </div>
-    <div class="grid g2 reveal" style="margin-top:28px;">
+    <details class="more-details">
+      <summary>Операции с графиками: от объезда до резервного выпуска</summary>
+      <div class="more-content">
+<div class="grid g2 reveal" style="margin-top:28px;">
       <div class="card"><span class="n">01</span><span class="t">Создание и редактирование графиков движения по маршрутам в автоматическом и ручном режимах, в том числе на основе интервалов движения</span></div>
       <div class="card"><span class="n">02</span><span class="t">Проверка вариантов графиков на исполнимость; сокращение времени отстоя на конечных для уменьшения интервального режима между автобусами</span></div>
       <div class="card"><span class="n">03</span><span class="t">Изменение схемы движения на случай потребности организации объездов</span></div>
@@ -538,6 +623,8 @@
       <div class="card"><span class="n">06</span><span class="t">Возможное удлинение рабочего дня с учётом максимально возможной переработки</span></div>
       <div class="card" style="grid-column:1 / -1;"><span class="n">07</span><span class="t">Согласование и утверждение разработанных вариантов графиков движения</span></div>
     </div>
+      </div>
+    </details>
     <h3 class="reveal">Генерация и визуализация <span class="grad">интервальных расписаний</span></h3>
     <div class="split" style="align-items:flex-start;">
       <div class="txt">
@@ -567,7 +654,7 @@
 <section id="planning">
   <div class="aurora b"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">03</span><span class="kb"></span>Планирование</div>
+    <div class="kick reveal"><span class="kn">06</span><span class="kb"></span>Планирование</div>
     <h2 class="reveal">Управление планированием транспорта</h2>
     <div class="split" style="margin-top:44px;">
       <div class="txt">
@@ -587,7 +674,7 @@
 <section id="dispatch">
   <div class="aurora a"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">04</span><span class="kb"></span>Диспетчеризация</div>
+    <div class="kick reveal"><span class="kn">07</span><span class="kb"></span>Диспетчеризация</div>
     <h2 class="reveal">Онлайн-диспетчерская и контроль работы ОТ</h2>
     <p class="note quality-context reveal"><strong>Качество перевозок:</strong> план и факт движения, события и связь с водителем помогают выявить причину срыва рейса.</p>
     <div class="shot reveal" style="margin-top:40px;"><img src="assets/web/dispatch_full.jpg" alt="Рабочее место диспетчера" loading="lazy" decoding="async" width="1065" height="598"><span class="cap">Рабочее место диспетчера</span></div>
@@ -608,7 +695,15 @@
         <div class="bitem"><span class="rt">А-93</span><span class="to">Тюмень АВ — Сладково</span><span class="eta">отправление 16:30</span></div>
       </div>
     </div>
-    <div class="grid g2 stagger" style="margin-top:28px;">
+    <div class="chips reveal" style="margin-top:28px;">
+      <span class="chip hl">План и факт по рейсам</span>
+      <span class="chip">Уведомления об отклонениях</span>
+      <span class="chip">Связь диспетчера с водителем</span>
+    </div>
+    <details class="more-details">
+      <summary>Все инструменты диспетчера</summary>
+      <div class="more-content">
+<div class="grid g2 stagger" style="margin-top:28px;">
       <div class="card"><span class="n">01</span><span class="t">Отображать сводную информацию по движению транспортных средств на маршруте</span></div>
       <div class="card"><span class="n">02</span><span class="t">Отображать схемы маршрутов на картографической подложке с остановочными пунктами</span></div>
       <div class="card"><span class="n">03</span><span class="t">Фиксировать события на маршруте и уведомлять пользователей по совершенным событиям</span></div>
@@ -618,6 +713,8 @@
       <div class="card"><span class="n">07</span><span class="t">Просматривать трек по периоду действия рейса</span></div>
       <div class="card"><span class="n">08</span><span class="t">Работать с мобильным приложением водителя</span></div>
     </div>
+      </div>
+    </details>
     <h3 class="reveal">Мобильное приложение <span class="grad">для водителей</span></h3>
     <div class="chips reveal" style="margin-bottom:26px;">
       <span class="chip">Отображение графика движения ТС</span>
@@ -632,7 +729,7 @@
 <section id="routes">
   <div class="aurora b"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">05</span><span class="kb"></span>Маршрутная сеть и контроль</div>
+    <div class="kick reveal"><span class="kn">08</span><span class="kb"></span>Маршрутная сеть и контроль</div>
     <h2 class="reveal">Организация маршрутов общественного транспорта</h2>
     <div class="split" style="margin-top:40px; align-items:flex-start;">
       <div class="txt">
@@ -675,7 +772,7 @@
 <section id="standards">
   <div class="aurora a"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">05</span><span class="kb"></span>Стандарты обслуживания</div>
+    <div class="kick reveal"><span class="kn">09</span><span class="kb"></span>Стандарты обслуживания</div>
     <h2 class="reveal">Контроль соблюдения социальных стандартов</h2>
     <div class="split" style="margin-top:40px;">
       <div class="txt">
@@ -700,37 +797,6 @@
       <div class="shot reveal"><img src="assets/web/passenger_flow.jpg" alt="Объемы пассажирских перевозок" loading="lazy" decoding="async" width="864" height="474"><span class="cap">Объемы перевозок</span></div>
     </div>
 
-    <div class="quality-block" id="quality-service" aria-labelledby="quality-service-title">
-      <h3 class="reveal" id="quality-service-title">Комплексный показатель качества <span class="grad">транспортного обслуживания</span></h3>
-      <p class="lead reveal">bus:vision объединяет данные о работе транспорта и условиях поездки. Заказчик видит качество обслуживания по четырём направлениям и определяет, какие маршруты требуют внимания.</p>
-      <div class="grid g2 quality-grid stagger">
-        <article class="card quality-card"><span class="n">01</span><div>
-          <h4>Надёжность перевозок</h4>
-          <p>Выполнение расписания, регулярность движения, отмены и сходы с причинами. Сопоставление плана и факта помогает разбирать срывы обслуживания.</p>
-          <p class="quality-tools">Расписания · ГЛОНАСС-мониторинг · события диспетчера</p>
-        </div></article>
-        <article class="card quality-card"><span class="n">02</span><div>
-          <h4>Территориальная доступность</h4>
-          <p>Пешеходная доступность остановок, охват жителей и связь с социальными объектами. Анализ сети показывает, где необходимо улучшить обслуживание.</p>
-          <p class="quality-tools">Маршрутная сеть · остановки · пешеходные подходы · население</p>
-        </div></article>
-        <article class="card quality-card"><span class="n">03</span><div>
-          <h4>Временная доступность</h4>
-          <p>Ожидание, время в пути, скорость сообщения и пересадки. Интервальные графики помогают согласовать движение и сделать поездку предсказуемее.</p>
-          <p class="quality-tools">Плановые и фактические прибытия · интервалы · пассажиропоток</p>
-        </div></article>
-        <article class="card quality-card"><span class="n">04</span><div>
-          <h4>Ценовая доступность</h4>
-          <p>Тарифы, проездные и льготы в сопоставлении с расходами на типовые поездки и доходами пассажиров. Единая база для оценки тарифных решений.</p>
-          <p class="quality-tools">Тарифы · льготные категории · поездки · статистика доходов</p>
-        </div></article>
-      </div>
-      <div class="panel quality-summary reveal">
-        <strong>Общая оценка региона → перевозчик → маршрут → конкретное отклонение</strong>
-        <p class="note">Показатель связан с исходными данными: команда может уточнить причину, скорректировать расписание или выпуск и сравнить результат за сопоставимые периоды.</p>
-        <p class="note">Методика расчёта, веса и целевые значения настраиваются для региона. Учитываются период, полнота и актуальность данных.</p>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -738,13 +804,13 @@
 <section id="analytics">
   <div class="aurora b"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">05</span><span class="kb"></span>Аналитика</div>
+    <div class="kick reveal"><span class="kn">10</span><span class="kb"></span>Аналитика</div>
     <h2 class="reveal">Анализ маршрутной сети</h2>
     <p class="note quality-context reveal"><strong>Качество перевозок:</strong> доступность остановок и загрузка сети помогают определить приоритеты изменения маршрутов.</p>
     <div class="split" style="margin-top:40px; align-items:flex-start;">
       <div class="txt">
         <div class="rows reveal">
-          <div class="row"><span class="n">01</span><span class="t" style="font-size:14.5px;">Определение наличия остановочных пунктов в границах пешеходного подхода, установленного региональными нормативами градостроительного проектирования, от границ земельных участков садоводства, огородничества или дачного хозяйства</span></div>
+          <div class="row"><span class="n">01</span><span class="t" style="font-size:14.5px;">Проверка пешеходной доступности остановок по региональным нормативам, в том числе для садоводческих территорий</span></div>
           <div class="row"><span class="n">02</span><span class="t" style="font-size:14.5px;">Определение остановочных пунктов, для которых маршрут является единственным</span></div>
           <div class="row"><span class="n">03</span><span class="t" style="font-size:14.5px;">Расчет расстояния между остановочными пунктами</span></div>
           <div class="row"><span class="n">04</span><span class="t" style="font-size:14.5px;">Анализ загруженности маршрутной сети</span></div>
@@ -774,6 +840,9 @@
         </div>
       </div>
     </div>
+    <details class="more-details">
+      <summary>Технические подробности: анализ пробега и привязка к дорогам</summary>
+      <div class="more-content">
     <h3 class="reveal">Сервис анализа пробега и <span class="grad">привязки к графам дорог</span></h3>
     <div class="split" style="align-items:flex-start;">
       <div class="txt">
@@ -790,6 +859,8 @@
         </div>
       </div>
     </div>
+      </div>
+    </details>
   </div>
 </section>
 
@@ -797,10 +868,19 @@
 <section id="booking">
   <div class="aurora a"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">06</span><span class="kb"></span>Билетная система</div>
+    <div class="kick reveal"><span class="kn">11</span><span class="kb"></span>Билетная система</div>
     <h2 class="reveal">Модуль «Бронирования платного <span class="grad">проезда и сервисов»</span></h2>
     <p class="lead reveal" style="margin-top:22px;">Продажа, возврат и контроль билетов — от касс автовокзалов до систем-агрегаторов.</p>
     <div class="grid g2 stagger" style="margin-top:36px;">
+      <div class="card"><span class="n">01</span><span class="t">Подбор рейса, бронирование и продажа билетов</span></div>
+      <div class="card"><span class="n">02</span><span class="t">Расчёт стоимости с учётом льгот и проверка оплаты</span></div>
+      <div class="card"><span class="n">03</span><span class="t">Возвраты и единый реестр операций с билетами</span></div>
+      <div class="card"><span class="n">04</span><span class="t">Контроль посадки и отчётность по продажам</span></div>
+    </div>
+    <details class="more-details">
+      <summary>Интеграции и полный состав билетного модуля</summary>
+      <div class="more-content">
+<div class="grid g2 stagger" style="margin-top:36px;">
       <div class="card"><span class="t">Бронирование и покупка билетов для перевозок пассажиров и багажа общественным транспортом</span></div>
       <div class="card"><span class="t">Поддержка актуального расписания и схем маршрутов для систем-агрегаторов, продающих билеты пассажирам</span></div>
       <div class="card"><span class="t">Подбор подходящих рейсов в соответствии с пунктами отправления и назначения пассажиров</span></div>
@@ -813,8 +893,10 @@
       <div class="card"><span class="t">Сводная информация о результатах работы модуля биллинга платного проезда</span></div>
       <div class="card"><span class="t">Взаимодействие в части модуля выдачи транспортных разрешений</span></div>
       <div class="card"><span class="t">Интерфейс администратора для управления параметрами работы модуля биллинга</span></div>
-      <div class="card dashed" style="grid-column:1 / -1;"><span class="t">Ограничение: не реализована обработка персональных данных покупателей билетов</span></div>
     </div>
+      </div>
+    </details>
+    <div class="card dashed" style="margin-top:20px;"><span class="t">Ограничение: не реализована обработка персональных данных покупателей билетов</span></div>
   </div>
 </section>
 
@@ -822,13 +904,20 @@
 <section id="passengers">
   <div class="aurora b"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">07</span><span class="kb"></span>Пассажирам</div>
+    <div class="kick reveal"><span class="kn">12</span><span class="kb"></span>Пассажирам</div>
     <h2 class="reveal">Комплексное информирование. <span class="grad">Интерактивные панели</span></h2>
     <div class="shot reveal" style="margin-top:40px; background:transparent; border:none; box-shadow:none;">
       <img src="assets/web/info_phones.jpg" alt="Экраны информирования пассажиров" loading="lazy" decoding="async" style="border-radius:20px; background:rgba(255,255,255,0.02);" width="890" height="474">
     </div>
-    <h3 class="reveal">Функции <span class="grad">для пользователя</span></h3>
+    <h3 class="reveal">Всё необходимое <span class="grad">для поездки</span></h3>
     <div class="chips reveal">
+      <span class="chip hl">Поиск маршрута</span><span class="chip">Расписание и движение транспорта</span>
+      <span class="chip">Стоимость и льготы</span><span class="chip">Бронирование билетов</span>
+    </div>
+    <details class="more-details">
+      <summary>Все функции пассажирских сервисов</summary>
+      <div class="more-content">
+<div class="chips reveal">
       <span class="chip">Поиск маршрута следования</span>
       <span class="chip">Бронирование билетов на рейс</span>
       <span class="chip">Проверка льготы пассажира</span>
@@ -845,6 +934,8 @@
       <span class="chip">Проверка наличия и категории льготы граждан</span>
       <span class="chip">Движение ТС по маршруту с просмотром данных о ТС</span>
     </div>
+      </div>
+    </details>
   </div>
 </section>
 
@@ -852,7 +943,7 @@
 <section id="effect">
   <div class="aurora a"></div><div class="aurora b"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">08</span><span class="kb"></span>Результаты внедрения</div>
+    <div class="kick reveal"><span class="kn">13</span><span class="kb"></span>Результаты внедрения</div>
     <h2 class="reveal">Эффективность</h2>
     <div class="grid g2 reveal" style="margin-top:40px; max-width:720px;">
       <div class="panel" style="display:flex; flex-direction:column; align-items:flex-start;">
@@ -883,15 +974,19 @@
 <section id="tech">
   <div class="aurora b"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">08</span><span class="kb"></span>Технологии</div>
-    <h2 class="reveal">Стек технологий и масштабируемость</h2>
-    <div class="split" style="margin-top:44px; align-items:flex-start;">
+    <div class="kick reveal"><span class="kn">14</span><span class="kb"></span>Технологии</div>
+    <h2 class="reveal">Масштабирование и <span class="grad">защита данных</span></h2>
+    <p class="lead reveal" style="margin-top:22px;">Архитектура поддерживает рост нагрузки, веб-сервисы и мобильные приложения. Предусмотрены средства защиты данных и контроля их передачи.</p>
+    <details class="more-details">
+      <summary>Архитектура и технологический стек</summary>
+      <div class="more-content">
+<div class="split" style="margin-top:44px; align-items:flex-start;">
       <div class="txt">
         <div class="rows reveal">
           <div class="row"><span class="n">01</span><span class="t" style="font-size:15px;">В разработке применяются только open source языки программирования, фреймворки и библиотеки</span></div>
           <div class="row"><span class="n">02</span><span class="t" style="font-size:15px;">Разработчики поддерживают самые актуальные версии применяемых языков на всем процессе развития системы</span></div>
           <div class="row"><span class="n">03</span><span class="t" style="font-size:15px;">Все необходимые средства информационной безопасности для сохранности данных и контроля передачи</span></div>
-          <div class="row"><span class="n">04</span><span class="t" style="font-size:15px;">Микросервисная архитектура обеспечивает горизонтальную масштабируемость на неограниченное количество объемов данных и пользователей</span></div>
+          <div class="row"><span class="n">04</span><span class="t" style="font-size:15px;">Микросервисная архитектура позволяет наращивать вычислительные ресурсы при росте объёмов данных и числа пользователей</span></div>
         </div>
       </div>
       <div class="panel reveal">
@@ -903,6 +998,8 @@
         <p class="note" style="margin-top:22px;">Единый open source стек для backend-сервисов, веб-интерфейса и мобильных приложений водителей и пассажиров.</p>
       </div>
     </div>
+      </div>
+    </details>
   </div>
 </section>
 
@@ -910,7 +1007,7 @@
 <section id="company">
   <div class="aurora a"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">09</span><span class="kb"></span>О компании</div>
+    <div class="kick reveal"><span class="kn">15</span><span class="kb"></span>О компании</div>
     <h2 class="reveal">Компания в цифрах</h2>
     <div class="grid g2 stagger" style="margin-top:40px;">
       <div class="card" style="align-items:center;"><div class="stat-num" style="font-size:72px;"><span class="counter" data-count="9" data-suffix="+">9+</span></div>
@@ -922,6 +1019,9 @@
       <div class="card" style="align-items:center;"><div class="stat-num" style="font-size:72px;"><span class="counter" data-count="6">6</span></div>
         <div><div class="stat-lbl">субъектов РФ</div><div class="stat-sub">Тюменская, Челябинская, Оренбургская области · Екатеринбург · Республика Мордовия · Красноярский край</div></div></div>
     </div>
+    <details class="more-details">
+      <summary>Награды и признание</summary>
+      <div class="more-content">
     <h3 class="reveal">Наши <span class="grad">достижения</span></h3>
     <div class="grid g2 stagger">
       <div class="aw"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="9" r="5.5" stroke="#8FEAF6" stroke-width="1.8"/><path d="M8.5 13.5 L7 21 L12 18.4 L17 21 L15.5 13.5" stroke="#8FEAF6" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
@@ -935,6 +1035,8 @@
       <div class="aw" style="grid-column:1 / -1;"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="9" r="5.5" stroke="#8FEAF6" stroke-width="1.8"/><path d="M8.5 13.5 L7 21 L12 18.4 L17 21 L15.5 13.5" stroke="#8FEAF6" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
         <div><h4>Твердые знаки</h4><p>2 место в номинации «Инновационные технологии» — повышающие эффективность производств и улучшающие качество жизни человека. Тюменская область</p></div></div>
     </div>
+      </div>
+    </details>
   </div>
 </section>
 
@@ -942,7 +1044,7 @@
 <section id="contacts">
   <div class="aurora b"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">10</span><span class="kb"></span>Контакты</div>
+    <div class="kick reveal"><span class="kn">16</span><span class="kb"></span>Контакты</div>
     <div class="split" style="align-items:flex-start;">
       <div class="txt">
         <h2 class="reveal">Контакты</h2>
@@ -1087,6 +1189,9 @@
   var par = Array.prototype.slice.call(document.querySelectorAll('.aurora, .topo'));
   var rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   onScroll();
+  document.querySelectorAll('.more-details').forEach(function(detail){
+    detail.addEventListener('toggle', onScroll);
+  });
 
   var cio = new IntersectionObserver(function(es){
     es.forEach(function(e){
