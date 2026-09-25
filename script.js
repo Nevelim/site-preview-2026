@@ -44,7 +44,8 @@
   );
 
   if (reduceMotion || compactMotion.matches || !('IntersectionObserver' in window)) {
-    // без анимаций — просто показать всё
+    // Статичное состояние включает и SVG-иконки, и линии заголовков.
+    revealTargets.forEach((el) => el.classList.add('is-visible'));
   } else {
     revealTargets.forEach((el, i) => {
       el.classList.add('reveal');
@@ -88,13 +89,13 @@
   };
 
   const nums = document.querySelectorAll('.stats__num');
-  if (reduceMotion || !('IntersectionObserver' in window)) {
+  if (reduceMotion || compactMotion.matches || !('IntersectionObserver' in window)) {
     // значения уже в HTML — ничего не делаем
   } else {
     const ioNums = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          animateCount(entry.target);
+          if (!compactMotion.matches && !motionQuery.matches) animateCount(entry.target);
           ioNums.unobserve(entry.target);
         }
       });
@@ -602,19 +603,25 @@
 
   let ticking = false;
   const mobileCta = document.querySelector('.mobile-cta');
+  const contacts = document.querySelector('#contacts');
   const onScroll = () => {
     if (ticking) return;
     ticking = true;
     requestAnimationFrame(() => {
       const y = window.scrollY;
       if (header) header.classList.toggle('is-scrolled', y > 8);
-      if (mobileCta) mobileCta.classList.toggle('is-shown', y > 420);
+      if (mobileCta) {
+        // В блоке контактов уже доступны прямые действия — панель не перекрывает их.
+        const contactsVisible = contacts && contacts.getBoundingClientRect().top < window.innerHeight - 100;
+        mobileCta.classList.toggle('is-shown', y > 420 && !contactsVisible);
+      }
       const max = document.documentElement.scrollHeight - window.innerHeight;
       progress.style.transform = 'scaleX(' + (max > 0 ? Math.min(y / max, 1) : 0) + ')';
       ticking = false;
     });
   };
   window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
   onScroll();
 
   /* ---------- 7. Светлая / тёмная тема ---------- */
