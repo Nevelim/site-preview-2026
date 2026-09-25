@@ -330,7 +330,7 @@
     .hero-shot { height:400px; }
     .g3 { grid-template-columns:repeat(2,minmax(0,1fr)); }
   }
-  @media (max-width:760px) {
+@media (max-width:760px) {
     nav { padding:10px 16px; gap:6px; }
     .lead { font-size:17px; line-height:1.65; }
     .nav-links { flex-basis:100%; }
@@ -417,6 +417,48 @@
   .architecture-flow { grid-template-columns:1fr; gap:28px; }
   .architecture-flow li + li::before { content:'↕'; left:-9px; top:-27px; }
 }
+  .scenario-baseline { border-left:2px solid #17BFA6; margin-top:30px; padding:4px 0 4px 22px; }
+  .scenario-baseline p { font-size:18px; line-height:1.6; margin:10px 0; }
+  .scenario-baseline .note { display:block; }
+  .scenario-grid .quality-card { display:block; }
+  .scenario-grid .n { width:34px; height:34px; margin-bottom:16px; }
+  .fleet-inspection { scroll-margin-top:120px; margin-top:54px; }
+  .fleet-inspection h3 { margin-top:0; }
+  .payments-demo { margin-top:32px; }
+  .payments-demo-head { display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap; }
+  .payments-demo-head .note { margin-top:8px; font-size:13px; }
+  .payments-period { display:flex; align-items:center; gap:10px; color:var(--muted); font-size:13px; }
+  .payments-period select { font:inherit; font-weight:600; color:var(--text); background:#101D29; border:1px solid rgba(23,191,166,.55); border-radius:10px; padding:10px 14px; min-height:44px; }
+  .payments-period select:focus-visible { outline:2px solid #4FD9EE; outline-offset:3px; }
+  .payments-metrics { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:24px; margin:30px 0; }
+  .payments-metric { min-width:0; border-bottom:1px solid var(--line); padding-bottom:22px; }
+  .payments-metric > span { font-size:14px; line-height:1.45; color:#C3CDE0; }
+  .payments-metric output { display:block; font-size:clamp(27px,3.2vw,42px); line-height:1.3; font-weight:700; margin:12px 0 8px; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .payments-metric small { display:block; color:var(--muted); font-size:12px; line-height:1.5; }
+  .payments-reconciliation-head { display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:16px; font-size:14px; line-height:1.5; }
+  .payments-reconciliation-head > span { color:#8FEAF6; font-size:13px; }
+  .payments-bar { display:flex; height:14px; border-radius:8px; overflow:hidden; gap:2px; }
+  .payments-bar span { min-width:0; }
+  .payments-bar .paid, .payments-legend .paid { background:#17BFA6; }
+  .payments-bar .benefits, .payments-legend .benefits { background:#B08FE6; }
+  .payments-bar .gap, .payments-legend .gap { background:#D9B56F; }
+  .payments-legend { display:flex; flex-wrap:wrap; gap:12px 22px; margin-top:14px; color:#C3CDE0; font-size:12px; line-height:1.5; }
+  .payments-legend > span { display:inline-flex; gap:7px; align-items:center; }
+  .payments-legend i { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+  .payments-sync { margin-top:20px; padding:14px 18px; border-radius:12px; background:rgba(23,191,166,.06); font-size:13px; }
+  .payments-sync strong { color:#8FEAF6; }
+  .payments-caption { margin-top:18px; font-size:12px; line-height:1.6; }
+@media (max-width:760px) {
+    .scenario-grid .quality-card > div { display:block; }
+    .scenario-baseline { padding-left:16px; }
+    .scenario-baseline p { font-size:16px; }
+    .payments-demo { padding:20px; }
+    .payments-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px 16px; }
+    .payments-metric > span { font-size:12px; }
+    .payments-metric output { font-size:26px; }
+    .payments-metric small { font-size:11px; }
+    .payments-demo-head { align-items:flex-start; }
+  }
   @media print { .hs-toggle { display:none!important; } .quality-card { break-inside:avoid; } }
 </style>
 </head>
@@ -429,9 +471,11 @@
     bus:vision
   </a>
   <div class="nav-links">
-    <a href="#quality-service">Качество</a><a href="#compliance">Нормы</a><a href="#features">Возможности</a><a href="#platform">Платформа</a><a href="#schedules">Графики</a>
+    <a href="#quality-service">Качество</a><a href="#compliance">Нормы</a><a href="#features">Возможности</a>
+    <a href="#network-scenarios">Сценарии и субсидии</a><a href="#ai-tools">ИИ</a>
+    <a href="#platform">Платформа</a><a href="#schedules">Графики</a>
     <a href="#planning">Планирование</a><a href="#dispatch">Диспетчеризация</a><a href="#routes">Маршруты</a><a href="#standards">Стандарты</a>
-    <a href="#analytics">Аналитика</a><a href="#booking">Бронирование</a><a href="#passengers">Пассажирам</a>
+    <a href="#payments">Платежи</a><a href="#analytics">Аналитика</a><a href="#booking">Бронирование</a><a href="#passengers">Пассажирам</a>
     <a href="#effect">Эффект</a><a href="#tech">Технологии</a><a href="#company">Компания</a><a href="#contacts">Контакты</a>
   </div>
 </nav>
@@ -470,7 +514,7 @@
       <h1><span class="hl-line">Управление движением</span><span class="hl-line">общественного</span><span class="hl-line"><span class="grad">транспорта</span></span></h1>
       <span class="uline reveal"></span>
       <p class="lead reveal" style="margin-top:28px;">Платформа полного цикла: ведение обновленного реестра 220-ФЗ, маршрутная сеть, графики движения,
-        планирование транспорта, онлайн-диспетчеризация (МП Водителя), контроль труда и отдыха,
+        планирование транспорта, онлайн-диспетчеризация, мобильное приложение водителя, контроль труда и отдыха,
         контроль контрактов — выявление нарушений, модуль аналитики спроса и сервисы для пассажиров.</p>
       <div class="cta reveal">
         <a class="btn pri" href="mailto:info@smart-transport.ru">Обсудить проект</a>
@@ -516,7 +560,7 @@
       </div></article>
       <article class="card quality-card"><span class="n">04</span><div>
         <h4>Доступная стоимость</h4>
-        <p>Оценка тарифов и льгот с учётом расходов на поездки и доходов пассажиров.</p>
+        <p>Оценка тарифов и льгот с учётом расходов на поездки и действующего МРОТ.</p>
       </div></article>
     </div>
     <div class="panel quality-summary reveal">
@@ -531,7 +575,7 @@
           <div><h4>Надёжность</h4><p class="note">Расписания, ГЛОНАСС-мониторинг и события диспетчера: план и факт рейсов, регулярность, отмены и сходы.</p></div>
           <div><h4>Территориальная доступность</h4><p class="note">Маршрутная сеть, остановки, пешеходные подходы, население и социальные объекты.</p></div>
           <div><h4>Временная доступность</h4><p class="note">Плановые и фактические прибытия, интервалы, скорость сообщения, пересадки и пассажиропоток.</p></div>
-          <div><h4>Ценовая доступность</h4><p class="note">Тарифы, льготные категории, типовые поездки и статистика доходов.</p></div>
+          <div><h4>Ценовая доступность</h4><p class="note">Тарифы, льготные категории, расходы на типовые поездки и действующий МРОТ.</p></div>
         </div>
         <p class="note norm-context" style="margin-top:24px;">Четыре направления предусмотрены пунктом 2а <a href="https://www.consultant.ru/document/cons_doc_LAW_544820/" target="_blank" rel="noopener noreferrer">поручения Президента от 17.09.2026 № Пр-2314ГС</a>. Разработать комплексный показатель с учётом опыта Москвы поручено к 01.12.2026.</p>
         <p class="note">Региональная оценка использует настраиваемые веса и цели; при сравнении учитываются период, полнота и актуальность данных. Утверждённая федеральная методика применяется после её принятия и настройки расчёта.</p>
@@ -615,11 +659,17 @@
     <h2 class="reveal">Ключевые задачи <span class="grad">заказчика</span></h2>
     <div class="grid g3 customer-features stagger" style="margin-top:36px;">
       <a class="card" href="#schedules"><span class="n">01</span><div><h4>Настроить расписания</h4><p>Интервалы, пересадки и проверка графиков на исполнимость.</p></div></a>
-      <a class="card" href="#planning"><span class="n">02</span><div><h4>Обеспечить выпуск</h4><p>Назначение транспорта на рейсы с проверкой требований.</p></div></a>
+      <a class="card" href="#planning"><span class="n">02</span><div><h4>Обеспечить выпуск</h4><p>Назначение транспорта на рейсы и актуальные данные о состоянии парка.</p></div></a>
       <a class="card" href="#dispatch"><span class="n">03</span><div><h4>Контролировать рейсы</h4><p>План и факт движения, отклонения и связь с водителем.</p></div></a>
       <a class="card" href="#routes"><span class="n">04</span><div><h4>Проверять контракты</h4><p>Выявление нарушений и оценка работы перевозчиков.</p></div></a>
-      <a class="card" href="#analytics"><span class="n">05</span><div><h4>Улучшать маршруты</h4><p>Доступность остановок, загрузка сети и пассажиропотоки.</p></div></a>
-      <a class="card" href="#passengers"><span class="n">06</span><div><h4>Помогать пассажирам</h4><p>Маршруты, расписания и информация о поездке.</p></div></a>
+      <a class="card" href="#network-scenarios"><span class="n">05</span><div><h4>Улучшать маршруты</h4><p>Три сценария сети с учётом спроса, качества и субсидий.</p></div></a>
+      <a class="card" href="#passengers"><span class="n">06</span><div><h4>Помогать пассажирам</h4><p>Маршруты, расписания, чат-боты и голосовые ассистенты.</p></div></a>
+    </div>
+    <div class="chips reveal" style="margin-top:24px;">
+      <a class="chip" href="#fleet-inspection">Обследование парка ↗</a>
+      <a class="chip" href="#network-scenarios">Расчёт субсидий ↗</a>
+      <a class="chip" href="#ai-tools">ИИ для перевозок ↗</a>
+      <a class="chip" href="#payments">Пассажиропоток и платежи ↗</a>
     </div>
     <details class="more-details">
       <summary>Полный перечень возможностей системы</summary>
@@ -631,8 +681,11 @@
       <span class="chip">Моделирование маршрутной сети</span>
       <a class="chip" href="#quality-service">Комплексный показатель качества транспортного обслуживания ↗</a>
       <a class="chip" href="#compliance">Мониторинг обновления парка по Указу № 309 ↗</a>
-      <span class="chip">Прогнозирование спроса</span>
-      <span class="chip">Оптимизация расписаний и маршрутных сетей</span>
+      <a class="chip" href="#fleet-inspection">Мобильное обследование подвижного состава ↗</a>
+      <a class="chip" href="#network-scenarios">Моделирование сети и оптимизация субсидирования ↗</a>
+      <a class="chip" href="#ai-tools">Прогнозирование спроса и техсостояния с ИИ ↗</a>
+      <a class="chip" href="#network-scenarios">Оптимизация расписаний и маршрутных сетей ↗</a>
+      <a class="chip" href="#payments">Сверка АСОП и пассажиропотока, льготы и безнал ↗</a>
       <span class="chip">Чат-боты «МАКС»</span>
       <span class="chip">Вещание данных «Яндекс» и 2ГИС</span>
       <span class="chip">Контроль выполнения условий контрактов</span>
@@ -652,11 +705,71 @@
   </div>
 </section>
 
+<!-- ═══ СЦЕНАРИИ СЕТИ И СУБСИДИИ ═══ -->
+<section id="network-scenarios" aria-labelledby="network-scenarios-title">
+  <div class="aurora b"></div>
+  <div class="inner">
+    <div class="kick reveal"><span class="kn">05</span><span class="kb"></span>Сценарии сети и субсидии</div>
+    <h2 class="reveal" id="network-scenarios-title">Маршрутная сеть с учётом<br><span class="grad">спроса и бюджета региона</span></h2>
+    <p class="lead reveal" style="margin-top:22px;">Оценка текущего субсидирования и три варианта развития сети. Заказчик сравнивает расходы и качество перевозок, выбирает сценарий и получает проект новой сети.</p>
+    <div class="scenario-baseline reveal">
+      <span class="arch-step">Исходная модель региона</span>
+      <p>Маршруты и контракты + тарифы и стоимость транспортной работы + АСОП и пассажиропоток</p>
+      <span class="note">Текущие субсидии, провозные платежи и потребность в финансировании — по маршрутам и перевозчикам.</span>
+    </div>
+    <div class="grid g3 quality-grid scenario-grid stagger">
+      <article class="card quality-card"><span class="n">01</span><div><h4>Приоритет бюджета</h4><p>Снижение потребности в субсидиях при заданных ограничениях доступности и объёма перевозок.</p></div></article>
+      <article class="card quality-card"><span class="n">02</span><div><h4>Баланс затрат и качества</h4><p>Перераспределение рейсов и классов ТС по спросу в пределах бюджета региона.</p></div></article>
+      <article class="card quality-card"><span class="n">03</span><div><h4>Приоритет качества</h4><p>Улучшение интервалов и доступности с расчётом необходимого субсидирования.</p></div></article>
+    </div>
+    <div class="panel quality-summary reveal">
+      <strong>Выбор заказчика → проект новой маршрутной сети</strong>
+      <p class="note">Маршруты, графики и расписания, классы транспортных средств и тарифы. Перед утверждением — сравнение с текущей сетью по субсидиям и прогнозу качества перевозок.</p>
+    </div>
+    <details class="more-details">
+      <summary>Как формируется сценарий и что сравнивает заказчик</summary>
+      <div class="more-content">
+        <ol class="architecture-flow">
+          <li><span class="arch-step">01 · Текущее состояние</span><h3>Экономика перевозок</h3><p class="note">Реестр маршрутов и контрактов, транспортная работа, тарифы, льготы и провозные платежи. Расчёт выделяемых субсидий и потребности в финансировании.</p></li>
+          <li><span class="arch-step">02 · Моделирование</span><h3>Три варианта сети</h3><p class="note">Анализ АСОП и пассажиропотока, прогноз спроса. Подбор маршрутов, частоты движения и вместимости ТС с учётом ограничений региона.</p></li>
+          <li><span class="arch-step">03 · Решение региона</span><h3>Новая сеть</h3><p class="note">Сопоставление затрат, ожидания, пересадок и доступности. Из выбранного варианта формируется проект маршрутов и расписаний для согласования.</p></li>
+        </ol>
+        <p class="note" style="margin-top:24px;">В сценарном редакторе изменение сети пересчитывает прогноз показателя качества. Допущения, исходные данные и ограничения сохраняются вместе с вариантом.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ═══ ИСКУССТВЕННЫЙ ИНТЕЛЛЕКТ ═══ -->
+<section id="ai-tools" aria-labelledby="ai-tools-title">
+  <div class="aurora a"></div>
+  <div class="inner">
+    <div class="kick reveal"><span class="kn">06</span><span class="kb"></span>ИИ для общественного транспорта</div>
+    <h2 class="reveal" id="ai-tools-title">Прогноз спроса,<br><span class="grad">качества и технических рисков</span></h2>
+    <div class="grid g2 quality-grid stagger">
+      <article class="card quality-card"><span class="n">01</span><div><h4>Спрос на перевозки</h4><p>Машинное обучение на билетных данных АСОП и наполняемости: прогноз по маршрутам, остановкам и времени суток.</p></div></article>
+      <article class="card quality-card"><span class="n">02</span><div><h4>Сценарный редактор сети</h4><p>Изменили маршрут или расписание → получили прогноз качества. Сравнение вариантов до принятия решения.</p></div></article>
+      <article class="card quality-card"><span class="n">03</span><div><h4>Предиктивное техсостояние</h4><p>Анализ телеметрии подвижного состава для выявления рисков отказа и планирования обслуживания. Меньше сходов — выше надёжность рейсов.</p></div></article>
+      <article class="card quality-card"><span class="n">04</span><div><h4>Помощь пассажирам</h4><p>Чат-боты и голосовые ассистенты на данных МУОТ: маршруты, расписания, прибытия и изменения движения.</p></div></article>
+    </div>
+    <details class="more-details">
+      <summary>Данные для моделей и контроль результатов</summary>
+      <div class="more-content">
+        <div class="grid g2">
+          <div><h4>Общие данные МУОТ</h4><p class="note">АСОП, наполняемость, фактическое движение, расписания, телеметрия и история обследований парка. Контроль полноты, периода и качества исходных данных.</p></div>
+          <div><h4>Решение остаётся у заказчика</h4><p class="note">Прогнозы сопоставляются с фактом. Планировщик проверяет ограничения, сравнивает сценарии и утверждает изменения сети и расписаний.</p></div>
+        </div>
+        <a class="norm-bridge" href="#network-scenarios">Сравнение трёх сценариев и расчёт субсидий →</a>
+      </div>
+    </details>
+  </div>
+</section>
+
 <!-- ═══ ПЛАТФОРМА ═══ -->
 <section id="platform">
   <div class="aurora b"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">05</span><span class="kb"></span>Платформа</div>
+    <div class="kick reveal"><span class="kn">07</span><span class="kb"></span>Платформа</div>
     <h2 class="reveal">Платформа общественного <span class="grad">транспорта</span></h2>
     <div class="split" style="margin-top:44px;">
       <div class="txt">
@@ -691,7 +804,7 @@
 <section id="schedules">
   <div class="aurora a"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">06</span><span class="kb"></span>Графики движения</div>
+    <div class="kick reveal"><span class="kn">08</span><span class="kb"></span>Графики движения</div>
     <h2 class="reveal">Управление графиками движения</h2>
     <p class="note quality-context reveal"><strong>Качество перевозок:</strong> согласованные интервалы и пересадки помогают снизить время ожидания пассажиров.</p>
     <div class="split" style="margin-top:40px; align-items:flex-start;">
@@ -745,7 +858,7 @@
 <section id="planning">
   <div class="aurora b"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">07</span><span class="kb"></span>Планирование</div>
+    <div class="kick reveal"><span class="kn">09</span><span class="kb"></span>Планирование</div>
     <h2 class="reveal">Управление планированием транспорта</h2>
     <div class="split" style="margin-top:44px;">
       <div class="txt">
@@ -758,6 +871,21 @@
       </div>
       <div class="shot reveal"><img src="assets/web/planning.jpg" alt="Календарь планирования транспорта" loading="lazy" decoding="async" width="570" height="666"><span class="cap">Календарь планирования</span></div>
     </div>
+    <div id="fleet-inspection" class="fleet-inspection">
+      <h3 class="reveal">Мобильное обследование<br><span class="grad">подвижного состава перевозчиков</span></h3>
+      <p class="lead reveal">Актуальные данные о состоянии транспорта региона — из приложения инспектора в единый реестр парка.</p>
+      <div class="grid g3 quality-grid stagger">
+        <article class="card quality-card"><span class="n">01</span><div><h4>Осмотр на месте</h4><p>Карточка ТС, чек-лист обследования, фотографии и замечания с датой и ответственным.</p></div></article>
+        <article class="card quality-card"><span class="n">02</span><div><h4>Состояние парка</h4><p>Техническое состояние, оснащение и доступность для маломобильных пассажиров. История обследований каждого ТС.</p></div></article>
+        <article class="card quality-card"><span class="n">03</span><div><h4>Контроль устранения</h4><p>Замечания перевозчику, сроки и повторная проверка. Сводная картина по парку и маршрутам региона.</p></div></article>
+      </div>
+      <details class="more-details">
+        <summary>Как обследования поддерживают актуальность реестра</summary>
+        <div class="more-content">
+          <p class="note">Результаты привязываются к транспортному средству и перевозчику. Видны дата последнего обследования, необследованные ТС и незакрытые замечания. После проверки данные обновляются в реестре и используются при планировании выпуска, оценке перевозчика и анализе технических рисков.</p>
+        </div>
+      </details>
+    </div>
   </div>
 </section>
 
@@ -765,7 +893,7 @@
 <section id="dispatch">
   <div class="aurora a"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">08</span><span class="kb"></span>Диспетчеризация</div>
+    <div class="kick reveal"><span class="kn">10</span><span class="kb"></span>Диспетчеризация</div>
     <h2 class="reveal">Онлайн-диспетчерская и контроль работы ОТ</h2>
     <p class="note quality-context reveal"><strong>Качество перевозок:</strong> план и факт движения, события и связь с водителем помогают выявить причину срыва рейса.</p>
     <div class="shot reveal" style="margin-top:40px;"><img src="assets/web/dispatch_full.jpg" alt="Рабочее место диспетчера" loading="lazy" decoding="async" width="1065" height="598"><span class="cap">Рабочее место диспетчера</span></div>
@@ -820,7 +948,7 @@
 <section id="routes">
   <div class="aurora b"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">09</span><span class="kb"></span>Маршрутная сеть и контроль</div>
+    <div class="kick reveal"><span class="kn">11</span><span class="kb"></span>Маршрутная сеть и контроль</div>
     <h2 class="reveal">Организация маршрутов общественного транспорта</h2>
     <div class="split" style="margin-top:40px; align-items:flex-start;">
       <div class="txt">
@@ -864,7 +992,7 @@
 <section id="standards">
   <div class="aurora a"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">10</span><span class="kb"></span>Стандарты обслуживания</div>
+    <div class="kick reveal"><span class="kn">12</span><span class="kb"></span>Стандарты обслуживания</div>
     <h2 class="reveal">Контроль соблюдения социальных стандартов</h2>
     <div class="split" style="margin-top:40px;">
       <div class="txt">
@@ -892,11 +1020,64 @@
   </div>
 </section>
 
+<!-- ═══ ПАССАЖИРОПОТОК И ПЛАТЕЖИ ═══ -->
+<section id="payments" aria-labelledby="payments-title">
+  <div class="aurora a"></div>
+  <div class="inner">
+    <div class="kick reveal"><span class="kn">13</span><span class="kb"></span>Пассажиропоток и платежи</div>
+    <h2 class="reveal" id="payments-title">Перевезено, оплачено,<br><span class="grad">предоставлено льгот</span></h2>
+    <p class="lead reveal" style="margin-top:22px;">Виджеты связывают данные пассажиропотока и АСОП: поездки, оплаты, льготные категории и долю безнала. Сверка по маршруту, перевозчику, рейсу и периоду.</p>
+    <div class="panel payments-demo reveal">
+      <div class="payments-demo-head">
+        <div><span class="arch-step">Пример виджетов</span><p class="note">Демонстрационные данные · единица учёта — поездка / посадка</p></div>
+        <label class="payments-period">Период
+          <select id="payments-period">
+            <option value="day">День</option>
+            <option value="week">Неделя</option>
+            <option value="month">Месяц</option>
+          </select>
+        </label>
+      </div>
+      <div class="payments-metrics" aria-live="polite" aria-atomic="true">
+        <div class="payments-metric"><span>Факт посадок</span><output id="metric-boardings">12 600</output><small>По данным пассажиропотока</small></div>
+        <div class="payments-metric"><span>Оплаченные поездки</span><output id="metric-paid">9 180</output><small>Подтверждённые оплаты АСОП</small></div>
+        <div class="payments-metric"><span>Льготные поездки</span><output id="metric-benefits">2 940</output><small>Регистрации с нулевой оплатой</small></div>
+        <div class="payments-metric"><span>Доля безнала</span><output id="metric-cashless">92,2%</output><small>Среди оплаченных поездок</small></div>
+      </div>
+      <div class="payments-reconciliation">
+        <div class="payments-reconciliation-head"><strong>Сверка посадок и регистраций</strong><span id="metric-coverage">96,2% сопоставлено</span></div>
+        <div class="payments-bar" aria-hidden="true">
+          <span id="bar-paid" class="paid" style="width:72.8571%"></span>
+          <span id="bar-benefits" class="benefits" style="width:23.3333%"></span>
+          <span id="bar-gap" class="gap" style="width:3.8096%"></span>
+        </div>
+        <div class="payments-legend">
+          <span><i class="paid"></i>Оплаченные</span><span><i class="benefits"></i>Льготные</span><span><i class="gap"></i>К сверке: <b id="metric-gap">480</b></span>
+        </div>
+        <p class="note payments-sync">Офлайн-очередь валидаторов: <strong id="metric-offline">216</strong> операций ожидают выгрузки.</p>
+      </div>
+      <p class="note payments-caption">Льготные поездки в примере учтены отдельно от оплаченных. Расхождение требует сверки: возможны задержки выгрузки, особенности учёта и ошибки датчиков.</p>
+    </div>
+    <details class="more-details">
+      <summary>Прозрачность платежей, автономная оплата и интеграции</summary>
+      <div class="more-content">
+        <div class="grid g2">
+          <div><h4>Единый поток провозных платежей</h4><p class="note">Приём операций в платформу, сверка оплат с перевозками, выявление расхождений. Отдельные показатели по льготным категориям и доле безнала.</p></div>
+          <div><h4>Контроль автономных оплат</h4><p class="note">Мониторинг офлайн-накопления валидаторов, времени последней связи и статуса выгрузки. Сверка накопленных операций после восстановления соединения.</p></div>
+          <div><h4>ЕБС, биометрия и «МАКС»</h4><p class="note">Интеграционный слой для оплаты и подтверждения льгот, включая биометрическую идентификацию льготников через подключённые сервисы. Состав и схема подключения определяются проектом внедрения.</p></div>
+          <div><h4>Отчётность региона</h4><p class="note">Сводки по провозным платежам, безналу, льготам и расхождениям для контроля и подготовки полугодовых докладов.</p></div>
+        </div>
+        <p class="note norm-context" style="margin-top:24px;">Пункт 4 <a href="https://www.consultant.ru/document/cons_doc_LAW_544820/" target="_blank" rel="noopener noreferrer">поручения № Пр-2314ГС от 17.09.2026</a>: первый доклад — до 25.12.2026, далее раз в полгода. Предусмотрены меры по прозрачности платежей и автономной безналичной оплате; применение ЕБС и «МАКС» поручено рассмотреть.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
 <!-- ═══ АНАЛИТИКА СЕТИ ═══ -->
 <section id="analytics">
   <div class="aurora b"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">11</span><span class="kb"></span>Аналитика</div>
+    <div class="kick reveal"><span class="kn">14</span><span class="kb"></span>Аналитика</div>
     <h2 class="reveal">Анализ маршрутной сети</h2>
     <p class="note quality-context reveal"><strong>Качество перевозок:</strong> доступность остановок и загрузка сети помогают определить приоритеты изменения маршрутов.</p>
     <div class="split" style="margin-top:40px; align-items:flex-start;">
@@ -960,7 +1141,7 @@
 <section id="booking">
   <div class="aurora a"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">12</span><span class="kb"></span>Билетная система</div>
+    <div class="kick reveal"><span class="kn">15</span><span class="kb"></span>Билетная система</div>
     <h2 class="reveal">Модуль «Бронирования платного <span class="grad">проезда и сервисов»</span></h2>
     <p class="lead reveal" style="margin-top:22px;">Продажа, возврат и контроль билетов — от касс автовокзалов до систем-агрегаторов.</p>
     <div class="grid g2 stagger" style="margin-top:36px;">
@@ -996,16 +1177,18 @@
 <section id="passengers">
   <div class="aurora b"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">13</span><span class="kb"></span>Пассажирам</div>
+    <div class="kick reveal"><span class="kn">16</span><span class="kb"></span>Пассажирам</div>
     <h2 class="reveal">Комплексное информирование. <span class="grad">Интерактивные панели</span></h2>
     <p class="note norm-context reveal" style="margin-top:22px;">Данные о движении делают ожидание понятнее. <a href="#compliance">ПНСТ 892-2023: нормативная основа пассажирских сервисов ↗</a></p>
     <div class="shot reveal" style="margin-top:40px; background:transparent; border:none; box-shadow:none;">
       <img src="assets/web/info_phones.jpg" alt="Экраны информирования пассажиров" loading="lazy" decoding="async" style="border-radius:20px; background:rgba(255,255,255,0.02);" width="890" height="474">
     </div>
     <h3 class="reveal">Всё необходимое <span class="grad">для поездки</span></h3>
+    <p class="note reveal" style="margin-bottom:24px;">Чат-боты и голосовые ассистенты используют данные МУОТ, чтобы отвечать о маршрутах, расписаниях, прибытиях и изменениях движения.</p>
     <div class="chips reveal">
       <span class="chip hl">Поиск маршрута</span><span class="chip">Расписание и движение транспорта</span>
       <span class="chip">Стоимость и льготы</span><span class="chip">Бронирование билетов</span>
+      <a class="chip" href="#ai-tools">Чат-боты и голосовые ассистенты ↗</a>
     </div>
     <details class="more-details">
       <summary>Все функции пассажирских сервисов</summary>
@@ -1036,7 +1219,7 @@
 <section id="effect">
   <div class="aurora a"></div><div class="aurora b"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">14</span><span class="kb"></span>Результаты внедрения</div>
+    <div class="kick reveal"><span class="kn">17</span><span class="kb"></span>Результаты внедрения</div>
     <h2 class="reveal">Эффективность</h2>
     <div class="grid g2 reveal" style="margin-top:40px; max-width:720px;">
       <div class="panel" style="display:flex; flex-direction:column; align-items:flex-start;">
@@ -1067,7 +1250,7 @@
 <section id="tech">
   <div class="aurora b"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">15</span><span class="kb"></span>Технологии</div>
+    <div class="kick reveal"><span class="kn">18</span><span class="kb"></span>Технологии</div>
     <h2 class="reveal">Масштабирование и <span class="grad">защита данных</span></h2>
     <p class="lead reveal" style="margin-top:22px;">Архитектура поддерживает рост нагрузки, веб-сервисы и мобильные приложения. Предусмотрены средства защиты данных и контроля их передачи.</p>
     <details class="more-details">
@@ -1100,7 +1283,7 @@
 <section id="company">
   <div class="aurora a"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">16</span><span class="kb"></span>О компании</div>
+    <div class="kick reveal"><span class="kn">19</span><span class="kb"></span>О компании</div>
     <h2 class="reveal">Компания в цифрах</h2>
     <div class="grid g2 stagger" style="margin-top:40px;">
       <div class="card" style="align-items:center;"><div class="stat-num" style="font-size:72px;"><span class="counter" data-count="9" data-suffix="+">9+</span></div>
@@ -1137,7 +1320,7 @@
 <section id="contacts">
   <div class="aurora b"></div>
   <div class="inner">
-    <div class="kick reveal"><span class="kn">17</span><span class="kb"></span>Контакты</div>
+    <div class="kick reveal"><span class="kn">20</span><span class="kb"></span>Контакты</div>
     <div class="split" style="align-items:flex-start;">
       <div class="txt">
         <h2 class="reveal">Контакты</h2>
@@ -1246,6 +1429,37 @@
     document.addEventListener('visibilitychange', sync);
     motion.addEventListener('change', sync);
     show(0); sync();
+  })();
+
+  // Illustrative payment widgets; no live passenger or payment data is loaded.
+  (function(){
+    var period = document.getElementById('payments-period');
+    if (!period) return;
+    var samples = {
+      day: {boardings:12600, paid:9180, benefits:2940, cashless:8460, offline:216},
+      week: {boardings:88200, paid:64960, benefits:20580, cashless:60290, offline:340},
+      month: {boardings:378000, paid:278400, benefits:88200, cashless:259860, offline:540}
+    };
+    function renderPayments(){
+      var data = samples[period.value] || samples.day;
+      var matched = data.paid + data.benefits;
+      var gap = data.boardings - matched;
+      function write(id, value){ document.getElementById(id).textContent = value; }
+      function count(value){ return value.toLocaleString('ru-RU'); }
+      function percent(value){ return value.toLocaleString('ru-RU', {minimumFractionDigits:1, maximumFractionDigits:1}) + '%'; }
+      write('metric-boardings', count(data.boardings));
+      write('metric-paid', count(data.paid));
+      write('metric-benefits', count(data.benefits));
+      write('metric-cashless', percent(data.cashless / data.paid * 100));
+      write('metric-coverage', percent(matched / data.boardings * 100) + ' сопоставлено');
+      write('metric-gap', count(gap));
+      write('metric-offline', count(data.offline));
+      document.getElementById('bar-paid').style.width = (data.paid / data.boardings * 100) + '%';
+      document.getElementById('bar-benefits').style.width = (data.benefits / data.boardings * 100) + '%';
+      document.getElementById('bar-gap').style.width = (gap / data.boardings * 100) + '%';
+    }
+    period.addEventListener('change', renderPayments);
+    renderPayments();
   })();
 
   var prog = document.getElementById('progress');
