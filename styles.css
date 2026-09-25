@@ -1499,3 +1499,16 @@ button:focus-visible {
 
 [data-theme="dark"] .products .card__text, :root:not([data-theme="light"]) .products .card__text { color:#b4bdc9; }
 @media(max-width:480px) { .header__right { flex:0 0 auto; } .header__row { flex-wrap:nowrap; } }
+
+/* Critical hero content is readable before optional visual effects. */
+.hero__word i { animation:none; transform:none; }
+.hero__subtitle, .hero__actions, .hero__tags { opacity:1; filter:none; transform:none; }
+@media (max-width:760px), (pointer:coarse) {
+  .hero__canvas, .route__veh, .route__dot { display:none!important; }
+  .hero .container { transform:none!important; }
+  .js .reveal, .js img[loading="lazy"] { opacity:1; filter:none; transform:none; transition:none; }
+  .js .route__stop { opacity:1; transform:none; animation:none!important; transition:none; }
+  .route__line, .veh-beacon, .marquee__track { animation:none!important; }
+  .js .stats__item.counted::after { display:none; }
+  .header, .mobile-cta { backdrop-filter:none; -webkit-backdrop-filter:none; }
+}

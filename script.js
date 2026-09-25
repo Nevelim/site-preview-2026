@@ -8,7 +8,9 @@
   const root = document.documentElement;
   root.classList.add('js');
 
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const reduceMotion = motionQuery.matches;
+  const compactMotion = window.matchMedia('(max-width: 760px), (pointer: coarse)');
   const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
   /* цель Яндекс.Метрики — срабатывает только когда включён счётчик
@@ -35,13 +37,13 @@
 
   /* ---------- 1. Появление блоков при прокрутке ---------- */
   const revealTargets = document.querySelectorAll(
-    '.hero__subtitle, .hero__actions, .hero__tags, .section-title, .section-sub, ' +
+    '.section-title, .section-sub, ' +
     '.trust__item, .stats__grid, .stats__note, .route, .card, .experience__block, ' +
     '.steps__item, .regions li, .partners li, ' +
     '.contact-card, .contacts__actions, .contacts__social'
   );
 
-  if (reduceMotion || !('IntersectionObserver' in window)) {
+  if (reduceMotion || compactMotion.matches || !('IntersectionObserver' in window)) {
     // без анимаций — просто показать всё
   } else {
     revealTargets.forEach((el, i) => {
@@ -103,12 +105,13 @@
   /* ---------- 3. Живая транспортная сеть: узлы, связи, «машины» на маршрутах ---------- */
   const hero = document.querySelector('.hero');
   const initNetwork = () => {
-    if (!hero || reduceMotion) return;
+    if (!hero || reduceMotion || compactMotion.matches || !('IntersectionObserver' in window)) return;
     const canvas = document.createElement('canvas');
     canvas.className = 'hero__canvas';
     canvas.setAttribute('aria-hidden', 'true');
     hero.prepend(canvas);
     const ctx = canvas.getContext('2d');
+    if (!ctx) { canvas.remove(); return; }
 
     const DPR = Math.min(window.devicePixelRatio || 1, 2);
     let W = 0, H = 0, nodes = [], vehicles = [], raf = null, running = false;
@@ -433,8 +436,17 @@
       if (running) raf = requestAnimationFrame(draw);
     };
 
-    const start = () => { if (!running) { running = true; raf = requestAnimationFrame(draw); } };
+    let heroVisible = false;
+    const start = () => {
+      if (!running && heroVisible && !document.hidden && !compactMotion.matches && !motionQuery.matches) {
+        running = true; raf = requestAnimationFrame(draw);
+      }
+    };
     const stop = () => { running = false; if (raf) cancelAnimationFrame(raf); };
+    const syncNetwork = () => {
+      if (heroVisible && !document.hidden && !compactMotion.matches && !motionQuery.matches) start();
+      else stop();
+    };
 
     resize();
     let resizeTimer;
@@ -444,12 +456,13 @@
     });
 
     new IntersectionObserver((entries) => {
-      entries.forEach((e) => (e.isIntersecting ? start() : stop()));
+      heroVisible = entries[0].isIntersecting;
+      syncNetwork();
     }, { threshold: 0.02 }).observe(hero);
 
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) stop(); else start();
-    });
+    document.addEventListener('visibilitychange', syncNetwork);
+    compactMotion.addEventListener('change', syncNetwork);
+    motionQuery.addEventListener('change', syncNetwork);
   };
   initNetwork();
 
@@ -460,7 +473,7 @@
     const route = document.querySelector('.route');
     if (!route) return;
     const vehicles = Array.from(route.querySelectorAll('.route__veh'));
-    if (reduceMotion) {
+    if (reduceMotion || compactMotion.matches) {
       route.querySelectorAll('.route__dot').forEach((el) => el.remove());
       vehicles.forEach((v) => v.remove());
       return;
@@ -492,18 +505,20 @@
       };
     });
 
-    let visible = true;
-    window.__itsRouteVisible = true;
+    let visible = false;
+    let routeFrame = null;
+    window.__itsRouteVisible = false;
     if ('IntersectionObserver' in window) {
       new IntersectionObserver((entries) => {
         visible = entries[0].isIntersecting;
         window.__itsRouteVisible = visible;
+        syncRoute();
       }, { rootMargin: '80px' }).observe(route);
     }
 
     const tick = (now) => {
-      requestAnimationFrame(tick);
-      if (!visible) return;
+      routeFrame = null;
+      if (!visible || document.hidden || compactMotion.matches || motionQuery.matches) return;
       window.__itsRt = (window.__itsRt || 0) + 1;
       for (const s of state) {
         const p = ((now / s.durMs) + s.phase) % 1;
@@ -518,14 +533,22 @@
         const spin = ((d / 22.6) * 360) % 360; // колесо r≈3.6: полный оборот на 2πr
         s.spins.forEach((g) => g.setAttribute('transform', 'rotate(' + spin.toFixed(1) + ')'));
       }
+      routeFrame = requestAnimationFrame(tick);
     };
-    requestAnimationFrame(tick);
+    function syncRoute() {
+      if (routeFrame !== null) cancelAnimationFrame(routeFrame);
+      routeFrame = null;
+      if (visible && !document.hidden && !compactMotion.matches && !motionQuery.matches) routeFrame = requestAnimationFrame(tick);
+    }
+    document.addEventListener('visibilitychange', syncRoute);
+    compactMotion.addEventListener('change', syncRoute);
+    motionQuery.addEventListener('change', syncRoute);
   };
   initRoute();
 
   /* ---------- 4b. Лёгкий параллакс героя (контент вниз, канвас-фон чуть вверх) ---------- */
   const initParallax = () => {
-    if (reduceMotion || !hero) return;
+    if (reduceMotion || compactMotion.matches || !hero) return;
     const heroContent = hero.querySelector('.container');
     const heroCanvas = hero.querySelector('.hero__canvas');
     let tickingP = false;
@@ -533,6 +556,7 @@
       if (tickingP) return;
       tickingP = true;
       requestAnimationFrame(() => {
+        if (compactMotion.matches || motionQuery.matches) { tickingP = false; return; }
         const y = window.scrollY;
         const h = hero.offsetHeight || 600;
         if (y < h) {
@@ -686,7 +710,7 @@
     document.body.appendChild(dbg);
     const paint = () => {
       dbg.textContent = [
-        'script: v21 (rAF + карта, контраст подписей)',
+        'script: v22 (адаптивные эффекты и остановка вне экрана)',
         'reduceMotion: ' + reduceMotion,
         'машинок в DOM: ' + document.querySelectorAll('.route__veh').length,
         'маршрут на экране: ' + (window.__itsRouteVisible === undefined ? '—' : (window.__itsRouteVisible ? 'да' : 'нет')),

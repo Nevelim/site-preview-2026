@@ -13,7 +13,7 @@ def inline(m):
     if not asset.is_file(): raise FileNotFoundError(path)
     mime=mimetypes.guess_type(path)[0] or 'application/octet-stream'
     return prefix+'data:'+mime+';base64,'+base64.b64encode(asset.read_bytes()).decode()+suffix
-s=re.sub(r'(src=")(assets/[^\"]+)(")',inline,s)
+s=re.sub(r'((?:data-)?src=")(assets/[^\"]+)(")',inline,s)
 s=re.sub(r"(url\(')(assets/[^']+)('\))",inline,s)
 for name,css in [('desktop','body{min-width:1180px}'),('mobile','section{padding:56px 20px!important}.split,.grid.g2,.grid.g3{grid-template-columns:1fr!important;gap:20px!important}#hero h1{font-size:40px!important}.hero-shot{height:auto!important;aspect-ratio:1200/607}.side-label,.scroll-hint{display:none!important}.nav-links{flex-basis:100%}')]:
     variant=s
@@ -26,7 +26,7 @@ for name,css in [('desktop','body{min-width:1180px}'),('mobile','section{padding
                 depth += (variant[end]=='{') - (variant[end]=='}'); end+=1
             variant=variant[:match.start()]+variant[end:]
     out=variant.replace('</head>','<style>'+css+'</style></head>')
-    (ROOT/f'presentation-busvision-{name}.html').write_text(out)
+    (ROOT/f'presentation-busvision-{name}.html').write_text('\n'.join(line.rstrip() for line in out.splitlines())+'\n')
 
 # Refresh the iframe and downloads together when any presentation output changes.
 # GitHub Pages caches HTML, so an unchanged wrapper must not reuse an older iframe.
