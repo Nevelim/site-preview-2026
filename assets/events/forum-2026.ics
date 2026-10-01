@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//ITS//ITSRussiaForum2026//RU
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:itsforum2026@its.dev
+DTSTAMP:20260825T120000Z
+DTSTART;VALUE=DATE:20260928
+DTEND;VALUE=DATE:20260930
+SUMMARY:Форум «ИТС России 2026» — стенд ООО «ИТС»
+DESCRIPTION:Форум и выставка «Интеллектуальные транспортные системы России». Цифровая эра транспорта. Лендинг компании ИТС — по QR в буклете.
+LOCATION:Москва, Azimut Отель
+URL:https://2026.itsrussiaforum.ru/
+END:VEVENT
+END:VCALENDAR
